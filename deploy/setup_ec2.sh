@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # =============================================================================
-# ThinkAloudAI EC2 Deployment & Setup Script (Ubuntu / Debian)
-# Monolith_ThinkAloudAI (frontend/ + backend/)
+# ThinkAloudAI EC2 Backend Setup Script (Ubuntu / Debian)
+# Sets up Backend Monolith + LiveKit Voice Worker + Local Redis + Nginx Reverse Proxy
+# (Frontend is deployed on Vercel)
 # Run as root or with sudo:
 #   sudo bash deploy/setup_ec2.sh
 # =============================================================================
@@ -9,16 +10,15 @@
 set -e
 
 echo "=========================================================="
-echo " Starting ThinkAloudAI Production Environment Provisioning"
+echo " Starting ThinkAloudAI Backend Production Setup (EC2)"
 echo "=========================================================="
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 BACKEND_DIR="$PROJECT_ROOT/backend"
-FRONTEND_DIR="$PROJECT_ROOT/frontend"
 
 # 1. Update OS packages
-echo "[1/7] Updating apt repositories..."
+echo "[1/5] Updating apt repositories and installing backend dependencies..."
 apt-get update -y
 apt-get install -y \
     curl \
@@ -35,29 +35,20 @@ apt-get install -y \
     libpq-dev
 
 # 2. Configure and start Redis on localhost
-echo "[2/7] Configuring local Redis..."
+echo "[2/5] Configuring local Redis..."
 systemctl enable redis-server
 systemctl restart redis-server
 redis-cli ping | grep -q "PONG" && echo " Redis is running and healthy!"
 
-# 3. Install Node.js (v20 LTS) if not installed
-if ! command -v node &> /dev/null; then
-    echo "[3/7] Installing Node.js LTS (v20)..."
-    curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-    apt-get install -y nodejs
-else
-    echo "[3/7] Node.js is already installed ($(node -v))."
-fi
-
-# 4. Install UV fast Python package manager
+# 3. Install UV fast Python package manager
 if ! command -v uv &> /dev/null; then
-    echo "[4/7] Installing uv..."
+    echo "[3/5] Installing Astral uv..."
     curl -LsSf https://astral.sh/uv/install.sh | sh
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
-# 5. Configure Monolith Virtual Environment & Dependencies
-echo "[5/7] Setting up Python virtual environment in $BACKEND_DIR..."
+# 4. Configure Monolith Virtual Environment & Dependencies
+echo "[4/5] Setting up Python virtual environment in $BACKEND_DIR..."
 cd "$BACKEND_DIR"
 
 if [ ! -d ".venv" ]; then
@@ -71,21 +62,8 @@ else
     .venv/bin/pip install -e .
 fi
 
-# 6. Setup Frontend Build & www directory
-echo "[6/7] Building Frontend SPA in $FRONTEND_DIR..."
-mkdir -p /var/www/thinkaloud/frontend
-if [ -d "$FRONTEND_DIR" ]; then
-    cd "$FRONTEND_DIR"
-    npm install
-    npm run build
-    rm -rf /var/www/thinkaloud/frontend/dist
-    cp -r dist /var/www/thinkaloud/frontend/dist
-    chown -R www-data:www-data /var/www/thinkaloud
-    echo " Frontend built and copied to /var/www/thinkaloud/frontend/dist"
-fi
-
-# 7. Configure Nginx and Systemd Services
-echo "[7/7] Installing Nginx configuration and Systemd units..."
+# 5. Configure Nginx and Systemd Services
+echo "[5/5] Installing Nginx reverse proxy and Systemd units..."
 cp "$SCRIPT_DIR/nginx.conf" /etc/nginx/sites-available/thinkaloud
 ln -sf /etc/nginx/sites-available/thinkaloud /etc/nginx/sites-enabled/thinkaloud
 rm -f /etc/nginx/sites-enabled/default
@@ -100,7 +78,7 @@ systemctl enable thinkaloud-backend
 systemctl enable thinkaloud-worker
 
 echo "=========================================================="
-echo " ThinkAloudAI EC2 Provisioning Complete!"
+echo " ThinkAloudAI EC2 Backend Setup Complete!"
 echo "=========================================================="
 echo "Next steps:"
 echo " 1. Configure $BACKEND_DIR/.env with your RDS & API keys"

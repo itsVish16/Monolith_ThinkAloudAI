@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
-# ThinkAloudAI Production Deployment & Continuous Update Script
+# ThinkAloudAI Production Continuous Update Script (Backend Only)
+# Monolith_ThinkAloudAI
 # Use this script whenever pulling latest code on EC2:
 #   sudo bash deploy/deploy_update.sh
 # =============================================================================
@@ -8,29 +9,28 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MONOLITH_DIR="$(dirname "$SCRIPT_DIR")"
-PROJECT_ROOT="$(dirname "$MONOLITH_DIR")"
-FRONTEND_DIR="$PROJECT_ROOT/Frontend"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+BACKEND_DIR="$PROJECT_ROOT/backend"
 
 echo "=========================================================="
-echo " Starting ThinkAloudAI Production Update & Rollout"
+echo " Starting ThinkAloudAI Backend Production Rollout"
 echo "=========================================================="
 
 cd "$PROJECT_ROOT"
 
-# 1. Update Git Repository (if in git repo)
+# 1. Update Git Repository
 if [ -d ".git" ]; then
-    echo "[1/5] Pulling latest git changes..."
+    echo "[1/4] Pulling latest git changes..."
     git pull origin main || echo "Git pull skipped or working on local branch."
 fi
 
 # 2. Update Backend Python Dependencies
-echo "[2/5] Updating Backend dependencies..."
-cd "$MONOLITH_DIR"
+echo "[2/4] Updating Backend dependencies..."
+cd "$BACKEND_DIR"
 
-if [ -f "$MONOLITH_DIR/.venv/bin/python" ]; then
-    PYTHON_BIN="$MONOLITH_DIR/.venv/bin/python"
-    ALEMBIC_BIN="$MONOLITH_DIR/.venv/bin/alembic"
+if [ -f "$BACKEND_DIR/.venv/bin/python" ]; then
+    PYTHON_BIN="$BACKEND_DIR/.venv/bin/python"
+    ALEMBIC_BIN="$BACKEND_DIR/.venv/bin/alembic"
 else
     PYTHON_BIN="python3"
     ALEMBIC_BIN="alembic"
@@ -43,27 +43,14 @@ else
 fi
 
 # 3. Apply Database Migrations & Seeds
-echo "[3/5] Applying PostgreSQL migrations..."
+echo "[3/4] Applying PostgreSQL migrations..."
 "$ALEMBIC_BIN" upgrade head
 
 echo "Seeding canonical questions and tracks..."
 "$PYTHON_BIN" scripts/seed_database.py
 
-# 4. Rebuild Frontend Static SPA
-echo "[4/5] Rebuilding Frontend SPA..."
-if [ -d "$FRONTEND_DIR" ]; then
-    cd "$FRONTEND_DIR"
-    npm install
-    npm run build
-    mkdir -p /var/www/thinkaloud/frontend/dist
-    rm -rf /var/www/thinkaloud/frontend/dist/*
-    cp -r dist/* /var/www/thinkaloud/frontend/dist/
-    chown -R www-data:www-data /var/www/thinkaloud
-    echo " Frontend updated at /var/www/thinkaloud/frontend/dist"
-fi
-
-# 5. Restart Systemd Services
-echo "[5/5] Restarting backend and voice agent services..."
+# 4. Restart Systemd Services
+echo "[4/4] Restarting backend and voice agent services..."
 systemctl restart thinkaloud-backend
 systemctl restart thinkaloud-worker
 systemctl reload nginx
