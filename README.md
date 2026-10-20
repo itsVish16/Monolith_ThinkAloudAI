@@ -37,7 +37,30 @@ Monolith_ThinkAloudAI/
 
 ---
 
-## AWS EC2 + Amazon RDS Deployment
+## Deployment Architecture
+
+- **Frontend**: Deployed on **Vercel** as a static Vite Single Page Application.
+- **Backend**: Deployed on **AWS EC2** (FastAPI backend + LiveKit voice agent worker + Redis) connected to **Amazon RDS PostgreSQL**.
+
+---
+
+## 1. Frontend Deployment (Vercel)
+
+1. Import `itsVish16/Monolith_ThinkAloudAI` in [Vercel Dashboard](https://vercel.com).
+2. Configure Project Settings:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+3. Add Environment Variables:
+   - `VITE_API_URL`: `http://<YOUR_EC2_PUBLIC_IP>` or `https://api.yourdomain.com`
+   - `VITE_LIVEKIT_URL`: `wss://thinkaloudai-3166kske.livekit.cloud`
+   - `VITE_ADMIN_EMAILS`: `vishalsaini160204@gmail.com,admin@thinkaloudai.tech`
+4. Click **Deploy**.
+
+---
+
+## 2. Backend & Voice Worker Deployment (AWS EC2 + Amazon RDS)
 
 ### 1. Provision Server
 SSH into your Ubuntu EC2 instance and clone this repository:
@@ -47,7 +70,7 @@ cd /home/ubuntu
 git clone https://github.com/itsVish16/Monolith_ThinkAloudAI.git
 cd Monolith_ThinkAloudAI
 
-# Run automated provisioner (installs Redis, Nginx, Python, Node, builds frontend)
+# Run automated backend provisioner (installs Redis, Nginx, Python 3.12 venv, dependencies)
 sudo bash deploy/setup_ec2.sh
 ```
 
@@ -83,13 +106,14 @@ sudo systemctl enable --now thinkaloud-backend
 sudo systemctl enable --now thinkaloud-worker
 ```
 
-### 5. Setup SSL / HTTPS
+### 5. Setup SSL / HTTPS (Optional Domain)
 ```bash
-sudo certbot --nginx -d yourdomain.com
+sudo certbot --nginx -d api.yourdomain.com
 ```
 
 ### 6. Continuous Deployment
-Whenever you push updates to GitHub, redeploy on EC2 with a single command:
+Whenever you push updates to GitHub, redeploy on EC2 with:
 ```bash
 sudo bash deploy/deploy_update.sh
 ```
+
