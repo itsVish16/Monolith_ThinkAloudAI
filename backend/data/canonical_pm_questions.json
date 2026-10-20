@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Design a New Feature for Spotify to Improve Social Discovery",
+    "description": "How would you design a social music discovery feature for Spotify? Walk through user personas, pain points, core user flows, monetization vs engagement trade-offs, and key North Star metrics (e.g., DAU/MAU, 30-day retention).",
+    "category": "Product Sense & Design"
+  },
+  {
+    "title": "Diagnosing a 15% Drop in E-Commerce Checkout Conversion",
+    "description": "Imagine your e-commerce platform experienced a 15% decline in cart checkout completion over the last week. How would you systematically diagnose the root cause across user funnels, tech latency, marketing channels, and fraud filters?",
+    "category": "Execution & Analytics"
+  },
+  {
+    "title": "Pricing Strategy and Launch for a B2B Developer API",
+    "description": "You are the PM launching a new real-time AI voice API product. How would you decide on tiered pricing (pay-as-you-go vs committed usage), determine free tier quotas, and plan go-to-market developer relations?",
+    "category": "Strategy & Monetization"
+  }
+]

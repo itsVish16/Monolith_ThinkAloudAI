@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Fine-Tuning vs RAG Trade-offs for Enterprise LLM Applications",
+    "description": "When should an enterprise choose LoRA / QLoRA fine-tuning versus Retrieval-Augmented Generation (RAG)? Discuss knowledge freshness, training costs, data privacy, latency constraints, and hallucination reduction.",
+    "domain": "Generative AI & LLMs",
+    "role": "AI Engineer / LLM Specialist"
+  },
+  {
+    "title": "Scaling Real-Time LLM Inference with Speculative Decoding & KV Caching",
+    "description": "Explain techniques used to optimize Time-To-First-Token (TTFT) and token generation throughput for Large Language Models. Detail PagedAttention, KV-cache quantization (FP8/INT4), continuous batching (vLLM), and speculative decoding.",
+    "domain": "ML Systems & Inference",
+    "role": "Machine Learning Engineer"
+  },
+  {
+    "title": "Handling Data Drift and Covariate Shift in Production ML Models",
+    "description": "How do you detect and mitigate statistical data drift and concept drift in a live fraud-detection model? Discuss PSI (Population Stability Index), KS-tests, online retraining pipelines, and shadow model deployment.",
+    "domain": "MLOps",
+    "role": "Senior MLOps Engineer"
+  }
+]

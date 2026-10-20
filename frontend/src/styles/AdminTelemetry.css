@@ -1,0 +1,942 @@
+/* ============================================================
+   AdminTelemetry.css — "Voice Latency & Turn Telemetry" tab
+   Owner: TELEMETRY agent. All new classes are prefixed `ta-`.
+   Shared `admin-*` classes come from AdminDashboard.css (owned
+   by SHELL) and are intentionally reused, never redefined here.
+   Layout fix: the bottom split grid can no longer grow wider
+   than the viewport; each table scrolls inside its own panel.
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   Root wrapper
+   ---------------------------------------------------------- */
+.ta-root {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* ----------------------------------------------------------
+   Header panel (icon + title + segmented sessions + refresh)
+   ---------------------------------------------------------- */
+.admin-filter-row.ta-header-row {
+  border-bottom: none;
+  row-gap: 14px;
+}
+
+.ta-header-left {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+}
+
+.ta-header-chip {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(249, 115, 22, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: #f97316;
+}
+
+.ta-header-chip-sm {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+}
+
+.ta-header-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ta-header-title {
+  margin: 0;
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: #f9fafb;
+}
+
+.ta-header-sub {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #a1a1aa;
+}
+
+.ta-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Session-count segmented pills */
+.ta-seg {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ta-seg-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #71717a;
+  white-space: nowrap;
+}
+
+.ta-seg-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ta-seg-btn {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #a1a1aa;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.ta-seg-btn:hover {
+  color: #f4f4f5;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.ta-seg-btn.active {
+  background: rgba(249, 115, 22, 0.12);
+  border-color: rgba(249, 115, 22, 0.3);
+  color: #fdba74;
+}
+
+.ta-seg-btn:focus-visible {
+  outline: 2px solid rgba(249, 115, 22, 0.45);
+  outline-offset: 1px;
+}
+
+/* Ghost refresh button */
+.admin-btn-secondary.ta-refresh {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+}
+
+/* ----------------------------------------------------------
+   Stat cards — mono values + status notes
+   ---------------------------------------------------------- */
+.ta-val {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  letter-spacing: -0.02em;
+}
+
+.admin-stat-card .ta-val {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.ta-val-orange,
+.admin-stat-card .ta-val-orange {
+  color: #fb923c;
+}
+
+.ta-val-green,
+.admin-stat-card .ta-val-green {
+  color: #34d399;
+}
+
+.ta-val-amber,
+.admin-stat-card .ta-val-amber {
+  color: #fdba74;
+}
+
+.ta-note {
+  margin-top: 3px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.ta-note-ok {
+  color: #34d399;
+}
+
+.ta-note-warn {
+  color: #fdba74;
+}
+
+.ta-note-dim {
+  color: #71717a;
+}
+
+/* Neutral chip for the "Analyzed Sessions" icon (count, not latency) */
+.admin-stat-card .admin-stat-icon.ta-icon-neutral {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #a1a1aa;
+}
+
+/* ----------------------------------------------------------
+   Bottom split grid — THE OVERFLOW FIX
+   minmax(0, …) tracks + min-width: 0 children keep the grid
+   from ever exceeding the viewport; each table scrolls inside
+   its own panel. Panels stack below 1100px.
+   ---------------------------------------------------------- */
+.ta-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 18px;
+  min-width: 0;
+}
+
+.ta-split > * {
+  min-width: 0;
+}
+
+@media (max-width: 1100px) {
+  .ta-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ----------------------------------------------------------
+   Panels
+   ---------------------------------------------------------- */
+.admin-table-header-card.ta-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Fade lives exactly over the table viewport, so the horizontal clip
+   reads as "content continues →" and never covers panel chrome. */
+.ta-scroll-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+.ta-scroll-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 26px;
+  background: linear-gradient(90deg, rgba(14, 14, 19, 0), rgba(14, 14, 19, 0.9));
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ta-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+}
+
+.ta-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ta-panel-title h3 {
+  margin: 0;
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: #f4f4f5;
+  white-space: nowrap;
+}
+
+.ta-panel-ico {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ta-panel-ico.amber {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  color: #fbbf24;
+}
+
+.ta-panel-ico.orange {
+  background: rgba(249, 115, 22, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: #f97316;
+}
+
+.ta-panel-hint {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #71717a;
+  white-space: nowrap;
+}
+
+/* Per-panel scroll viewport: tables scroll inside their panel, never
+   pushing the page wide. The capped height keeps both panels visually
+   balanced and keeps the table's horizontal scroll adjacent to the rows. */
+.ta-scroll {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-width: 100%;
+  min-width: 0;
+  max-height: 520px;
+}
+
+/* Thin scrollbars (fallback styling if the shell ever drops its own) */
+.ta-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.ta-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ta-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+}
+
+.ta-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.ta-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ----------------------------------------------------------
+   Tables — dense, scannable
+   ---------------------------------------------------------- */
+.ta-panel .ta-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 9px 12px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #71717a;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--adm-card-bg, #0e0e13);
+}
+
+.ta-panel .ta-table tbody td {
+  padding: 10px 12px;
+  font-size: 12.5px;
+  color: #d4d4d8;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ta-panel .ta-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ta-panel .ta-table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ta-panel .ta-table thead th:last-child,
+.ta-panel .ta-table tbody td:last-child {
+  padding-right: 34px;
+}
+
+.ta-table tbody tr.ta-clickable {
+  cursor: pointer;
+}
+
+.ta-clickable:hover .ta-sid {
+  color: #fb923c;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Cell primitives */
+.ta-sid {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fdba74;
+  white-space: nowrap;
+}
+
+.ta-candidate {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #f9fafb;
+  white-space: nowrap;
+}
+
+.ta-turn {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  font-weight: 600;
+  color: #e4e4e7;
+  white-space: nowrap;
+}
+
+.ta-num {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  font-weight: 500;
+  color: #a1a1aa;
+  white-space: nowrap;
+}
+
+.ta-quote {
+  display: inline-block;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+  font-size: 12px;
+  color: #a1a1aa;
+}
+
+/* Chips & pills */
+.ta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.ta-chip-stage {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  color: #fdba74;
+}
+
+.ta-chip-ok {
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  color: #34d399;
+}
+
+.ta-chip-type {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #a1a1aa;
+}
+
+.ta-lat {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.ta-lat-ok {
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  color: #34d399;
+}
+
+.ta-lat-warn {
+  background: rgba(249, 115, 22, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: #fdba74;
+}
+
+.ta-lat-bad {
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171;
+}
+
+.ta-lat-none {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #71717a;
+}
+
+/* Table action buttons */
+.admin-btn-secondary.ta-btn-mini {
+  height: 26px;
+  padding: 0 10px;
+  gap: 4px;
+  border-radius: 8px;
+  font-size: 11px;
+}
+
+.admin-btn-secondary.ta-btn-mini:hover {
+  border-color: rgba(249, 115, 22, 0.35);
+  color: #fdba74;
+}
+
+.admin-btn-secondary.ta-icon-btn {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.admin-btn-secondary.ta-icon-btn:hover {
+  border-color: rgba(249, 115, 22, 0.35);
+  color: #fdba74;
+}
+
+/* Empty / loading rows */
+.ta-panel .ta-table tbody td.ta-empty {
+  padding: 32px 18px;
+  text-align: center;
+  font-size: 12.5px;
+  color: #71717a;
+}
+
+/* ----------------------------------------------------------
+   Deep-dive modal
+   ---------------------------------------------------------- */
+.admin-modal-card.ta-dialog-wide {
+  max-width: 980px;
+  width: 95%;
+}
+
+.admin-modal-body.ta-dialog-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.ta-dd-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.ta-dd-head-copy {
+  min-width: 0;
+}
+
+.ta-dd-title {
+  margin: 0;
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #f9fafb;
+}
+
+.ta-dd-sub {
+  margin: 3px 0 0 0;
+  font-size: 12px;
+  color: #a1a1aa;
+}
+
+.ta-dd-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 48px 0;
+  font-size: 12.5px;
+  color: #a1a1aa;
+}
+
+.ta-spin-orange {
+  color: #f97316;
+}
+
+.ta-dd-fail {
+  padding: 36px 0;
+  text-align: center;
+  font-size: 12.5px;
+  color: #71717a;
+}
+
+.ta-dd-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* Summary bar */
+.ta-dd-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  padding: 14px 16px;
+  background: #14141b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+
+.ta-dd-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ta-dd-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #71717a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ta-dd-val {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 15px;
+  font-weight: 700;
+  color: #f4f4f5;
+  white-space: nowrap;
+}
+
+.ta-dd-val-sm {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #d4d4d8;
+}
+
+/* Turns list */
+.ta-turns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ta-turns-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+
+.ta-turns-title {
+  margin: 0;
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  color: #f4f4f5;
+}
+
+.ta-turns-hint {
+  font-size: 11px;
+  color: #71717a;
+}
+
+.ta-empty-box {
+  padding: 26px 16px;
+  text-align: center;
+  font-size: 12.5px;
+  color: #71717a;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+}
+
+.ta-turn-card {
+  background: #121218;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+.ta-turn-card:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.ta-turn-card.expanded {
+  border-color: rgba(249, 115, 22, 0.3);
+  background: #14141b;
+}
+
+.ta-turn-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+}
+
+.ta-turn-head-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.ta-turn-head-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ta-turn-num {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e4e4e7;
+  white-space: nowrap;
+}
+
+.ta-score {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  color: #34d399;
+  white-space: nowrap;
+}
+
+.ta-quote-sm {
+  display: inline-block;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+  font-size: 12px;
+  color: #a1a1aa;
+}
+
+.ta-caret {
+  color: #71717a;
+  flex-shrink: 0;
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+
+.ta-caret.open {
+  transform: rotate(90deg);
+  color: #fdba74;
+}
+
+/* Expanded turn body */
+.ta-turn-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0b0b10;
+}
+
+/* Pipeline flow */
+.ta-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  padding: 12px 10px;
+  background: #101015;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.ta-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  flex-shrink: 0;
+  min-width: 118px;
+  padding: 9px 12px;
+  text-align: center;
+  background: #16161d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+
+.ta-node.hl-green {
+  border-color: rgba(52, 211, 153, 0.3);
+  background: rgba(52, 211, 153, 0.06);
+}
+
+.ta-node.hl-amber {
+  border-color: rgba(251, 191, 36, 0.28);
+  background: rgba(251, 191, 36, 0.06);
+}
+
+.ta-node.hl-orange {
+  border-color: rgba(249, 115, 22, 0.3);
+  background: rgba(249, 115, 22, 0.07);
+}
+
+.ta-node-head {
+  font-size: 11px;
+  font-weight: 600;
+  color: #d4d4d8;
+  white-space: nowrap;
+}
+
+.ta-node-val {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #f4f4f5;
+  white-space: nowrap;
+}
+
+.ta-node-sub {
+  font-size: 10.5px;
+  color: #71717a;
+  white-space: nowrap;
+}
+
+.ta-flow-arrow {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0 2px;
+  font-size: 11px;
+  color: #3f3f46;
+}
+
+/* Dialogue blocks */
+.ta-dialogue {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  background: #101015;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+}
+
+.ta-dialogue-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ta-dialogue-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ta-label-orange {
+  color: #fb923c;
+}
+
+.ta-label-green {
+  color: #34d399;
+}
+
+.ta-label-amber {
+  color: #fdba74;
+}
+
+.ta-label-muted {
+  color: #a1a1aa;
+}
+
+.ta-dialogue-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #e4e4e7;
+}
+
+.ta-filler-code {
+  display: block;
+  margin-top: 4px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #6ee7b7;
+  background: rgba(52, 211, 153, 0.07);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ta-eval-note {
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.ta-eval-text {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  font-style: italic;
+  color: #a1a1aa;
+}

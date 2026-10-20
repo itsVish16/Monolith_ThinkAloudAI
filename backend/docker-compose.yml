@@ -1,0 +1,108 @@
+name: thinkaloud-monolith
+
+services:
+  # ===========================================================================
+  # 1. PostgreSQL 16 Database
+  # ===========================================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: thinkaloud-monolith-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-thinkaloud_monolith}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      # CRITICAL: Directly pin postgres storage to host disk directory so container updates NEVER wipe data!
+      - ${POSTGRES_DATA_DIR:-/var/lib/thinkaloud/postgres_data}:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-thinkaloud_monolith}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ===========================================================================
+  # 2. Redis 7 In-Memory Cache & Async Queue
+  # ===========================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: thinkaloud-monolith-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "512mb", "--maxmemory-policy", "volatile-lru"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  # ===========================================================================
+  # 3. ThinkAloud AI Unified Monolith Application
+  # ===========================================================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: thinkaloud-monolith-app
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8000}:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # Allow override from .env (e.g. for Amazon RDS and custom Redis) with local container fallbacks
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-thinkaloud_monolith}}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 25s
+
+  # ===========================================================================
+  # 4. LiveKit Voice Agent Worker
+  # ===========================================================================
+  voice-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: thinkaloud-monolith-voice-worker
+    restart: unless-stopped
+    command: ["python", "-m", "app.voice_agent.worker", "start"]
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-thinkaloud_monolith}}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      LIVEKIT_URL: ${LIVEKIT_URL}
+      LIVEKIT_API_KEY: ${LIVEKIT_API_KEY}
+      LIVEKIT_API_SECRET: ${LIVEKIT_API_SECRET}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  redis_data:
+    name: thinkaloud_redis_data
+
+networks:
+  default:
+    name: thinkaloud-network
+    driver: bridge

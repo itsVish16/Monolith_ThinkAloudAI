@@ -1,0 +1,82 @@
+[
+  {
+    "title": "Handling Critical Production Outage Under Pressure",
+    "description": "Tell me about a time when a critical system failed in production. Walk me through how you triaged the issue, communicated with stakeholders, coordinated the fix, and implemented preventive safeguards afterwards.",
+    "category": "Ownership & Crisis Management"
+  },
+  {
+    "title": "Disagreement with Engineering Leadership on Technical Direction",
+    "description": "Describe a situation where you strongly disagreed with a team lead, architect, or peer on a technical decision or architecture choice. How did you advocate for your perspective with data, evaluate trade-offs, and what was the ultimate resolution?",
+    "category": "Collaboration & Conflict Resolution"
+  },
+  {
+    "title": "Delivering a Major Feature with Ambiguous Requirements",
+    "description": "Tell me about a high-impact project you delivered where the initial requirements were vague or rapidly changing. How did you break down milestones, scope MVPs, align cross-functional stakeholders, and guarantee on-time delivery?",
+    "category": "Execution & Navigating Ambiguity"
+  },
+  {
+    "title": "Overcoming a Project Failure or Critical Mistake",
+    "description": "Can you share an experience where a project failed to meet expectations or a code change caused a significant regression? How did you take ownership of the mistake, communicate with your team, and what concrete lessons did you apply to future projects?",
+    "category": "Accountability & Continuous Learning"
+  },
+  {
+    "title": "Balancing Technical Debt Refactoring vs Tight Product Deadlines",
+    "description": "Describe a time when you had to balance paying down critical technical debt with aggressive product feature deadlines. How did you negotiate priorities with product managers and ensure code health without slowing business momentum?",
+    "category": "Technical Judgment & Prioritization"
+  },
+  {
+    "title": "Pushing Back on Unrealistic Deadlines or Scope Creep",
+    "description": "Tell me about a time when you were asked to deliver an unrealistic project scope within a tight timeframe. How did you push back constructively, present technical constraints, and renegotiate deliverables or timelines?",
+    "category": "Stakeholder Management & Integrity"
+  },
+  {
+    "title": "Mentoring a Teammate and Elevating Engineering Quality",
+    "description": "Share an example where you mentored a junior engineer, paired with a struggling teammate, or elevated engineering quality on your team (e.g., automated testing, code review standards). What coaching approach did you use, and what was the measurable outcome?",
+    "category": "Leadership & Team Enablement"
+  },
+  {
+    "title": "Simplifying Complex Legacy Architecture to Boost Reliability",
+    "description": "Describe a time when you identified unnecessary complexity or fragile legacy code and proactively simplified it. What was your strategy for safe refactoring without downtime, and what was the impact on latency, maintainability, or cloud costs?",
+    "category": "Invent & Simplify"
+  },
+  {
+    "title": "Driving Cross-Functional Alignment Across Teams",
+    "description": "Tell me about a project that required close collaboration across multiple engineering squads, product managers, designers, or external vendors. How did you resolve communication bottlenecks and keep everyone aligned toward a common goal?",
+    "category": "Cross-Functional Collaboration"
+  },
+  {
+    "title": "Making High-Impact Architectural Decisions with Incomplete Data",
+    "description": "Describe a scenario where you had to make a critical architectural or toolchain decision with incomplete or imperfect information under a tight deadline. How did you evaluate trade-offs, mitigate downside risks, and validate your choice?",
+    "category": "Bias for Action & Decision Making"
+  },
+  {
+    "title": "Receiving Tough Constructive Feedback and Transforming It",
+    "description": "Can you share a time when you received difficult constructive feedback from a manager, peer, or client? How did you process the feedback, what specific behavior or workflow did you change, and how did it improve your impact?",
+    "category": "Self-Awareness & Growth Mindset"
+  },
+  {
+    "title": "Resolving a Frustrating Team Conflict Amicably",
+    "description": "Tell me about a situation where communication broke down or frustration arose between team members during a high-stress release. How did you de-escalate the tension, foster empathy, and find a productive middle ground?",
+    "category": "Emotional Intelligence & Conflict Management"
+  },
+  {
+    "title": "Going Above and Beyond to Unblock Customers or Team",
+    "description": "Share an example where you took initiative outside your formal job responsibilities to solve an unowned problem, fix a customer pain point, or unblock other engineers. What motivated you and what was the long-term impact?",
+    "category": "Extreme Ownership"
+  },
+  {
+    "title": "Advocating for Security and Scalability Under Pressure",
+    "description": "Describe a situation where there was intense business pressure to cut corners on security, data validation, or testing. How did you champion engineering excellence and ensure system safety without becoming a blocker?",
+    "category": "Engineering Standards & Ethics"
+  },
+  {
+    "title": "Prioritizing Competing Urgent Production Tasks",
+    "description": "Tell me about a day or week where multiple urgent production bugs, customer escalations, and feature deadlines landed on your plate at once. How did you triage, delegate, communicate status, and maintain focus under pressure?",
+    "category": "Time Management & Resilience"
+  },
+  {
+    "title": "Rapidly Mastering a New Technology or Domain to Ship",
+    "description": "Describe a project where you were tasked with building in a completely unfamiliar programming language, framework, or domain on short notice. How did you structure your learning, prototype quickly, and deliver a production-ready solution?",
+    "category": "Learn & Be Curious"
+  }
+]

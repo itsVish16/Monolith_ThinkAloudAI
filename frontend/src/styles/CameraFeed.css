@@ -1,0 +1,106 @@
+.camera-feed-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #1e293b;
+  border: 2px solid var(--brand-silver-dark);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.camera-feed-box:hover {
+  border-color: var(--brand-blue);
+  box-shadow: 0 8px 24px rgba(2, 86, 235, 0.1);
+}
+
+.camera-video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1); /* Mirror camera feed */
+}
+
+/* Fallback state when webcam is off */
+.camera-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.camera-off-avatar {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--brand-silver-dark) 0%, var(--brand-silver) 100%);
+  border: 2px solid var(--workspace-panel);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.placeholder-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Overlay overlay details */
+.camera-overlay-info {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(4px);
+  border-radius: var(--radius-sm);
+  z-index: 2;
+}
+
+.user-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--workspace-panel);
+}
+
+.status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-icon.unmute {
+  color: var(--color-success);
+}
+
+.status-icon.mute {
+  color: var(--color-error);
+}
+
+.status-icon.video-on {
+  color: var(--workspace-panel);
+}
+
+.status-icon.video-off {
+  color: var(--color-error);
+}

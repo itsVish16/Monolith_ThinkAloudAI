@@ -1,0 +1,1348 @@
+/* ============================================================================
+   FeatureShowcase — "scrollytelling" / split-scroll section
+   The visual pins (position: sticky) while narrative steps scroll past;
+   each step activates and crossfades the stage content, one by one.
+   Everything lives inside one big "console" box (.ff-console).
+   Palette: indigo "night sky" canvas lit by drifting meteor beams;
+   light ink text, dark product visuals for maximum contrast.
+   ============================================================================ */
+
+.ff-section {
+  --ff-silver: #e2e8f0;
+  --ff-silver-bright: #f8fafc;
+  --ff-silver-soft: rgba(226, 232, 240, 0.1);
+  --ff-silver-edge: rgba(226, 232, 240, 0.26);
+  --ff-steel: #94a3b8;
+  --ff-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  padding: 96px 0 84px;
+  scroll-margin-top: 90px;
+}
+
+/* ---------------------------------------------------------------
+   Header
+   --------------------------------------------------------------- */
+.ff-header {
+  max-width: 760px;
+  margin-bottom: clamp(36px, 6vh, 60px);
+}
+
+.ff-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.03);
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.66);
+  margin-bottom: 20px;
+}
+
+.ff-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ff-silver);
+  box-shadow: 0 0 10px rgba(226, 232, 240, 0.65);
+}
+
+.ff-heading {
+  font-size: clamp(2.2rem, 4.6vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Serif accents — animated silver sheen (shared by heading + step titles) */
+.ff-heading em,
+.ff-title em {
+  font-family: var(--font-serif, 'Instrument Serif', Georgia, serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: #e6ecf5;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .ff-heading em,
+  .ff-title em {
+    background: linear-gradient(100deg, #f8fafc 0%, #8fa0b8 36%, #e8eef7 62%, #f8fafc 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: ffSilverSheen 8s ease-in-out infinite;
+  }
+}
+
+.ff-heading em {
+  padding-left: 0.06em;
+}
+
+@keyframes ffSilverSheen {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Console — one big box that houses the whole scrollytelling area.
+   The grid itself carries the box (padding = box padding).
+   --------------------------------------------------------------- */
+.ff-console {
+  position: relative;
+  /* clip (NOT hidden — hidden would kill the inner position: sticky) keeps the
+     animated backdrop inside the rounded corners */
+  overflow: clip;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #12122a; /* base colour under the beam backdrop */
+  box-shadow:
+    0 60px 150px rgba(0, 0, 0, 0.6),
+    0 30px 90px rgba(79, 70, 229, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  isolation: isolate;
+}
+
+/* Thin luminous top edge — sells the "console" feel (glimmers slowly) */
+.ff-console::before {
+  content: '';
+  position: absolute;
+  /* top:0 not -1px — overflow:clip would cut anything outside the padding box */
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(248, 250, 252, 0.35), transparent);
+  animation: ffEdgeGlimmer 6s ease-in-out infinite;
+}
+
+@keyframes ffEdgeGlimmer {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Animated beam backdrop (ported from Animata's AnimatedBeam) —
+   an indigo night sky crossed by faint diagonal lanes; roughly a
+   third of the lanes carry drifting meteor streaks. Out-of-flow,
+   so it is NOT a grid item (the 2-column layout is untouched).
+   Transforms/opacity only → GPU-composited, cheap to run.
+   --------------------------------------------------------------- */
+.ff-ab-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(to top, #312e81, #1e1b4b);
+}
+
+/* Soft teal glow pooling in the lower half */
+.ff-ab-glow {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  opacity: 0.4;
+  background: radial-gradient(50% 50% at 50% 50%, #072a39 0%, rgb(7, 42, 57) 50%, rgba(7, 42, 57, 0) 100%);
+}
+
+/* Fixed-width lanes → constant 40px spacing, clipped to whatever fits */
+.ff-ab-lane {
+  display: flex;
+  height: 100%;
+  width: 40px;
+  flex-shrink: 0;
+  justify-content: center;
+}
+
+/* Faint diagonal guide line that the meteors ride */
+.ff-ab-line {
+  position: relative;
+  height: 100%;
+  width: 1px;
+  transform: rotate(12deg);
+  background: rgba(243, 244, 246, 0.1);
+}
+
+/* A meteor: width/duration/delay/length/opacity arrive as CSS vars */
+.ff-ab-beam {
+  height: 100%;
+  transform: translateY(-20%) translateX(-50%);
+  animation: ffMeteor var(--duration, 8s) var(--delay, 0s) ease-in-out infinite backwards;
+}
+
+.ff-ab-streak {
+  width: 100%;
+  height: var(--length, 60px);
+  /* tapered comet — a point at the head widening toward the tail */
+  clip-path: polygon(54% 0, 54% 0, 60% 100%, 40% 100%);
+}
+
+.ff-ab-streak-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to bottom, rgba(250, 250, 250, 0.5), #f5f5f5 75%, #fafafa);
+}
+
+@keyframes ffMeteor {
+  0% {
+    transform: translateY(-20%) translateX(-50%);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--opacity, 1);
+  }
+  88% {
+    opacity: var(--opacity, 1);
+  }
+  100% {
+    transform: translateY(300%) translateX(-50%);
+    opacity: 0;
+  }
+}
+
+/* Narrative + stage paint above the backdrop */
+.ff-console .ff-steps,
+.ff-console .ff-stage-col {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------------------------------------------------------
+   Split-scroll layout: steps (left) + pinned stage (right)
+   --------------------------------------------------------------- */
+.ff-scrolly {
+  display: grid;
+  grid-template-columns: minmax(0, 0.64fr) minmax(0, 1fr);
+  gap: clamp(30px, 4vw, 56px);
+  padding: clamp(26px, 3.2vw, 42px) clamp(22px, 3.2vw, 42px);
+}
+
+.ff-steps {
+  display: flex;
+  flex-direction: column;
+}
+
+.ff-step {
+  min-height: 84vh;
+  display: flex;
+  align-items: center;
+  padding: 28px 0;
+}
+
+.ff-step-inner {
+  position: relative;
+  z-index: 0; /* own stacking context so the glass card can sit behind the text */
+  width: 100%;
+  max-width: 520px;
+  padding: 34px 34px 30px;
+  border-radius: 26px;
+}
+
+/* Frosted glass card — deepens the sky behind the ink so text always pops */
+.ff-step-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  border: 1px solid rgba(226, 232, 240, 0.14);
+  background:
+    linear-gradient(
+      168deg,
+      rgba(255, 255, 255, 0.09) 0%,
+      rgba(255, 255, 255, 0.02) 44%,
+      rgba(255, 255, 255, 0.05) 100%
+    ),
+    linear-gradient(180deg, rgba(15, 16, 42, 0.62), rgba(12, 13, 36, 0.5));
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  box-shadow:
+    0 34px 80px -34px rgba(4, 5, 18, 0.9),
+    0 12px 34px -18px rgba(4, 5, 18, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  opacity: 0;
+  transition: opacity 0.7s var(--ff-ease) 0.05s;
+  pointer-events: none;
+}
+
+/* Luminous top edge — same "console" language as the section shell */
+.ff-step-inner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 32px;
+  right: 32px;
+  height: 1px;
+  z-index: -1;
+  background: linear-gradient(90deg, transparent, rgba(248, 250, 252, 0.45), transparent);
+  opacity: 0;
+  transition: opacity 0.7s var(--ff-ease) 0.25s;
+  pointer-events: none;
+}
+
+.ff-step.is-active .ff-step-inner::before,
+.ff-step.is-active .ff-step-inner::after {
+  opacity: 1;
+}
+
+/* Text rises in when its step becomes active */
+.ff-step-inner > * {
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(9px);
+  transition:
+    opacity 0.6s var(--ff-ease),
+    transform 0.6s var(--ff-ease),
+    filter 0.6s var(--ff-ease);
+}
+
+.ff-step.is-active .ff-step-inner > * {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+.ff-step.is-active .ff-step-inner > *:nth-child(1) {
+  transition-delay: 0.02s;
+}
+.ff-step.is-active .ff-step-inner > *:nth-child(2) {
+  transition-delay: 0.08s;
+}
+.ff-step.is-active .ff-step-inner > *:nth-child(3) {
+  transition-delay: 0.15s;
+}
+.ff-step.is-active .ff-step-inner > *:nth-child(4) {
+  transition-delay: 0.23s;
+}
+.ff-step.is-active .ff-step-inner > *:nth-child(5) {
+  transition-delay: 0.32s;
+}
+.ff-step.is-active .ff-step-inner > *:nth-child(6) {
+  transition-delay: 0.4s;
+}
+
+/* Oversized outlined index number */
+.ff-ghost {
+  position: absolute;
+  top: -70px;
+  left: -18px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: clamp(4.2rem, 7.2vw, 6.6rem);
+  font-weight: 700;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(226, 232, 240, 0.16);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.ff-tag {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #eef3fa;
+  margin-bottom: 20px;
+  padding: 7px 15px 7px 12px;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)) padding-box,
+    linear-gradient(
+        120deg,
+        rgba(248, 250, 252, 0.55),
+        rgba(148, 163, 184, 0.12) 45%,
+        rgba(248, 250, 252, 0.4)
+      )
+      border-box;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(4, 6, 20, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.ff-tag svg {
+  color: var(--ff-silver-bright);
+}
+
+.ff-step.is-active .ff-tag svg {
+  animation: ffTagGlow 3.2s ease-in-out infinite;
+}
+
+@keyframes ffTagGlow {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+.ff-title {
+  position: relative;
+  font-family: "Space Grotesk", var(--font-sans), sans-serif;
+  font-size: clamp(1.9rem, 2.4vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.032em;
+  color: #ffffff;
+  margin: 0 0 18px;
+  max-width: 22ch;
+  filter: drop-shadow(0 12px 34px rgba(6, 8, 24, 0.4));
+}
+
+.ff-title em {
+  display: inline;
+  font-size: 1.06em;
+  padding-left: 0.05em;
+}
+
+.ff-desc {
+  font-family: var(--font-sans, "Public Sans", sans-serif);
+  font-size: clamp(1rem, 1.06vw, 1.07rem);
+  font-weight: 400;
+  line-height: 1.68;
+  letter-spacing: -0.008em;
+  color: rgba(203, 213, 225, 0.76);
+  max-width: 46ch;
+  margin: 0 0 28px;
+}
+
+/* Stats + CTA — footer strip of the panel, tied together by a hairline */
+.ff-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px 22px;
+  flex-wrap: wrap;
+  padding-top: 22px;
+  border-top: 1px solid;
+  border-image: linear-gradient(
+      90deg,
+      rgba(226, 232, 240, 0.3),
+      rgba(226, 232, 240, 0.06) 72%,
+      transparent
+    )
+    1;
+}
+
+.ff-stats {
+  display: flex;
+  align-items: center;
+}
+
+.ff-stat {
+  padding: 0 20px;
+}
+
+.ff-stat + .ff-stat {
+  border-left: 1px solid;
+  border-image: linear-gradient(
+      to bottom,
+      transparent 12%,
+      rgba(226, 232, 240, 0.32) 50%,
+      transparent 88%
+    )
+    1;
+}
+
+.ff-stat:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+
+.ff-stat:last-child {
+  padding-right: 0;
+}
+
+.ff-stat-value {
+  display: block;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 1.32rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: #f8fafc;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .ff-stat-value {
+    background: linear-gradient(180deg, #ffffff 18%, #c3cede 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.ff-stat-label {
+  display: block;
+  margin-top: 5px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(226, 232, 240, 0.55);
+  white-space: nowrap;
+}
+
+.ff-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-left: auto;
+  padding: 11px 20px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: linear-gradient(180deg, #ffffff 0%, #eef2f8 100%);
+  color: #0e1116;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  box-shadow:
+    0 14px 30px -12px rgba(4, 6, 20, 0.6),
+    0 3px 10px rgba(4, 6, 20, 0.3);
+}
+
+.ff-link svg {
+  font-size: 13px;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ff-link:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #0b0c10;
+  transform: translateY(-1.5px);
+  box-shadow:
+    0 20px 38px -12px rgba(4, 6, 20, 0.7),
+    0 4px 12px rgba(4, 6, 20, 0.35);
+}
+
+.ff-link:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* Inline visual — only shown on narrow screens where the stage is hidden */
+.ff-step-visual {
+  display: none;
+}
+
+/* ---------------------------------------------------------------
+   Pinned stage
+   --------------------------------------------------------------- */
+.ff-stage-col {
+  position: relative;
+  min-width: 0;
+}
+
+.ff-stage-sticky {
+  position: sticky;
+  top: calc(50vh - min(35vh, 340px));
+  height: min(70vh, 680px);
+  display: flex;
+  flex-direction: column;
+}
+
+.ff-stage-glow {
+  position: absolute;
+  inset: 6% -8% -6% -8%;
+  background: radial-gradient(55% 55% at 50% 45%, rgba(199, 210, 254, 0.12), transparent 72%);
+  filter: blur(52px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Frameless stage — the photo (or mock card) floats directly in the box */
+.ff-stage {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Crossfading visuals */
+.ff-stage-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.ff-stage-visual {
+  position: absolute;
+  inset: 0;
+  container-type: size; /* so .ff-shot can cap its width against the stage height */
+  display: grid;
+  place-items: center;
+  padding: 0;
+  opacity: 0;
+  transform: translateY(26px) scale(0.975);
+  transition:
+    opacity 0.6s var(--ff-ease),
+    transform 0.6s var(--ff-ease);
+  pointer-events: none;
+}
+
+.ff-stage-visual.active {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.ff-stage-visual .ff-visual {
+  width: 100%;
+  max-width: 640px;
+}
+
+/* --- Real product screenshots (image-backed features) ---
+   Width is capped by both the column width and the stage height
+   (100cqh), so the full screenshot is always visible — never cropped. */
+.ff-shot {
+  position: relative;
+  margin: 0;
+  width: min(100%, calc(100cqh * var(--ff-ar, 1.6)));
+  max-width: 720px;
+  aspect-ratio: var(--ff-ar, 1.6);
+  border-radius: 18px;
+  background: #0b0c10;
+  overflow: hidden;
+  box-shadow:
+    0 34px 90px rgba(0, 0, 0, 0.62),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 80px rgba(165, 180, 252, 0.08);
+}
+
+.ff-shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Animated silver ring around the screenshots ---
+   A masked conic gradient draws only the 2px border ring;
+   two brushed-silver arcs travel around it while the step is active. */
+@property --ff-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.ff-shot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--ff-angle),
+    rgba(255, 255, 255, 0.2) 0deg,
+    rgba(248, 250, 252, 0.98) 38deg,
+    rgba(255, 255, 255, 0.2) 92deg,
+    rgba(255, 255, 255, 0.2) 188deg,
+    rgba(148, 163, 184, 0.92) 236deg,
+    rgba(255, 255, 255, 0.2) 292deg,
+    rgba(255, 255, 255, 0.2) 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* The ring only animates while its step is on screen */
+.ff-stage-visual.active .ff-shot::before,
+.ff-step.is-active .ff-shot::before {
+  animation: ffRingSpin 6s linear infinite;
+}
+
+@keyframes ffRingSpin {
+  to {
+    --ff-angle: 360deg;
+  }
+}
+
+/* Footer: counter + segmented progress — floats under the stage, no box */
+.ff-stage-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: min(100%, 720px);
+  margin: 0 auto;
+  padding: 18px 4px 0;
+  flex: none;
+}
+
+.ff-counter {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+}
+
+.ff-counter b {
+  color: var(--ff-silver-bright);
+  font-weight: 600;
+}
+
+.ff-progress {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+}
+
+.ff-progress-seg {
+  flex: 1;
+  height: 3px;
+  padding: 0;
+  border: none;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.ff-progress-seg.done {
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.ff-progress-seg:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.ff-progress-seg.active {
+  background: linear-gradient(90deg, #cbd5e1, #f8fafc);
+  box-shadow: 0 0 12px rgba(226, 232, 240, 0.5);
+}
+
+/* ---------------------------------------------------------------
+   Mock visuals (shared: stage + inline)
+   --------------------------------------------------------------- */
+.ff-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.ff-step-visual .ff-visual,
+.ff-stage-visual .ff-visual {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  background: #0b0c10;
+  padding: 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* --- 01 voice --- */
+.ff-voice-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ff-voice-orb {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #0b0c10;
+  background: radial-gradient(circle at 32% 28%, #ffffff, var(--ff-steel) 80%);
+  box-shadow: 0 0 20px var(--ff-silver-soft), 0 0 0 5px rgba(255, 255, 255, 0.04);
+  animation: ffOrbPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes ffOrbPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 16px var(--ff-silver-soft), 0 0 0 5px rgba(255, 255, 255, 0.04);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(226, 232, 240, 0.18), 0 0 0 9px rgba(255, 255, 255, 0.05);
+  }
+}
+
+.ff-voice-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ff-voice-meta b {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.ff-voice-meta i {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-style: normal;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.ff-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.7);
+  animation: ffLivePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes ffLivePulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.ff-wave-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  height: 56px;
+  padding: 0 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ff-wave-bar {
+  flex: 1;
+  max-width: 6px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.2);
+  transform-origin: center;
+  animation: ffWave 1.6s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.ff-wave-bar.accent {
+  background: var(--ff-silver);
+  opacity: 0.85;
+}
+
+.ff-stage-visual.active .ff-wave-bar,
+.ff-step.is-active .ff-wave-bar {
+  animation-play-state: running;
+}
+
+@keyframes ffWave {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.ff-transcript {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ff-t-bubble {
+  padding: 10px 13px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.ff-t-bubble.ai {
+  border-color: var(--ff-silver-edge);
+  background: var(--ff-silver-soft);
+}
+
+.ff-t-who {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.ff-t-bubble.ai .ff-t-who {
+  color: var(--ff-silver-bright);
+}
+
+.ff-t-bubble p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* --- 02 editor mock --- */
+.ff-code {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.ff-code-gutter {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.22);
+  text-align: right;
+  user-select: none;
+}
+
+.ff-code-pre {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.ff-c-kw {
+  color: #cbd5e1;
+}
+
+.ff-c-cls {
+  color: #e2e8f0;
+}
+
+.ff-c-fn {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.ff-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ff-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 11px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.74);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.5s var(--ff-ease),
+    transform 0.5s var(--ff-ease);
+}
+
+.ff-chip.accent {
+  border-color: var(--ff-silver-edge);
+  background: var(--ff-silver-soft);
+  color: var(--ff-silver-bright);
+}
+
+.ff-stage-visual.active .ff-chip,
+.ff-step.is-active .ff-chip {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(0.3s + var(--i, 0) * 0.12s);
+}
+
+/* --- 03 canvas mock --- */
+.ff-canvas {
+  border-radius: 12px;
+}
+
+.ff-step-visual .ff-canvas {
+  border-radius: 16px;
+}
+
+.ff-arch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background-color: rgba(255, 255, 255, 0.015);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.ff-arch-node {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 9px 11px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(11, 12, 16, 0.9);
+}
+
+.ff-arch-ic {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 3px;
+  border-radius: 8px;
+  background: var(--ff-silver-soft);
+  border: 1px solid var(--ff-silver-edge);
+  color: var(--ff-silver);
+}
+
+.ff-arch-name {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+}
+
+.ff-arch-sub {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  color: rgba(255, 255, 255, 0.42);
+  white-space: nowrap;
+}
+
+.ff-arch-arrow {
+  color: var(--ff-silver);
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.ff-arch-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ff-canvas-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.ff-canvas-strip i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--ff-silver);
+  opacity: 0.6;
+}
+
+/* --- 04 score mock --- */
+.ff-score-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ff-score-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: 1px solid var(--ff-silver-edge);
+  background: var(--ff-silver-soft);
+  color: var(--ff-silver-bright);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.ff-score-time {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.ff-score-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ff-bar-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 7px;
+}
+
+.ff-bar-label span {
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.ff-bar-label b {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ff-silver-bright);
+}
+
+.ff-bar-track {
+  height: 6px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.ff-bar-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, rgba(226, 232, 240, 0.35), #e2e8f0);
+  transition: width 1s var(--ff-ease);
+}
+
+.ff-stage-visual.active .ff-bar-fill,
+.ff-step.is-active .ff-bar-fill {
+  width: var(--w, 0%);
+}
+
+.ff-score-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ff-score-pill {
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.64);
+}
+
+/* ---------------------------------------------------------------
+   Responsive
+   --------------------------------------------------------------- */
+@media (max-width: 1140px) and (min-width: 1001px) {
+  .ff-scrolly {
+    grid-template-columns: minmax(0, 0.74fr) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 1000px) {
+  .ff-scrolly {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ff-stage-col {
+    display: none;
+  }
+
+  .ff-step {
+    min-height: 0;
+    padding: 46px 0;
+  }
+
+  .ff-step-inner {
+    max-width: 560px;
+  }
+
+  .ff-step-visual {
+    display: block;
+    margin-top: 26px;
+  }
+
+  .ff-ghost {
+    top: -56px;
+    left: -10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ff-section {
+    padding: 70px 0 56px;
+  }
+
+  .ff-console {
+    border-radius: 22px;
+  }
+
+  .ff-scrolly {
+    padding: 18px 16px;
+    gap: 0;
+  }
+
+  .ff-step {
+    padding: 38px 0;
+  }
+
+  .ff-step-inner {
+    padding: 26px 22px 24px;
+    border-radius: 20px;
+  }
+
+  .ff-step-inner::after {
+    left: 20px;
+    right: 20px;
+  }
+
+  .ff-ghost {
+    top: -48px;
+    left: -6px;
+  }
+
+  .ff-stat {
+    padding: 0 14px;
+  }
+
+  .ff-meta {
+    padding-top: 18px;
+    gap: 14px 18px;
+  }
+
+  .ff-step-visual .ff-visual {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .ff-shot {
+    border-radius: 14px;
+  }
+
+  .ff-code-gutter,
+  .ff-code-pre {
+    font-size: 10.5px;
+  }
+
+  .ff-wave-row {
+    height: 48px;
+  }
+
+  .ff-arch {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ff-arch-arrow {
+    text-align: center;
+    transform: rotate(90deg);
+  }
+
+  .ff-link {
+    margin-left: 0;
+  }
+
+  .ff-stats {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Reduced motion
+   --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ff-step-inner > *,
+  .ff-step-inner::before,
+  .ff-step-inner::after,
+  .ff-stage-visual,
+  .ff-chip,
+  .ff-shot::before {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .ff-wave-bar,
+  .ff-voice-orb,
+  .ff-live-dot,
+  .ff-heading em,
+  .ff-title em,
+  .ff-tag svg {
+    animation: none !important;
+  }
+
+  .ff-bar-fill {
+    transition: none !important;
+  }
+
+  /* Console backdrop: hide the meteor beams entirely */
+  .ff-ab-beam {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  .ff-console::before {
+    animation: none !important;
+  }
+}

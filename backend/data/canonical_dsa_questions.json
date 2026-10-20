@@ -1,0 +1,619 @@
+[
+  {
+    "title": "Contains Duplicate",
+    "description": "Given an integer array `nums`, return `true` if any value appears **at least twice** in the array, and return `false` if every element is distinct.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [1,2,3,1]`\n- **Output:** `true`\n\n**Example 2:**\n- **Input:** `nums = [1,2,3,4]`\n- **Output:** `false`\n\n**Example 3:**\n- **Input:** `nums = [1,1,1,3,3,4,3,2,4,2]`\n- **Output:** `true`\n\n## Constraints\n- `1 <= nums.length <= 10^5`\n- `-10^9 <= nums[i] <= 10^9`",
+    "difficulty": "Easy",
+    "function_name": "containsDuplicate",
+    "python_starter_code": "class Solution:\n    def containsDuplicate(self, nums: List[int]) -> bool:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    bool containsDuplicate(vector<int>& nums) {\n        // Implement your solution here\n        return false;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    Solution sol;\n    bool res = sol.containsDuplicate(nums);\n    cout << (res ? \"true\" : \"false\") << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"containsDuplicate\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}], \"return_type\": \"boolean\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"nums\": [1, 2, 3, 1]}, \"expected\": true}, {\"args\": {\"nums\": [1, 2, 3, 4]}, \"expected\": false}, {\"args\": {\"nums\": [1, 1, 1, 3, 3, 4, 3, 2, 4, 2]}, \"expected\": true}, {\"args\": {\"nums\": [0]}, \"expected\": false}, {\"args\": {\"nums\": [99, 99]}, \"expected\": true}, {\"args\": {\"nums\": [-1, -2, -3, -1]}, \"expected\": true}, {\"args\": {\"nums\": [-1000000000, 1000000000, 0, -1000000000]}, \"expected\": true}]}",
+    "hints": "[\"A brute force check compares all pairs in O(N^2) time.\", \"Can you use a Hash Set to track seen numbers in O(N) time and O(N) space?\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(N)",
+    "tags": [
+      "Array",
+      "Hash Table"
+    ]
+  },
+  {
+    "title": "Valid Anagram",
+    "description": "Given two strings `s` and `t`, return `true` if `t` is an **anagram** of `s`, and `false` otherwise.\n\n## Examples\n\n**Example 1:**\n- **Input:** `s = \"anagram\"`, `t = \"nagaram\"`\n- **Output:** `true`\n\n**Example 2:**\n- **Input:** `s = \"rat\"`, `t = \"car\"`\n- **Output:** `false`\n\n## Constraints\n- `1 <= s.length, t.length <= 5 * 10^4`\n- `s` and `t` consist of lowercase English letters.",
+    "difficulty": "Easy",
+    "function_name": "isAnagram",
+    "python_starter_code": "class Solution:\n    def isAnagram(self, s: str, t: str) -> bool:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    bool isAnagram(string s, string t) {\n        // Implement your solution here\n        return false;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <string>\n#include <vector>\n#include <algorithm>\nusing namespace std;\n\n{{user_code}}\n\nint main() {\n    string s, t;\n    if (!(cin >> s >> t)) return 0;\n    Solution sol;\n    bool res = sol.isAnagram(s, t);\n    cout << (res ? \"true\" : \"false\") << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"isAnagram\", \"params\": [{\"name\": \"s\", \"type\": \"string\"}, {\"name\": \"t\", \"type\": \"string\"}], \"return_type\": \"boolean\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"s\": \"anagram\", \"t\": \"nagaram\"}, \"expected\": true}, {\"args\": {\"s\": \"rat\", \"t\": \"car\"}, \"expected\": false}, {\"args\": {\"s\": \"a\", \"t\": \"a\"}, \"expected\": true}, {\"args\": {\"s\": \"ab\", \"t\": \"a\"}, \"expected\": false}, {\"args\": {\"s\": \"listen\", \"t\": \"silent\"}, \"expected\": true}, {\"args\": {\"s\": \"triangle\", \"t\": \"integral\"}, \"expected\": true}, {\"args\": {\"s\": \"aabbcc\", \"t\": \"abcabc\"}, \"expected\": true}]}",
+    "hints": "[\"If lengths of s and t differ, they cannot be anagrams.\", \"Count frequencies of each character using a hash map or array of size 26.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Hash Table",
+      "String",
+      "Sorting"
+    ]
+  },
+  {
+    "title": "Two Sum",
+    "description": "Given an array of integers `nums` and an integer `target`, return *indices of the two numbers such that they add up to `target`*.\n\nYou may assume that each input would have ***exactly one solution***, and you may not use the *same* element twice.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [2,7,11,15]`, `target = 9`\n- **Output:** `[0,1]`\n\n**Example 2:**\n- **Input:** `nums = [3,2,4]`, `target = 6`\n- **Output:** `[1,2]`\n\n**Example 3:**\n- **Input:** `nums = [3,3]`, `target = 6`\n- **Output:** `[0,1]`\n\n## Constraints\n- `2 <= nums.length <= 10^4`\n- `-10^9 <= nums[i] <= 10^9`\n- `-10^9 <= target <= 10^9`",
+    "difficulty": "Easy",
+    "function_name": "twoSum",
+    "python_starter_code": "class Solution:\n    def twoSum(self, nums: List[int], target: int) -> List[int]:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        // Implement your solution here\n        return {};\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    int target;\n    if (!(cin >> target)) return 0;\n    Solution sol;\n    vector<int> res = sol.twoSum(nums, target);\n    cout << \"[\";\n    for(size_t i = 0; i < res.size(); ++i) {\n        cout << res[i] << (i == res.size() - 1 ? \"\" : \",\");\n    }\n    cout << \"]\" << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"twoSum\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}, {\"name\": \"target\", \"type\": \"int\"}], \"return_type\": \"int[]\", \"comparison\": \"unordered\", \"cases\": [{\"args\": {\"nums\": [2, 7, 11, 15], \"target\": 9}, \"expected\": [0, 1]}, {\"args\": {\"nums\": [3, 2, 4], \"target\": 6}, \"expected\": [1, 2]}, {\"args\": {\"nums\": [3, 3], \"target\": 6}, \"expected\": [0, 1]}, {\"args\": {\"nums\": [-1, -2, -3, -4, -5], \"target\": -8}, \"expected\": [2, 4]}, {\"args\": {\"nums\": [0, 4, 3, 0], \"target\": 0}, \"expected\": [0, 3]}, {\"args\": {\"nums\": [1000000000, -1000000000, 5], \"target\": 0}, \"expected\": [0, 1]}]}",
+    "hints": "[\"Store elements in a hash map: for each element x, check if (target - x) is already in the map.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(N)",
+    "tags": [
+      "Array",
+      "Hash Table"
+    ]
+  },
+  {
+    "title": "Group Anagrams",
+    "description": "Given an array of strings `strs`, group **the anagrams** together. You can return the answer in **any order**.\n\n## Examples\n\n**Example 1:**\n- **Input:** `strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]`\n- **Output:** `[[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]`\n\n**Example 2:**\n- **Input:** `strs = [\"\"]`\n- **Output:** `[[\"\"]]`\n\n**Example 3:**\n- **Input:** `strs = [\"a\"]`\n- **Output:** `[[\"a\"]]`\n\n## Constraints\n- `1 <= strs.length <= 10^4`\n- `0 <= strs[i].length <= 100`",
+    "difficulty": "Medium",
+    "function_name": "groupAnagrams",
+    "python_starter_code": "class Solution:\n    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    vector<vector<string>> groupAnagrams(vector<string>& strs) {\n        // Implement your solution here\n        return {};\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<string> parseVectorString(const string& s) {\n    vector<string> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) {\n            item.erase(remove(item.begin(), item.end(), '\"'), item.end());\n            item.erase(remove(item.begin(), item.end(), '\\''), item.end());\n            item.erase(remove(item.begin(), item.end(), ' '), item.end());\n            res.push_back(item);\n        }\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string strs_line;\n    if (!getline(cin >> ws, strs_line)) return 0;\n    vector<string> strs = parseVectorString(strs_line);\n    Solution sol;\n    vector<vector<string>> res = sol.groupAnagrams(strs);\n    cout << \"[\";\n    for(size_t i = 0; i < res.size(); ++i) {\n        cout << \"[\";\n        for(size_t j = 0; j < res[i].size(); ++j) {\n            cout << \"\\\"\" << res[i][j] << \"\\\"\" << (j == res[i].size() - 1 ? \"\" : \",\");\n        }\n        cout << \"]\" << (i == res.size() - 1 ? \"\" : \",\");\n    }\n    cout << \"]\" << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"groupAnagrams\", \"params\": [{\"name\": \"strs\", \"type\": \"string[]\"}], \"return_type\": \"string[][]\", \"comparison\": \"unordered_nested\", \"cases\": [{\"args\": {\"strs\": [\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"]}, \"expected\": [[\"bat\"], [\"nat\", \"tan\"], [\"ate\", \"eat\", \"tea\"]]}, {\"args\": {\"strs\": [\"\"]}, \"expected\": [[\"\"]]}, {\"args\": {\"strs\": [\"a\"]}, \"expected\": [[\"a\"]]}, {\"args\": {\"strs\": [\"a\", \"b\", \"a\"]}, \"expected\": [[\"a\", \"a\"], [\"b\"]]}]}",
+    "hints": "[\"Use the sorted string as the key in a hash map to group words.\"]",
+    "optimal_time_complexity": "O(N * K log K)",
+    "optimal_space_complexity": "O(N * K)",
+    "tags": [
+      "Array",
+      "Hash Table",
+      "String",
+      "Sorting"
+    ]
+  },
+  {
+    "title": "Top K Frequent Elements",
+    "description": "Given an integer array `nums` and an integer `k`, return *the* `k` *most frequent elements*. You may return the answer in **any order**.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [1,1,1,2,2,3]`, `k = 2`\n- **Output:** `[1,2]`\n\n**Example 2:**\n- **Input:** `nums = [1]`, `k = 1`\n- **Output:** `[1]`\n\n## Constraints\n- `1 <= nums.length <= 10^5`\n- `-10^4 <= nums[i] <= 10^4`\n- `k` is in the range `[1, the number of unique elements in the array]`.\n- It is **guaranteed** that the answer is **unique**.",
+    "difficulty": "Medium",
+    "function_name": "topKFrequent",
+    "python_starter_code": "class Solution:\n    def topKFrequent(self, nums: List[int], k: int) -> List[int]:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    vector<int> topKFrequent(vector<int>& nums, int k) {\n        // Implement your solution here\n        return {};\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    int k;\n    if (!(cin >> k)) return 0;\n    Solution sol;\n    vector<int> res = sol.topKFrequent(nums, k);\n    cout << \"[\";\n    for(size_t i = 0; i < res.size(); ++i) {\n        cout << res[i] << (i == res.size() - 1 ? \"\" : \",\");\n    }\n    cout << \"]\" << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"topKFrequent\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}, {\"name\": \"k\", \"type\": \"int\"}], \"return_type\": \"int[]\", \"comparison\": \"unordered\", \"cases\": [{\"args\": {\"nums\": [1, 1, 1, 2, 2, 3], \"k\": 2}, \"expected\": [1, 2]}, {\"args\": {\"nums\": [1], \"k\": 1}, \"expected\": [1]}, {\"args\": {\"nums\": [4, 1, -1, 2, -1, 2, 3], \"k\": 2}, \"expected\": [-1, 2]}, {\"args\": {\"nums\": [3, 0, 1, 0], \"k\": 1}, \"expected\": [0]}]}",
+    "hints": "[\"Use Bucket Sort or a Min-Heap of size k to find the top k frequent elements in O(N) time.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(N)",
+    "tags": [
+      "Array",
+      "Hash Table",
+      "Heap",
+      "Bucket Sort"
+    ]
+  },
+  {
+    "title": "Product of Array Except Self",
+    "description": "Given an integer array `nums`, return *an array* `answer` *such that* `answer[i]` *is equal to the product of all the elements of* `nums` *except* `nums[i]`.\n\nYou must write an algorithm that runs in `O(n)` time and without using the division operation.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [1,2,3,4]`\n- **Output:** `[24,12,8,6]`\n\n**Example 2:**\n- **Input:** `nums = [-1,1,0,-3,3]`\n- **Output:** `[0,0,9,0,0]`\n\n## Constraints\n- `2 <= nums.length <= 10^5`\n- `-30 <= nums[i] <= 30`",
+    "difficulty": "Medium",
+    "function_name": "productExceptSelf",
+    "python_starter_code": "class Solution:\n    def productExceptSelf(self, nums: List[int]) -> List[int]:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    vector<int> productExceptSelf(vector<int>& nums) {\n        // Implement your solution here\n        return {};\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    Solution sol;\n    vector<int> res = sol.productExceptSelf(nums);\n    cout << \"[\";\n    for(size_t i = 0; i < res.size(); ++i) {\n        cout << res[i] << (i == res.size() - 1 ? \"\" : \",\");\n    }\n    cout << \"]\" << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"productExceptSelf\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}], \"return_type\": \"int[]\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"nums\": [1, 2, 3, 4]}, \"expected\": [24, 12, 8, 6]}, {\"args\": {\"nums\": [-1, 1, 0, -3, 3]}, \"expected\": [0, 0, 9, 0, 0]}, {\"args\": {\"nums\": [2, 3]}, \"expected\": [3, 2]}, {\"args\": {\"nums\": [0, 0]}, \"expected\": [0, 0]}, {\"args\": {\"nums\": [1, 1, 1, 1]}, \"expected\": [1, 1, 1, 1]}]}",
+    "hints": "[\"Compute prefix products in one forward pass and suffix products in a backward pass.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Prefix Sum"
+    ]
+  },
+  {
+    "title": "Longest Consecutive Sequence",
+    "description": "Given an unsorted array of integers `nums`, return *the length of the longest consecutive elements sequence.*\n\nYou must write an algorithm that runs in `O(n)` time.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [100,4,200,1,3,2]`\n- **Output:** `4`\n- **Explanation:** The longest consecutive elements sequence is `[1, 2, 3, 4]`. Its length is 4.\n\n**Example 2:**\n- **Input:** `nums = [0,3,7,2,5,8,4,6,0,1]`\n- **Output:** `9`\n\n## Constraints\n- `0 <= nums.length <= 10^5`\n- `-10^9 <= nums[i] <= 10^9`",
+    "difficulty": "Medium",
+    "function_name": "longestConsecutive",
+    "python_starter_code": "class Solution:\n    def longestConsecutive(self, nums: List[int]) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int longestConsecutive(vector<int>& nums) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    Solution sol;\n    int res = sol.longestConsecutive(nums);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"longestConsecutive\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"nums\": [100, 4, 200, 1, 3, 2]}, \"expected\": 4}, {\"args\": {\"nums\": [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]}, \"expected\": 9}, {\"args\": {\"nums\": []}, \"expected\": 0}, {\"args\": {\"nums\": [9, 1, 4, 7, 3, -1, 0, 5, 8, -1, 6]}, \"expected\": 7}, {\"args\": {\"nums\": [1, 2, 0, 1]}, \"expected\": 3}]}",
+    "hints": "[\"Store all numbers in a HashSet.\", \"Only start counting sequence length from numbers that are sequence starts (i.e. `n - 1` is not in the set).\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(N)",
+    "tags": [
+      "Array",
+      "Hash Table",
+      "Union Find"
+    ]
+  },
+  {
+    "title": "Valid Palindrome",
+    "description": "A phrase is a **palindrome** if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward.\n\nGiven a string `s`, return `true` *if it is a **palindrome**, or* `false` *otherwise*.\n\n## Examples\n\n**Example 1:**\n- **Input:** `s = \"A man, a plan, a canal: Panama\"`\n- **Output:** `true`\n\n**Example 2:**\n- **Input:** `s = \"race a car\"`\n- **Output:** `false`\n\n**Example 3:**\n- **Input:** `s = \" \"`\n- **Output:** `true`\n\n## Constraints\n- `1 <= s.length <= 2 * 10^5`",
+    "difficulty": "Easy",
+    "function_name": "isPalindrome",
+    "python_starter_code": "class Solution:\n    def isPalindrome(self, s: str) -> bool:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    bool isPalindrome(string s) {\n        // Implement your solution here\n        return false;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <string>\n#include <cctype>\n#include <algorithm>\nusing namespace std;\n\n{{user_code}}\n\nint main() {\n    string s;\n    if (!getline(cin, s)) return 0;\n    Solution sol;\n    bool res = sol.isPalindrome(s);\n    cout << (res ? \"true\" : \"false\") << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"isPalindrome\", \"params\": [{\"name\": \"s\", \"type\": \"string\"}], \"return_type\": \"boolean\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"s\": \"A man, a plan, a canal: Panama\"}, \"expected\": true}, {\"args\": {\"s\": \"race a car\"}, \"expected\": false}, {\"args\": {\"s\": \" \"}, \"expected\": true}, {\"args\": {\"s\": \"0P\"}, \"expected\": false}, {\"args\": {\"s\": \"a.\"}, \"expected\": true}, {\"args\": {\"s\": \"Madam, I'm Adam.\"}, \"expected\": true}]}",
+    "hints": "[\"Use two pointers, skipping non-alphanumeric characters with `isalnum()`.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Two Pointers",
+      "String"
+    ]
+  },
+  {
+    "title": "3Sum",
+    "description": "Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.\n\nThe solution set must not contain duplicate triplets.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [-1,0,1,2,-1,-4]`\n- **Output:** `[[-1,-1,2],[-1,0,1]]`\n\n**Example 2:**\n- **Input:** `nums = [0,1,1]`\n- **Output:** `[]`\n\n**Example 3:**\n- **Input:** `nums = [0,0,0]`\n- **Output:** `[[0,0,0]]`\n\n## Constraints\n- `3 <= nums.length <= 3000`\n- `-10^5 <= nums[i] <= 10^5`",
+    "difficulty": "Medium",
+    "function_name": "threeSum",
+    "python_starter_code": "class Solution:\n    def threeSum(self, nums: List[int]) -> List[List[int]]:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    vector<vector<int>> threeSum(vector<int>& nums) {\n        // Implement your solution here\n        return {};\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    Solution sol;\n    vector<vector<int>> res = sol.threeSum(nums);\n    cout << \"[\";\n    for(size_t i=0; i<res.size(); ++i) {\n        cout << \"[\";\n        for(size_t j=0; j<res[i].size(); ++j) cout << res[i][j] << (j==res[i].size()-1 ? \"\" : \",\");\n        cout << \"]\" << (i==res.size()-1 ? \"\" : \",\");\n    }\n    cout << \"]\" << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"threeSum\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}], \"return_type\": \"int[][]\", \"comparison\": \"unordered_nested\", \"cases\": [{\"args\": {\"nums\": [-1, 0, 1, 2, -1, -4]}, \"expected\": [[-1, -1, 2], [-1, 0, 1]]}, {\"args\": {\"nums\": [0, 1, 1]}, \"expected\": []}, {\"args\": {\"nums\": [0, 0, 0]}, \"expected\": [[0, 0, 0]]}, {\"args\": {\"nums\": [-2, 0, 1, 1, 2]}, \"expected\": [[-2, 0, 2], [-2, 1, 1]]}, {\"args\": {\"nums\": [-1, 0, 1]}, \"expected\": [[-1, 0, 1]]}, {\"args\": {\"nums\": [1, 2, -2, -1]}, \"expected\": []}]}",
+    "hints": "[\"Sort the array first to easily bypass duplicates and apply two pointers.\"]",
+    "optimal_time_complexity": "O(N^2)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Two Pointers",
+      "Sorting"
+    ]
+  },
+  {
+    "title": "Container With Most Water",
+    "description": "You are given an integer array `height` of length `n`. There are `n` vertical lines drawn such that the two endpoints of the `i`th line are `(i, 0)` and `(i, height[i])`.\n\nFind two lines that together with the x-axis form a container, such that the container contains the most water.\n\nReturn *the maximum amount of water a container can store*.\n\n## Examples\n\n**Example 1:**\n- **Input:** `height = [1,8,6,2,5,4,8,3,7]`\n- **Output:** `49`\n\n**Example 2:**\n- **Input:** `height = [1,1]`\n- **Output:** `1`\n\n## Constraints\n- `n == height.length`\n- `2 <= n <= 10^5`\n- `0 <= height[i] <= 10^4`",
+    "difficulty": "Medium",
+    "function_name": "maxArea",
+    "python_starter_code": "class Solution:\n    def maxArea(self, height: List[int]) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int maxArea(vector<int>& height) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string height_str;\n    if (!getline(cin >> ws, height_str)) return 0;\n    vector<int> height = parseVectorInt(height_str);\n    Solution sol;\n    int res = sol.maxArea(height);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"maxArea\", \"params\": [{\"name\": \"height\", \"type\": \"int[]\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"height\": [1, 8, 6, 2, 5, 4, 8, 3, 7]}, \"expected\": 49}, {\"args\": {\"height\": [1, 1]}, \"expected\": 1}, {\"args\": {\"height\": [4, 3, 2, 1, 4]}, \"expected\": 16}, {\"args\": {\"height\": [1, 2, 1]}, \"expected\": 2}, {\"args\": {\"height\": [1, 2, 4, 3]}, \"expected\": 4}]}",
+    "hints": "[\"Start with the widest container and greedily move the shorter line inward.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Two Pointers",
+      "Greedy"
+    ]
+  },
+  {
+    "title": "Trapping Rain Water",
+    "description": "Given `n` non-negative integers representing an elevation map where the width of each bar is `1`, compute how much water it can trap after raining.\n\n## Examples\n\n**Example 1:**\n- **Input:** `height = [0,1,0,2,1,0,1,3,2,1,2,1]`\n- **Output:** `6`\n\n**Example 2:**\n- **Input:** `height = [4,2,0,3,2,5]`\n- **Output:** `9`\n\n## Constraints\n- `n == height.length`\n- `1 <= n <= 2 * 10^4`\n- `0 <= height[i] <= 10^5`",
+    "difficulty": "Hard",
+    "function_name": "trap",
+    "python_starter_code": "class Solution:\n    def trap(self, height: List[int]) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int trap(vector<int>& height) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string height_str;\n    if (!getline(cin >> ws, height_str)) return 0;\n    vector<int> height = parseVectorInt(height_str);\n    Solution sol;\n    int res = sol.trap(height);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"trap\", \"params\": [{\"name\": \"height\", \"type\": \"int[]\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"height\": [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]}, \"expected\": 6}, {\"args\": {\"height\": [4, 2, 0, 3, 2, 5]}, \"expected\": 9}, {\"args\": {\"height\": [4, 2, 3]}, \"expected\": 1}, {\"args\": {\"height\": [1]}, \"expected\": 0}, {\"args\": {\"height\": []}, \"expected\": 0}]}",
+    "hints": "[\"Use two pointers with `left_max` and `right_max` boundaries to calculate trapped water in O(1) space.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Two Pointers",
+      "Dynamic Programming",
+      "Stack"
+    ]
+  },
+  {
+    "title": "Best Time to Buy and Sell Stock",
+    "description": "You are given an array `prices` where `prices[i]` is the price of a given stock on the `i`th day.\n\nMaximize your profit by choosing a single day to buy and a future day to sell. Return the maximum profit, or `0` if no profit is possible.\n\n## Examples\n\n**Example 1:**\n- **Input:** `prices = [7,1,5,3,6,4]`\n- **Output:** `5`\n\n**Example 2:**\n- **Input:** `prices = [7,6,4,3,1]`\n- **Output:** `0`\n\n## Constraints\n- `1 <= prices.length <= 10^5`\n- `0 <= prices[i] <= 10^4`",
+    "difficulty": "Easy",
+    "function_name": "maxProfit",
+    "python_starter_code": "class Solution:\n    def maxProfit(self, prices: List[int]) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int maxProfit(vector<int>& prices) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string prices_str;\n    if (!getline(cin >> ws, prices_str)) return 0;\n    vector<int> prices = parseVectorInt(prices_str);\n    Solution sol;\n    int res = sol.maxProfit(prices);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"maxProfit\", \"params\": [{\"name\": \"prices\", \"type\": \"int[]\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"prices\": [7, 1, 5, 3, 6, 4]}, \"expected\": 5}, {\"args\": {\"prices\": [7, 6, 4, 3, 1]}, \"expected\": 0}, {\"args\": {\"prices\": [1, 2]}, \"expected\": 1}, {\"args\": {\"prices\": [2, 4, 1]}, \"expected\": 2}, {\"args\": {\"prices\": [3, 2, 6, 5, 0, 3]}, \"expected\": 4}]}",
+    "hints": "[\"Track min price so far and compute profit at every step.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Dynamic Programming"
+    ]
+  },
+  {
+    "title": "Longest Substring Without Repeating Characters",
+    "description": "Given a string `s`, find the length of the **longest substring** without duplicate characters.\n\n## Examples\n\n**Example 1:**\n- **Input:** `s = \"abcabcbb\"`\n- **Output:** `3`\n\n**Example 2:**\n- **Input:** `s = \"bbbbb\"`\n- **Output:** `1`\n\n**Example 3:**\n- **Input:** `s = \"pwwkew\"`\n- **Output:** `3`\n\n## Constraints\n- `0 <= s.length <= 5 * 10^4`",
+    "difficulty": "Medium",
+    "function_name": "lengthOfLongestSubstring",
+    "python_starter_code": "class Solution:\n    def lengthOfLongestSubstring(self, s: str) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int lengthOfLongestSubstring(string s) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <string>\n#include <unordered_map>\n#include <algorithm>\nusing namespace std;\n\n{{user_code}}\n\nint main() {\n    string s;\n    getline(cin, s);\n    Solution sol;\n    int res = sol.lengthOfLongestSubstring(s);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"lengthOfLongestSubstring\", \"params\": [{\"name\": \"s\", \"type\": \"string\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"s\": \"abcabcbb\"}, \"expected\": 3}, {\"args\": {\"s\": \"bbbbb\"}, \"expected\": 1}, {\"args\": {\"s\": \"pwwkew\"}, \"expected\": 3}, {\"args\": {\"s\": \"\"}, \"expected\": 0}, {\"args\": {\"s\": \" \"}, \"expected\": 1}, {\"args\": {\"s\": \"au\"}, \"expected\": 2}, {\"args\": {\"s\": \"dvdf\"}, \"expected\": 3}]}",
+    "hints": "[\"Use a sliding window with a hash map of last seen indices.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(min(M, N))",
+    "tags": [
+      "Hash Table",
+      "String",
+      "Sliding Window"
+    ]
+  },
+  {
+    "title": "Valid Parentheses",
+    "description": "Given a string `s` containing just the characters `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, determine if the input string is valid.\n\n## Examples\n\n**Example 1:**\n- **Input:** `s = \"()\"`\n- **Output:** `true`\n\n**Example 2:**\n- **Input:** `s = \"()[]{}\"`\n- **Output:** `true`\n\n**Example 3:**\n- **Input:** `s = \"(]\"`\n- **Output:** `false`\n\n## Constraints\n- `1 <= s.length <= 10^4`",
+    "difficulty": "Easy",
+    "function_name": "isValid",
+    "python_starter_code": "class Solution:\n    def isValid(self, s: str) -> bool:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    bool isValid(string s) {\n        // Implement your solution here\n        return false;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <string>\n#include <stack>\n#include <unordered_map>\nusing namespace std;\n\n{{user_code}}\n\nint main() {\n    string s;\n    if (!getline(cin, s)) return 0;\n    Solution sol;\n    bool res = sol.isValid(s);\n    cout << (res ? \"true\" : \"false\") << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"isValid\", \"params\": [{\"name\": \"s\", \"type\": \"string\"}], \"return_type\": \"boolean\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"s\": \"()\"}, \"expected\": true}, {\"args\": {\"s\": \"()[]{}\"}, \"expected\": true}, {\"args\": {\"s\": \"(]\"}, \"expected\": false}, {\"args\": {\"s\": \"([])\"}, \"expected\": true}, {\"args\": {\"s\": \"([)]\"}, \"expected\": false}, {\"args\": {\"s\": \"{\"}, \"expected\": false}]}",
+    "hints": "[\"Use a stack to push open brackets and pop on matching closed brackets.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(N)",
+    "tags": [
+      "String",
+      "Stack"
+    ]
+  },
+  {
+    "title": "Evaluate Reverse Polish Notation",
+    "description": "You are given an array of strings `tokens` that represents an arithmetic expression in a Reverse Polish Notation.\n\nEvaluate the expression and return an integer that represents its value.\n\n## Examples\n\n**Example 1:**\n- **Input:** `tokens = [\"2\",\"1\",\"+\",\"3\",\"*\"]`\n- **Output:** `9`\n\n**Example 2:**\n- **Input:** `tokens = [\"4\",\"13\",\"5\",\"/\",\"+\"]`\n- **Output:** `6`\n\n## Constraints\n- `1 <= tokens.length <= 10^4`",
+    "difficulty": "Medium",
+    "function_name": "evalRPN",
+    "python_starter_code": "class Solution:\n    def evalRPN(self, tokens: List[str]) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int evalRPN(vector<string>& tokens) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <stack>\n#include <algorithm>\nusing namespace std;\n\nvector<string> parseVectorString(const string& s) {\n    vector<string> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) {\n            item.erase(remove(item.begin(), item.end(), '\"'), item.end());\n            item.erase(remove(item.begin(), item.end(), '\\''), item.end());\n            item.erase(remove(item.begin(), item.end(), ' '), item.end());\n            res.push_back(item);\n        }\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string tokens_line;\n    if (!getline(cin >> ws, tokens_line)) return 0;\n    vector<string> tokens = parseVectorString(tokens_line);\n    Solution sol;\n    int res = sol.evalRPN(tokens);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"evalRPN\", \"params\": [{\"name\": \"tokens\", \"type\": \"string[]\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"tokens\": [\"2\", \"1\", \"+\", \"3\", \"*\"]}, \"expected\": 9}, {\"args\": {\"tokens\": [\"4\", \"13\", \"5\", \"/\", \"+\"]}, \"expected\": 6}, {\"args\": {\"tokens\": [\"10\", \"6\", \"9\", \"3\", \"+\", \"-11\", \"*\", \"/\", \"*\", \"17\", \"+\", \"5\", \"+\"]}, \"expected\": 22}, {\"args\": {\"tokens\": [\"18\"]}, \"expected\": 18}]}",
+    "hints": "[\"Use a stack: push numbers, pop two numbers on operators, evaluate, and push result.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(N)",
+    "tags": [
+      "Array",
+      "Math",
+      "Stack"
+    ]
+  },
+  {
+    "title": "Daily Temperatures",
+    "description": "Given an array of integers `temperatures` represents the daily temperatures, return *an array* `answer` *such that* `answer[i]` *is the number of days you have to wait after the* `i`th *day to get a warmer temperature*. If there is no future day for which this is possible, keep `answer[i] == 0` instead.\n\n## Examples\n\n**Example 1:**\n- **Input:** `temperatures = [73,74,75,71,69,72,76,73]`\n- **Output:** `[1,1,4,2,1,1,0,0]`\n\n**Example 2:**\n- **Input:** `temperatures = [30,40,50,60]`\n- **Output:** `[1,1,1,0]`\n\n**Example 3:**\n- **Input:** `temperatures = [30,60,90]`\n- **Output:** `[1,1,0]`\n\n## Constraints\n- `1 <= temperatures.length <= 10^5`\n- `30 <= temperatures[i] <= 100`",
+    "difficulty": "Medium",
+    "function_name": "dailyTemperatures",
+    "python_starter_code": "class Solution:\n    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    vector<int> dailyTemperatures(vector<int>& temperatures) {\n        // Implement your solution here\n        return {};\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string temps_str;\n    if (!getline(cin >> ws, temps_str)) return 0;\n    vector<int> temperatures = parseVectorInt(temps_str);\n    Solution sol;\n    vector<int> res = sol.dailyTemperatures(temperatures);\n    cout << \"[\";\n    for(size_t i = 0; i < res.size(); ++i) {\n        cout << res[i] << (i == res.size() - 1 ? \"\" : \",\");\n    }\n    cout << \"]\" << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"dailyTemperatures\", \"params\": [{\"name\": \"temperatures\", \"type\": \"int[]\"}], \"return_type\": \"int[]\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"temperatures\": [73, 74, 75, 71, 69, 72, 76, 73]}, \"expected\": [1, 1, 4, 2, 1, 1, 0, 0]}, {\"args\": {\"temperatures\": [30, 40, 50, 60]}, \"expected\": [1, 1, 1, 0]}, {\"args\": {\"temperatures\": [30, 60, 90]}, \"expected\": [1, 1, 0]}, {\"args\": {\"temperatures\": [90]}, \"expected\": [0]}]}",
+    "hints": "[\"Use a monotonic decreasing stack storing pairs of (temperature, index).\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(N)",
+    "tags": [
+      "Array",
+      "Stack",
+      "Monotonic Stack"
+    ]
+  },
+  {
+    "title": "Binary Search",
+    "description": "Given an array of integers `nums` which is sorted in ascending order, and an integer `target`, write a function to search `target` in `nums`. If `target` exists, then return its index. Otherwise, return `-1`.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [-1,0,3,5,9,12]`, `target = 9`\n- **Output:** `4`\n\n**Example 2:**\n- **Input:** `nums = [-1,0,3,5,9,12]`, `target = 2`\n- **Output:** `-1`\n\n## Constraints\n- `1 <= nums.length <= 10^4`\n- All the integers in `nums` are **unique**.",
+    "difficulty": "Easy",
+    "function_name": "search",
+    "python_starter_code": "class Solution:\n    def search(self, nums: List[int], target: int) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        // Implement your solution here\n        return -1;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    int target;\n    if (!(cin >> target)) return 0;\n    Solution sol;\n    int res = sol.search(nums, target);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"search\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}, {\"name\": \"target\", \"type\": \"int\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"nums\": [-1, 0, 3, 5, 9, 12], \"target\": 9}, \"expected\": 4}, {\"args\": {\"nums\": [-1, 0, 3, 5, 9, 12], \"target\": 2}, \"expected\": -1}, {\"args\": {\"nums\": [5], \"target\": 5}, \"expected\": 0}, {\"args\": {\"nums\": [5], \"target\": -5}, \"expected\": -1}]}",
+    "hints": "[\"Use two pointers `left` and `right`, comparing `nums[mid]` against `target`.\"]",
+    "optimal_time_complexity": "O(log N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Binary Search"
+    ]
+  },
+  {
+    "title": "Find Minimum in Rotated Sorted Array",
+    "description": "Suppose an array of length `n` sorted in ascending order is rotated between `1` and `n` times.\n\nGiven the sorted rotated array `nums` of **unique** elements, return *the minimum element of this array*.\n\nYou must write an algorithm that runs in `O(log n)` time.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [3,4,5,1,2]`\n- **Output:** `1`\n\n**Example 2:**\n- **Input:** `nums = [4,5,6,7,0,1,2]`\n- **Output:** `0`\n\n**Example 3:**\n- **Input:** `nums = [11,13,15,17]`\n- **Output:** `11`\n\n## Constraints\n- `n == nums.length`\n- `1 <= n <= 5000`\n- All values are **unique**.",
+    "difficulty": "Medium",
+    "function_name": "findMin",
+    "python_starter_code": "class Solution:\n    def findMin(self, nums: List[int]) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int findMin(vector<int>& nums) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    Solution sol;\n    int res = sol.findMin(nums);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"findMin\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"nums\": [3, 4, 5, 1, 2]}, \"expected\": 1}, {\"args\": {\"nums\": [4, 5, 6, 7, 0, 1, 2]}, \"expected\": 0}, {\"args\": {\"nums\": [11, 13, 15, 17]}, \"expected\": 11}, {\"args\": {\"nums\": [2, 1]}, \"expected\": 1}, {\"args\": {\"nums\": [1]}, \"expected\": 1}]}",
+    "hints": "[\"Compare `nums[mid]` with `nums[right]`. If `nums[mid] > nums[right]`, the minimum is in the right half.\"]",
+    "optimal_time_complexity": "O(log N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Binary Search"
+    ]
+  },
+  {
+    "title": "Search in Rotated Sorted Array",
+    "description": "Given the array `nums` after a possible rotation and an integer `target`, return *the index of* `target` *if it is in* `nums`*, or* `-1` *if it is not in* `nums`.\n\nYou must write an algorithm with `O(log n)` runtime complexity.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [4,5,6,7,0,1,2]`, `target = 0`\n- **Output:** `4`\n\n**Example 2:**\n- **Input:** `nums = [4,5,6,7,0,1,2]`, `target = 3`\n- **Output:** `-1`\n\n**Example 3:**\n- **Input:** `nums = [1]`, `target = 0`\n- **Output:** `-1`\n\n## Constraints\n- `1 <= nums.length <= 5000`\n- All values of `nums` are **unique**.",
+    "difficulty": "Medium",
+    "function_name": "search",
+    "python_starter_code": "class Solution:\n    def search(self, nums: List[int], target: int) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        // Implement your solution here\n        return -1;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    int target;\n    if (!(cin >> target)) return 0;\n    Solution sol;\n    int res = sol.search(nums, target);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"search\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}, {\"name\": \"target\", \"type\": \"int\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"nums\": [4, 5, 6, 7, 0, 1, 2], \"target\": 0}, \"expected\": 4}, {\"args\": {\"nums\": [4, 5, 6, 7, 0, 1, 2], \"target\": 3}, \"expected\": -1}, {\"args\": {\"nums\": [1], \"target\": 0}, \"expected\": -1}, {\"args\": {\"nums\": [1, 3], \"target\": 3}, \"expected\": 1}, {\"args\": {\"nums\": [5, 1, 3], \"target\": 5}, \"expected\": 0}]}",
+    "hints": "[\"Check which half of the array `[l, mid]` or `[mid, r]` is sorted.\"]",
+    "optimal_time_complexity": "O(log N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Binary Search"
+    ]
+  },
+  {
+    "title": "Merge Intervals",
+    "description": "Given an array of `intervals` where `intervals[i] = [start_i, end_i]`, merge all overlapping intervals, and return *an array of the non-overlapping intervals that cover all the intervals in the input*.\n\n## Examples\n\n**Example 1:**\n- **Input:** `intervals = [[1,3],[2,6],[8,10],[15,18]]`\n- **Output:** `[[1,6],[8,10],[15,18]]`\n\n**Example 2:**\n- **Input:** `intervals = [[1,4],[4,5]]`\n- **Output:** `[[1,5]]`\n\n## Constraints\n- `1 <= intervals.length <= 10^4`\n- `intervals[i].length == 2`",
+    "difficulty": "Medium",
+    "function_name": "merge",
+    "python_starter_code": "class Solution:\n    def merge(self, intervals: List[List[int]]) -> List[List[int]]:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    vector<vector<int>> merge(vector<vector<int>>& intervals) {\n        // Implement your solution here\n        return {};\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<vector<int>> parseVectorVectorInt(const string& s) {\n    vector<vector<int>> res;\n    size_t i = 0;\n    while (i < s.size()) {\n        if (s[i] == '[') {\n            size_t end = s.find(']', i);\n            if (end != string::npos) {\n                string sub = s.substr(i + 1, end - i - 1);\n                if (!sub.empty() && sub.find('[') == string::npos) {\n                    vector<int> row;\n                    stringstream ss(sub);\n                    string item;\n                    while (getline(ss, item, ',')) {\n                        if (!item.empty()) row.push_back(stoi(item));\n                    }\n                    if(!row.empty()) res.push_back(row);\n                }\n            }\n        }\n        i++;\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string intervals_str;\n    if (!getline(cin >> ws, intervals_str)) return 0;\n    vector<vector<int>> intervals = parseVectorVectorInt(intervals_str);\n    Solution sol;\n    vector<vector<int>> res = sol.merge(intervals);\n    cout << \"[\";\n    for (size_t i = 0; i < res.size(); ++i) {\n        cout << \"[\";\n        for (size_t j = 0; j < res[i].size(); ++j) {\n            cout << res[i][j] << (j == res[i].size() - 1 ? \"\" : \",\");\n        }\n        cout << \"]\" << (i == res.size() - 1 ? \"\" : \",\");\n    }\n    cout << \"]\" << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"merge\", \"params\": [{\"name\": \"intervals\", \"type\": \"int[][]\"}], \"return_type\": \"int[][]\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"intervals\": [[1, 3], [2, 6], [8, 10], [15, 18]]}, \"expected\": [[1, 6], [8, 10], [15, 18]]}, {\"args\": {\"intervals\": [[1, 4], [4, 5]]}, \"expected\": [[1, 5]]}, {\"args\": {\"intervals\": [[1, 4], [0, 4]]}, \"expected\": [[0, 4]]}, {\"args\": {\"intervals\": [[1, 4], [2, 3]]}, \"expected\": [[1, 4]]}, {\"args\": {\"intervals\": [[1, 10], [2, 3], [4, 5], [6, 7], [8, 9]]}, \"expected\": [[1, 10]]}]}",
+    "hints": "[\"Sort intervals by start time, then merge consecutively overlapping intervals.\"]",
+    "optimal_time_complexity": "O(N log N)",
+    "optimal_space_complexity": "O(N)",
+    "tags": [
+      "Array",
+      "Sorting"
+    ]
+  },
+  {
+    "title": "Insert Interval",
+    "description": "You are given an array of non-overlapping intervals `intervals` where `intervals[i] = [start_i, end_i]` sorted in ascending order by `start_i`. You are also given an interval `newInterval = [start, end]`.\n\nInsert `newInterval` into `intervals` such that `intervals` is still sorted and non-overlapping.\n\n## Examples\n\n**Example 1:**\n- **Input:** `intervals = [[1,3],[6,9]]`, `newInterval = [2,5]`\n- **Output:** `[[1,5],[6,9]]`\n\n**Example 2:**\n- **Input:** `intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]]`, `newInterval = [4,8]`\n- **Output:** `[[1,2],[3,10],[12,16]]`\n\n## Constraints\n- `0 <= intervals.length <= 10^4`\n- `intervals[i].length == 2`",
+    "difficulty": "Medium",
+    "function_name": "insert",
+    "python_starter_code": "class Solution:\n    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {\n        // Implement your solution here\n        return {};\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<vector<int>> parseVectorVectorInt(const string& s) {\n    vector<vector<int>> res;\n    size_t i = 0;\n    while (i < s.size()) {\n        if (s[i] == '[') {\n            size_t end = s.find(']', i);\n            if (end != string::npos) {\n                string sub = s.substr(i + 1, end - i - 1);\n                if (!sub.empty() && sub.find('[') == string::npos) {\n                    vector<int> row;\n                    stringstream ss(sub);\n                    string item;\n                    while (getline(ss, item, ',')) {\n                        if (!item.empty()) row.push_back(stoi(item));\n                    }\n                    if(!row.empty()) res.push_back(row);\n                }\n            }\n        }\n        i++;\n    }\n    return res;\n}\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string intervals_str, new_str;\n    if (!getline(cin >> ws, intervals_str)) return 0;\n    if (!getline(cin >> ws, new_str)) return 0;\n    vector<vector<int>> intervals = parseVectorVectorInt(intervals_str);\n    vector<int> newInterval = parseVectorInt(new_str);\n    Solution sol;\n    vector<vector<int>> res = sol.insert(intervals, newInterval);\n    cout << \"[\";\n    for (size_t i = 0; i < res.size(); ++i) {\n        cout << \"[\";\n        for (size_t j = 0; j < res[i].size(); ++j) {\n            cout << res[i][j] << (j == res[i].size() - 1 ? \"\" : \",\");\n        }\n        cout << \"]\" << (i == res.size() - 1 ? \"\" : \",\");\n    }\n    cout << \"]\" << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"insert\", \"params\": [{\"name\": \"intervals\", \"type\": \"int[][]\"}, {\"name\": \"newInterval\", \"type\": \"int[]\"}], \"return_type\": \"int[][]\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"intervals\": [[1, 3], [6, 9]], \"newInterval\": [2, 5]}, \"expected\": [[1, 5], [6, 9]]}, {\"args\": {\"intervals\": [[1, 2], [3, 5], [6, 7], [8, 10], [12, 16]], \"newInterval\": [4, 8]}, \"expected\": [[1, 2], [3, 10], [12, 16]]}, {\"args\": {\"intervals\": [], \"newInterval\": [5, 7]}, \"expected\": [[5, 7]]}, {\"args\": {\"intervals\": [[1, 5]], \"newInterval\": [2, 3]}, \"expected\": [[1, 5]]}, {\"args\": {\"intervals\": [[1, 5]], \"newInterval\": [2, 7]}, \"expected\": [[1, 7]]}]}",
+    "hints": "[\"Add all intervals ending before newInterval starts.\", \"Merge all overlapping intervals with newInterval, then append the rest.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(N)",
+    "tags": [
+      "Array"
+    ]
+  },
+  {
+    "title": "Climbing Stairs",
+    "description": "You are climbing a staircase. It takes `n` steps to reach the top.\n\nEach time you can either climb `1` or `2` steps. In how many distinct ways can you climb to the top?\n\n## Examples\n\n**Example 1:**\n- **Input:** `n = 2`\n- **Output:** `2`\n\n**Example 2:**\n- **Input:** `n = 3`\n- **Output:** `3`\n\n## Constraints\n- `1 <= n <= 45`",
+    "difficulty": "Easy",
+    "function_name": "climbStairs",
+    "python_starter_code": "class Solution:\n    def climbStairs(self, n: int) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int climbStairs(int n) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\nusing namespace std;\n\n{{user_code}}\n\nint main() {\n    int n;\n    if (!(cin >> n)) return 0;\n    Solution sol;\n    int res = sol.climbStairs(n);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"climbStairs\", \"params\": [{\"name\": \"n\", \"type\": \"int\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"n\": 1}, \"expected\": 1}, {\"args\": {\"n\": 2}, \"expected\": 2}, {\"args\": {\"n\": 3}, \"expected\": 3}, {\"args\": {\"n\": 4}, \"expected\": 5}, {\"args\": {\"n\": 5}, \"expected\": 8}, {\"args\": {\"n\": 10}, \"expected\": 89}, {\"args\": {\"n\": 20}, \"expected\": 10946}]}",
+    "hints": "[\"Use Fibonacci recurrence: `dp[n] = dp[n-1] + dp[n-2]`.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Math",
+      "Dynamic Programming",
+      "Memoization"
+    ]
+  },
+  {
+    "title": "House Robber",
+    "description": "You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed. Adjacent houses have security systems connected, which will automatically contact the police if two adjacent houses were broken into on the same night.\n\nGiven an integer array `nums` representing the amount of money of each house, return *the maximum amount of money you can rob tonight without alerting the police*.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [1,2,3,1]`\n- **Output:** `4`\n\n**Example 2:**\n- **Input:** `nums = [2,7,9,3,1]`\n- **Output:** `12`\n\n## Constraints\n- `1 <= nums.length <= 100`\n- `0 <= nums[i] <= 400`",
+    "difficulty": "Medium",
+    "function_name": "rob",
+    "python_starter_code": "class Solution:\n    def rob(self, nums: List[int]) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int rob(vector<int>& nums) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    Solution sol;\n    int res = sol.rob(nums);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"rob\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"nums\": [1, 2, 3, 1]}, \"expected\": 4}, {\"args\": {\"nums\": [2, 7, 9, 3, 1]}, \"expected\": 12}, {\"args\": {\"nums\": [0]}, \"expected\": 0}, {\"args\": {\"nums\": [2, 1, 1, 2]}, \"expected\": 4}]}",
+    "hints": "[\"At house i, choose `max(rob[i-1], rob[i-2] + nums[i])`.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Dynamic Programming"
+    ]
+  },
+  {
+    "title": "Coin Change",
+    "description": "You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.\n\nReturn *the fewest number of coins that you need to make up that amount*. If that amount cannot be made up, return `-1`.\n\n## Examples\n\n**Example 1:**\n- **Input:** `coins = [1,2,5]`, `amount = 11`\n- **Output:** `3`\n\n**Example 2:**\n- **Input:** `coins = [2]`, `amount = 3`\n- **Output:** `-1`\n\n**Example 3:**\n- **Input:** `coins = [1]`, `amount = 0`\n- **Output:** `0`\n\n## Constraints\n- `1 <= coins.length <= 12`\n- `0 <= amount <= 10^4`",
+    "difficulty": "Medium",
+    "function_name": "coinChange",
+    "python_starter_code": "class Solution:\n    def coinChange(self, coins: List[int], amount: int) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int coinChange(vector<int>& coins, int amount) {\n        // Implement your solution here\n        return -1;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string coins_str;\n    if (!getline(cin >> ws, coins_str)) return 0;\n    vector<int> coins = parseVectorInt(coins_str);\n    int amount;\n    if (!(cin >> amount)) return 0;\n    Solution sol;\n    int res = sol.coinChange(coins, amount);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"coinChange\", \"params\": [{\"name\": \"coins\", \"type\": \"int[]\"}, {\"name\": \"amount\", \"type\": \"int\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"coins\": [1, 2, 5], \"amount\": 11}, \"expected\": 3}, {\"args\": {\"coins\": [2], \"amount\": 3}, \"expected\": -1}, {\"args\": {\"coins\": [1], \"amount\": 0}, \"expected\": 0}, {\"args\": {\"coins\": [1], \"amount\": 1}, \"expected\": 1}, {\"args\": {\"coins\": [1], \"amount\": 2}, \"expected\": 2}]}",
+    "hints": "[\"Use bottom-up DP: `dp[i] = min(dp[i], dp[i - c] + 1)` for each coin `c`.\"]",
+    "optimal_time_complexity": "O(amount * len(coins))",
+    "optimal_space_complexity": "O(amount)",
+    "tags": [
+      "Array",
+      "Dynamic Programming"
+    ]
+  },
+  {
+    "title": "Unique Paths",
+    "description": "There is a robot on an `m x n` grid. The robot is initially located at the **top-left corner** (`grid[0][0]`). The robot tries to move to the **bottom-right corner** (`grid[m - 1][n - 1]`). The robot can only move either down or right at any point in time.\n\nGiven the two integers `m` and `n`, return *the number of possible unique paths that the robot can take to reach the bottom-right corner*.\n\n## Examples\n\n**Example 1:**\n- **Input:** `m = 3, n = 7`\n- **Output:** `28`\n\n**Example 2:**\n- **Input:** `m = 3, n = 2`\n- **Output:** `3`\n\n## Constraints\n- `1 <= m, n <= 100`",
+    "difficulty": "Medium",
+    "function_name": "uniquePaths",
+    "python_starter_code": "class Solution:\n    def uniquePaths(self, m: int, n: int) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int uniquePaths(int m, int n) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\nusing namespace std;\n\n{{user_code}}\n\nint main() {\n    int m, n;\n    if (!(cin >> m >> n)) return 0;\n    Solution sol;\n    int res = sol.uniquePaths(m, n);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"uniquePaths\", \"params\": [{\"name\": \"m\", \"type\": \"int\"}, {\"name\": \"n\", \"type\": \"int\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"m\": 3, \"n\": 7}, \"expected\": 28}, {\"args\": {\"m\": 3, \"n\": 2}, \"expected\": 3}, {\"args\": {\"m\": 1, \"n\": 1}, \"expected\": 1}, {\"args\": {\"m\": 7, \"n\": 3}, \"expected\": 28}]}",
+    "hints": "[\"`dp[i][j] = dp[i-1][j] + dp[i][j-1]`.\"]",
+    "optimal_time_complexity": "O(M * N)",
+    "optimal_space_complexity": "O(N)",
+    "tags": [
+      "Math",
+      "Dynamic Programming",
+      "Combinatorics"
+    ]
+  },
+  {
+    "title": "Maximum Subarray",
+    "description": "Given an integer array `nums`, find the subarray with the largest sum, and return *its sum*.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [-2,1,-3,4,-1,2,1,-5,4]`\n- **Output:** `6`\n\n**Example 2:**\n- **Input:** `nums = [1]`\n- **Output:** `1`\n\n**Example 3:**\n- **Input:** `nums = [5,4,-1,7,8]`\n- **Output:** `23`\n\n## Constraints\n- `1 <= nums.length <= 10^5`\n- `-10^4 <= nums[i] <= 10^4`",
+    "difficulty": "Medium",
+    "function_name": "maxSubArray",
+    "python_starter_code": "class Solution:\n    def maxSubArray(self, nums: List[int]) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int maxSubArray(vector<int>& nums) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    Solution sol;\n    int res = sol.maxSubArray(nums);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"maxSubArray\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"nums\": [-2, 1, -3, 4, -1, 2, 1, -5, 4]}, \"expected\": 6}, {\"args\": {\"nums\": [1]}, \"expected\": 1}, {\"args\": {\"nums\": [5, 4, -1, 7, 8]}, \"expected\": 23}, {\"args\": {\"nums\": [-1]}, \"expected\": -1}, {\"args\": {\"nums\": [-2, -1]}, \"expected\": -1}]}",
+    "hints": "[\"Kadane's Algorithm: `cur_sum = max(x, cur_sum + x)`.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Divide and Conquer",
+      "Dynamic Programming"
+    ]
+  },
+  {
+    "title": "Jump Game",
+    "description": "You are given an integer array `nums`. You are initially positioned at the array's **first index**, and each element in the array represents your maximum jump length at that position.\n\nReturn `true` *if you can reach the last index, or* `false` *otherwise*.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [2,3,1,1,4]`\n- **Output:** `true`\n\n**Example 2:**\n- **Input:** `nums = [3,2,1,0,4]`\n- **Output:** `false`\n\n## Constraints\n- `1 <= nums.length <= 10^4`",
+    "difficulty": "Medium",
+    "function_name": "canJump",
+    "python_starter_code": "class Solution:\n    def canJump(self, nums: List[int]) -> bool:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    bool canJump(vector<int>& nums) {\n        // Implement your solution here\n        return false;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    Solution sol;\n    bool res = sol.canJump(nums);\n    cout << (res ? \"true\" : \"false\") << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"canJump\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}], \"return_type\": \"boolean\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"nums\": [2, 3, 1, 1, 4]}, \"expected\": true}, {\"args\": {\"nums\": [3, 2, 1, 0, 4]}, \"expected\": false}, {\"args\": {\"nums\": [0]}, \"expected\": true}, {\"args\": {\"nums\": [2, 0, 0]}, \"expected\": true}, {\"args\": {\"nums\": [1, 0, 1, 0]}, \"expected\": false}]}",
+    "hints": "[\"Track the max reachable index at every step.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Dynamic Programming",
+      "Greedy"
+    ]
+  },
+  {
+    "title": "Jump Game II",
+    "description": "You are given a **0-indexed** array of integers `nums` of length `n`. You are initially positioned at `nums[0]`.\n\nEach element `nums[i]` represents the maximum length of a forward jump from index `i`.\n\nReturn *the minimum number of jumps to reach* `nums[n - 1]`.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [2,3,1,1,4]`\n- **Output:** `2`\n\n**Example 2:**\n- **Input:** `nums = [2,3,0,1,4]`\n- **Output:** `2`\n\n## Constraints\n- `1 <= nums.length <= 10^4`",
+    "difficulty": "Medium",
+    "function_name": "jump",
+    "python_starter_code": "class Solution:\n    def jump(self, nums: List[int]) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int jump(vector<int>& nums) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    Solution sol;\n    int res = sol.jump(nums);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"jump\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"nums\": [2, 3, 1, 1, 4]}, \"expected\": 2}, {\"args\": {\"nums\": [2, 3, 0, 1, 4]}, \"expected\": 2}, {\"args\": {\"nums\": [0]}, \"expected\": 0}, {\"args\": {\"nums\": [1, 2, 3]}, \"expected\": 2}]}",
+    "hints": "[\"Use BFS / Greedy window: whenever `i == cur_end`, increment jumps and update `cur_end = cur_farthest`.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Dynamic Programming",
+      "Greedy"
+    ]
+  },
+  {
+    "title": "Rotate Image",
+    "description": "You are given an `n x n` 2D `matrix` representing an image, rotate the image by **90 degrees (clockwise)** in-place.\n\n## Examples\n\n**Example 1:**\n- **Input:** `matrix = [[1,2,3],[4,5,6],[7,8,9]]`\n- **Output:** `[[7,4,1],[8,5,2],[9,6,3]]`\n\n**Example 2:**\n- **Input:** `matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]`\n- **Output:** `[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]`\n\n## Constraints\n- `n == matrix.length == matrix[i].length`\n- `1 <= n <= 20`",
+    "difficulty": "Medium",
+    "function_name": "rotate",
+    "python_starter_code": "class Solution:\n    def rotate(self, matrix: List[List[int]]) -> None:\n        # Modify matrix in-place instead.\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    void rotate(vector<vector<int>>& matrix) {\n        // Modify matrix in-place instead.\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<vector<int>> parseVectorVectorInt(const string& s) {\n    vector<vector<int>> res;\n    size_t i = 0;\n    while (i < s.size()) {\n        if (s[i] == '[') {\n            size_t end = s.find(']', i);\n            if (end != string::npos) {\n                string sub = s.substr(i + 1, end - i - 1);\n                if (!sub.empty() && sub.find('[') == string::npos) {\n                    vector<int> row;\n                    stringstream ss(sub);\n                    string item;\n                    while (getline(ss, item, ',')) {\n                        if (!item.empty()) row.push_back(stoi(item));\n                    }\n                    if(!row.empty()) res.push_back(row);\n                }\n            }\n        }\n        i++;\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string matrix_str;\n    if (!getline(cin >> ws, matrix_str)) return 0;\n    vector<vector<int>> matrix = parseVectorVectorInt(matrix_str);\n    Solution sol;\n    sol.rotate(matrix);\n    cout << \"[\";\n    for (size_t i = 0; i < matrix.size(); ++i) {\n        cout << \"[\";\n        for (size_t j = 0; j < matrix[i].size(); ++j) {\n            cout << matrix[i][j] << (j == matrix[i].size() - 1 ? \"\" : \",\");\n        }\n        cout << \"]\" << (i == matrix.size() - 1 ? \"\" : \",\");\n    }\n    cout << \"]\" << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"rotate\", \"params\": [{\"name\": \"matrix\", \"type\": \"int[][]\"}], \"return_type\": \"void\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"matrix\": [[1, 2, 3], [4, 5, 6], [7, 8, 9]]}, \"expected\": [[7, 4, 1], [8, 5, 2], [9, 6, 3]]}, {\"args\": {\"matrix\": [[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]]}, \"expected\": [[15, 13, 2, 5], [14, 3, 4, 1], [12, 6, 8, 9], [16, 7, 10, 11]]}, {\"args\": {\"matrix\": [[1]]}, \"expected\": [[1]]}, {\"args\": {\"matrix\": [[1, 2], [3, 4]]}, \"expected\": [[3, 1], [4, 2]]}]}",
+    "hints": "[\"Transpose the matrix, then reverse each row.\"]",
+    "optimal_time_complexity": "O(N^2)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Math",
+      "Matrix"
+    ]
+  },
+  {
+    "title": "Spiral Matrix",
+    "description": "Given an `m x n` `matrix`, return *all elements of the* `matrix` *in spiral order*.\n\n## Examples\n\n**Example 1:**\n- **Input:** `matrix = [[1,2,3],[4,5,6],[7,8,9]]`\n- **Output:** `[1,2,3,6,9,8,7,4,5]`\n\n**Example 2:**\n- **Input:** `matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]`\n- **Output:** `[1,2,3,4,8,12,11,10,9,5,6,7]`\n\n## Constraints\n- `1 <= m, n <= 10`",
+    "difficulty": "Medium",
+    "function_name": "spiralOrder",
+    "python_starter_code": "class Solution:\n    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    vector<int> spiralOrder(vector<vector<int>>& matrix) {\n        // Implement your solution here\n        return {};\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<vector<int>> parseVectorVectorInt(const string& s) {\n    vector<vector<int>> res;\n    size_t i = 0;\n    while (i < s.size()) {\n        if (s[i] == '[') {\n            size_t end = s.find(']', i);\n            if (end != string::npos) {\n                string sub = s.substr(i + 1, end - i - 1);\n                if (!sub.empty() && sub.find('[') == string::npos) {\n                    vector<int> row;\n                    stringstream ss(sub);\n                    string item;\n                    while (getline(ss, item, ',')) {\n                        if (!item.empty()) row.push_back(stoi(item));\n                    }\n                    if(!row.empty()) res.push_back(row);\n                }\n            }\n        }\n        i++;\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string matrix_str;\n    if (!getline(cin >> ws, matrix_str)) return 0;\n    vector<vector<int>> matrix = parseVectorVectorInt(matrix_str);\n    Solution sol;\n    vector<int> res = sol.spiralOrder(matrix);\n    cout << \"[\";\n    for (size_t i = 0; i < res.size(); ++i) {\n        cout << res[i] << (i == res.size() - 1 ? \"\" : \",\");\n    }\n    cout << \"]\" << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"spiralOrder\", \"params\": [{\"name\": \"matrix\", \"type\": \"int[][]\"}], \"return_type\": \"int[]\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"matrix\": [[1, 2, 3], [4, 5, 6], [7, 8, 9]]}, \"expected\": [1, 2, 3, 6, 9, 8, 7, 4, 5]}, {\"args\": {\"matrix\": [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]}, \"expected\": [1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7]}, {\"args\": {\"matrix\": [[7]]}, \"expected\": [7]}, {\"args\": {\"matrix\": [[1, 2], [3, 4]]}, \"expected\": [1, 2, 4, 3]}]}",
+    "hints": "[\"Maintain four boundaries (top, bottom, left, right) and shrink them sequentially.\"]",
+    "optimal_time_complexity": "O(M * N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Matrix",
+      "Simulation"
+    ]
+  },
+  {
+    "title": "Single Number",
+    "description": "Given a **non-empty** array of integers `nums`, every element appears *twice* except for one. Find that single one in linear time and O(1) space.\n\n## Examples\n\n**Example 1:**\n- **Input:** `nums = [2,2,1]`\n- **Output:** `1`\n\n**Example 2:**\n- **Input:** `nums = [4,1,2,1,2]`\n- **Output:** `4`\n\n## Constraints\n- `1 <= nums.length <= 3 * 10^4`",
+    "difficulty": "Easy",
+    "function_name": "singleNumber",
+    "python_starter_code": "class Solution:\n    def singleNumber(self, nums: List[int]) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int singleNumber(vector<int>& nums) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    Solution sol;\n    int res = sol.singleNumber(nums);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"singleNumber\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"nums\": [2, 2, 1]}, \"expected\": 1}, {\"args\": {\"nums\": [4, 1, 2, 1, 2]}, \"expected\": 4}, {\"args\": {\"nums\": [1]}, \"expected\": 1}, {\"args\": {\"nums\": [-1, -1, -2]}, \"expected\": -2}]}",
+    "hints": "[\"XORing all elements together cancels duplicates: `x ^ x = 0`.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Array",
+      "Bit Manipulation"
+    ]
+  },
+  {
+    "title": "Number of 1 Bits",
+    "description": "Given a positive integer `n`, write a function that returns the number of set bits it has (also known as the Hamming weight).\n\n## Examples\n\n**Example 1:**\n- **Input:** `n = 11`\n- **Output:** `3`\n\n**Example 2:**\n- **Input:** `n = 128`\n- **Output:** `1`\n\n## Constraints\n- `1 <= n <= 2^31 - 1`",
+    "difficulty": "Easy",
+    "function_name": "hammingWeight",
+    "python_starter_code": "class Solution:\n    def hammingWeight(self, n: int) -> int:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    int hammingWeight(int n) {\n        // Implement your solution here\n        return 0;\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\nusing namespace std;\n\n{{user_code}}\n\nint main() {\n    int n;\n    if (!(cin >> n)) return 0;\n    Solution sol;\n    int res = sol.hammingWeight(n);\n    cout << res << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"hammingWeight\", \"params\": [{\"name\": \"n\", \"type\": \"int\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"n\": 11}, \"expected\": 3}, {\"args\": {\"n\": 128}, \"expected\": 1}, {\"args\": {\"n\": 2147483645}, \"expected\": 30}, {\"args\": {\"n\": 1}, \"expected\": 1}, {\"args\": {\"n\": 0}, \"expected\": 0}]}",
+    "hints": "[\"Use `n & (n - 1)` to clear the lowest set bit in each step.\"]",
+    "optimal_time_complexity": "O(1)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Divide and Conquer",
+      "Bit Manipulation"
+    ]
+  },
+  {
+    "title": "Counting Bits",
+    "description": "Given an integer `n`, return an array `ans` of length `n + 1` such that for each `i` (`0 <= i <= n`), `ans[i]` is the **number of** `1`**'s** in the binary representation of `i`.\n\n## Examples\n\n**Example 1:**\n- **Input:** `n = 2`\n- **Output:** `[0,1,1]`\n\n**Example 2:**\n- **Input:** `n = 5`\n- **Output:** `[0,1,1,2,1,2]`\n\n## Constraints\n- `0 <= n <= 10^5`",
+    "difficulty": "Easy",
+    "function_name": "countBits",
+    "python_starter_code": "class Solution:\n    def countBits(self, n: int) -> List[int]:\n        # Implement your solution here\n        pass",
+    "cpp_starter_code": "class Solution {\npublic:\n    vector<int> countBits(int n) {\n        // Implement your solution here\n        return {};\n    }\n};",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\nusing namespace std;\n\n{{user_code}}\n\nint main() {\n    int n;\n    if (!(cin >> n)) return 0;\n    Solution sol;\n    vector<int> res = sol.countBits(n);\n    cout << \"[\";\n    for(size_t i = 0; i < res.size(); ++i) {\n        cout << res[i] << (i == res.size() - 1 ? \"\" : \",\");\n    }\n    cout << \"]\" << endl;\n    return 0;\n}",
+    "test_cases": "{\"function_name\": \"countBits\", \"params\": [{\"name\": \"n\", \"type\": \"int\"}], \"return_type\": \"int[]\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"n\": 2}, \"expected\": [0, 1, 1]}, {\"args\": {\"n\": 5}, \"expected\": [0, 1, 1, 2, 1, 2]}, {\"args\": {\"n\": 0}, \"expected\": [0]}, {\"args\": {\"n\": 1}, \"expected\": [0, 1]}]}",
+    "hints": "[\"Use DP: `dp[i] = dp[i >> 1] + (i & 1)`.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(1)",
+    "tags": [
+      "Dynamic Programming",
+      "Bit Manipulation"
+    ]
+  },
+  {
+    "title": "Course Schedule",
+    "description": "There are a total of `numCourses` courses you have to take, labeled from `0` to `numCourses - 1`. You are given an array `prerequisites` where `prerequisites[i] = [a_i, b_i]` indicates that you **must** take course `b_i` first if you want to take course `a_i`.\n\n- For example, the pair `[0, 1]` indicates that to take course `0` you have to first take course `1`.\n\nReturn `true` if you can finish all courses. Otherwise, return `false`.\n\n### Example 1:\n```\nInput: numCourses = 2, prerequisites = [[1,0]]\nOutput: true\nExplanation: There are a total of 2 courses to take. To take course 1 you should have finished course 0. So it is possible.\n```\n\n### Example 2:\n```\nInput: numCourses = 2, prerequisites = [[1,0],[0,1]]\nOutput: false\nExplanation: There are a total of 2 courses to take. To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.\n```\n\n### Constraints:\n- `1 <= numCourses <= 2000`\n- `0 <= prerequisites.length <= 5000`\n- `prerequisites[i].length == 2`\n- `0 <= a_i, b_i < numCourses`\n- All the pairs `prerequisites[i]` are **unique**.",
+    "difficulty": "Medium",
+    "function_name": "canFinish",
+    "python_starter_code": "class Solution:\n    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:\n        # Implement your solution here\n        pass\n",
+    "cpp_starter_code": "class Solution {\npublic:\n    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {\n        // Implement your solution here\n        return false;\n    }\n};\n",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\n#include <queue>\nusing namespace std;\n\nvector<vector<int>> parseVectorVectorInt(const string& s) {\n    vector<vector<int>> res;\n    size_t i = 0;\n    while (i < s.size()) {\n        if (s[i] == '[') {\n            size_t end = s.find(']', i);\n            if (end != string::npos) {\n                string sub = s.substr(i + 1, end - i - 1);\n                if (!sub.empty() && sub.find('[') == string::npos) {\n                    vector<int> row;\n                    stringstream ss(sub);\n                    string item;\n                    while (getline(ss, item, ',')) {\n                        if (!item.empty()) row.push_back(stoi(item));\n                    }\n                    if(!row.empty()) res.push_back(row);\n                }\n            }\n        }\n        i++;\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    int numCourses;\n    if (!(cin >> numCourses)) return 0;\n    string prereq_str;\n    if (!getline(cin >> ws, prereq_str)) return 0;\n    vector<vector<int>> prerequisites = parseVectorVectorInt(prereq_str);\n    Solution sol;\n    cout << (sol.canFinish(numCourses, prerequisites) ? \"true\" : \"false\") << endl;\n    return 0;\n}\n",
+    "test_cases": "{\"function_name\": \"canFinish\", \"params\": [{\"name\": \"numCourses\", \"type\": \"int\"}, {\"name\": \"prerequisites\", \"type\": \"int[][]\"}], \"return_type\": \"boolean\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"numCourses\": 2, \"prerequisites\": [[1, 0]]}, \"expected\": true}, {\"args\": {\"numCourses\": 2, \"prerequisites\": [[1, 0], [0, 1]]}, \"expected\": false}, {\"args\": {\"numCourses\": 1, \"prerequisites\": []}, \"expected\": true}, {\"args\": {\"numCourses\": 3, \"prerequisites\": [[0, 1], [0, 2], [1, 2]]}, \"expected\": true}, {\"args\": {\"numCourses\": 4, \"prerequisites\": [[1, 0], [2, 0], [3, 1], [3, 2]]}, \"expected\": true}, {\"args\": {\"numCourses\": 4, \"prerequisites\": [[1, 0], [2, 1], [3, 2], [1, 3]]}, \"expected\": false}, {\"args\": {\"numCourses\": 5, \"prerequisites\": [[1, 4], [2, 4], [3, 1], [3, 2]]}, \"expected\": true}]}",
+    "hints": "[\"This problem is equivalent to detecting a cycle in a directed graph. If a cycle exists, no topological order is possible and you cannot finish all courses.\", \"You can use Kahn's Algorithm (BFS topological sort using in-degrees) or DFS with 3-state coloring (unvisited, visiting, visited).\"]",
+    "optimal_time_complexity": "O(V + E)",
+    "optimal_space_complexity": "O(V + E)",
+    "tags": [
+      "Graph",
+      "Breadth-First Search",
+      "Depth-First Search",
+      "Topological Sort"
+    ]
+  },
+  {
+    "title": "Subarray Sum Equals K",
+    "description": "Given an array of integers `nums` and an integer `k`, return *the total number of subarrays whose sum equals to* `k`.\n\nA subarray is a contiguous **non-empty** sequence of elements within an array.\n\n### Example 1:\n```\nInput: nums = [1,1,1], k = 2\nOutput: 2\nExplanation: Subarrays [1, 1] at indices [0, 1] and [1, 2] both sum to 2.\n```\n\n### Example 2:\n```\nInput: nums = [1,2,3], k = 3\nOutput: 2\nExplanation: Subarrays [1, 2] and [3] both sum to 3.\n```\n\n### Constraints:\n- `1 <= nums.length <= 2 * 10^4`\n- `-1000 <= nums[i] <= 1000`\n- `-10^7 <= k <= 10^7`",
+    "difficulty": "Medium",
+    "function_name": "subarraySum",
+    "python_starter_code": "class Solution:\n    def subarraySum(self, nums: List[int], k: int) -> int:\n        # Implement your solution here\n        pass\n",
+    "cpp_starter_code": "class Solution {\npublic:\n    int subarraySum(vector<int>& nums, int k) {\n        // Implement your solution here\n        return 0;\n    }\n};\n",
+    "cpp_test_harness": "#include <iostream>\n#include <vector>\n#include <string>\n#include <sstream>\n#include <algorithm>\n#include <unordered_map>\nusing namespace std;\n\nvector<int> parseVectorInt(const string& s) {\n    vector<int> res;\n    string temp = s;\n    temp.erase(remove(temp.begin(), temp.end(), '['), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ']'), temp.end());\n    temp.erase(remove(temp.begin(), temp.end(), ' '), temp.end());\n    stringstream ss(temp);\n    string item;\n    while(getline(ss, item, ',')) {\n        if(!item.empty()) res.push_back(stoi(item));\n    }\n    return res;\n}\n\n{{user_code}}\n\nint main() {\n    string nums_str;\n    if (!getline(cin >> ws, nums_str)) return 0;\n    vector<int> nums = parseVectorInt(nums_str);\n    int k;\n    if (!(cin >> k)) return 0;\n    Solution sol;\n    cout << sol.subarraySum(nums, k) << endl;\n    return 0;\n}\n",
+    "test_cases": "{\"function_name\": \"subarraySum\", \"params\": [{\"name\": \"nums\", \"type\": \"int[]\"}, {\"name\": \"k\", \"type\": \"int\"}], \"return_type\": \"int\", \"comparison\": \"exact\", \"cases\": [{\"args\": {\"nums\": [1, 1, 1], \"k\": 2}, \"expected\": 2}, {\"args\": {\"nums\": [1, 2, 3], \"k\": 3}, \"expected\": 2}, {\"args\": {\"nums\": [1, -1, 0], \"k\": 0}, \"expected\": 3}, {\"args\": {\"nums\": [3, 4, 7, 2, -3, 1, 4, 2], \"k\": 7}, \"expected\": 4}, {\"args\": {\"nums\": [1], \"k\": 0}, \"expected\": 0}, {\"args\": {\"nums\": [-1, -1, 1], \"k\": 0}, \"expected\": 1}, {\"args\": {\"nums\": [0, 0, 0, 0, 0], \"k\": 0}, \"expected\": 15}]}",
+    "hints": "[\"Can you maintain a running cumulative sum (prefix sum) as you iterate through nums?\", \"If the cumulative sum up to index j is S_j, we are looking for earlier indices i where S_j - S_i = k, which means S_i = S_j - k. A hash map tracking the frequency of seen prefix sums allows O(1) lookups.\"]",
+    "optimal_time_complexity": "O(N)",
+    "optimal_space_complexity": "O(N)",
+    "tags": [
+      "Array",
+      "Hash Table",
+      "Prefix Sum"
+    ]
+  }
+]

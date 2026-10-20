@@ -1,0 +1,102 @@
+/* ThinkAloudAI — Industrial Blueprint Design Tokens
+ * theme: brutalist-tech
+ * bg: #000000 (Black) · accent: #f97316 (Warm Orange)
+ * display: Inter/Space Grotesk · mono: JetBrains Mono
+ * axes: dark / strict grid / hyper-precise / tech
+ */
+
+:root {
+  /* ---- Colour: Backgrounds (Deep Obsidian/Zinc) ---- */
+  --color-bg: #000000;
+  --color-surface: #09090B;
+  --color-surface-elevated: #18181B;
+
+  /* ---- Colour: Text (Stark White/Gray) ---- */
+  --color-text: #FAFAFA;
+  --color-muted: #A1A1AA;
+  --color-dim: #52525B;
+
+  /* ---- Colour: Neutrals / Borders (Hairlines) ---- */
+  --color-rule: #27272A;
+  --color-rule-2: #3F3F46;
+
+  /* ---- Colour: Accent (Warm Orange) ---- */
+  --color-accent: #f97316; 
+  --color-accent-hover: #ea580c; 
+  --color-accent-glow: rgba(249, 115, 22, 0.25);
+  
+  --orange: #f97316;
+  --orange-2: #fb923c;
+  --orange-3: #fdba74;
+  --orange-dim: rgba(249, 115, 22, 0.25);
+  --orange-soft: rgba(249, 115, 22, 0.1);
+  --surface: #0e0e12;
+  --white: #ffffff;
+  --muted: #a1a1aa;
+  --muted-2: #9ca3af;
+  
+  /* ---- Surfaces (No Glass, No Shadows) ---- */
+  --glass-bg: transparent;
+  --glass-bg-strong: transparent;
+  --glass-border: #27272A;
+  --glass-shadow: none;
+  --glass-blur: none;
+
+  /* ---- Ambient washes (None) ---- */
+  --ambient-1: none;
+  --ambient-2: none;
+  --ambient-3: none;
+  --cta-bloom: none;
+  --hero-glow: none;
+
+  /* ---- Typography ---- */
+  --font-display: "Space Grotesk", "Public Sans", "Inter", sans-serif;
+  --font-body: "Public Sans", "Geist", "Inter", sans-serif;
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-mono: "JetBrains Mono", "Geist Mono", monospace;
+
+  /* ---- Typography Scale ---- */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 3rem;
+  --text-display: clamp(3.5rem, 6vw + 1rem, 6.5rem);
+
+  /* ---- Spacing (Strict Grid Scale) ---- */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-4xl: 8rem;
+
+  /* ---- Motion (Instant/Snappy) ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 100ms;
+  --dur-short: 150ms;
+  --dur-long: 300ms;
+
+  /* ---- Radii & rules (Zero Radius, Hairline borders) ---- */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --rule-hair: 1px;
+
+  /* ---- Z-index scale ---- */
+  --z-base: 1;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal: 400;
+}

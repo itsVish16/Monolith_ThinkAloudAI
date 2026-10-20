@@ -1,0 +1,415 @@
+/* ============================================================
+   ThinkAloudAI — Admin Analytics tabs
+   (Users & Gamification · Mock Interviews Audit · DSA Catalog & Submissions)
+   Scoped helpers only — shared admin-* classes stay owned by AdminDashboard.css.
+   Prefix: ana-
+   ============================================================ */
+
+/* ---------- Tab shell rhythm ---------- */
+.ana-tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ana-tab-content > .admin-stats-grid {
+  margin-bottom: 0;
+}
+
+/* ---------- Page header block ---------- */
+.ana-tab-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: #0e0e13;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.ana-tab-header-main {
+  min-width: 0;
+}
+
+.ana-tab-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ana-tab-title {
+  margin: 0;
+  font-family: var(--font-display, 'Space Grotesk', 'Public Sans', sans-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #f9fafb;
+}
+
+.ana-count-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(249, 115, 22, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: #fdba74;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.ana-tab-subtitle {
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #a1a1aa;
+  max-width: 760px;
+}
+
+.ana-tab-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ana-icon-refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  color: #fdba74;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.ana-icon-refresh:hover {
+  background: rgba(249, 115, 22, 0.16);
+  border-color: rgba(249, 115, 22, 0.45);
+  color: #ffffff;
+}
+
+.ana-icon-refresh:active {
+  transform: translateY(1px);
+}
+
+.ana-icon-refresh:focus-visible,
+.ana-btn-danger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.45);
+}
+
+/* ---------- Toolbar helpers ---------- */
+.ana-toolbar {
+  row-gap: 10px;
+}
+
+.ana-toolbar .ana-toolbar-actions {
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+.ana-toolbar .admin-search-box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  color: #f9fafb;
+  font-size: 12.5px;
+  font-family: inherit;
+}
+
+.ana-toolbar .admin-search-box input::placeholder {
+  color: #71717a;
+}
+
+.ana-toolbar-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-left: auto;
+}
+
+@media (max-width: 1000px) {
+  .ana-toolbar .ana-toolbar-search {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+
+  .ana-toolbar .ana-toolbar-actions {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+/* Live feed indicator */
+.ana-live-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(52, 211, 153, 0.08);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  color: #6ee7b7;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ana-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
+  animation: ana-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ana-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* ---------- Tables ---------- */
+.ana-table-mid {
+  min-width: 920px;
+}
+
+.ana-table-wide {
+  min-width: 1080px;
+}
+
+/* ---------- Empty & loading states ---------- */
+.ana-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 34px 16px;
+  color: #71717a;
+  font-size: 12.5px;
+}
+
+.ana-empty svg {
+  color: #52525b;
+  flex: 0 0 auto;
+}
+
+.ana-spin {
+  animation: ana-spin 1s linear infinite;
+}
+
+@keyframes ana-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Text helpers ---------- */
+.ana-mono {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-weight: 600;
+  color: #d4d4d8;
+}
+
+.ana-pill-click {
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ana-pill-click:hover {
+  filter: brightness(1.14);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+/* ---------- Modals ---------- */
+.admin-modal-card.ana-modal-lg {
+  max-width: 860px;
+}
+
+.admin-modal-card.ana-modal-md {
+  max-width: 700px;
+}
+
+.admin-modal-card.ana-modal-sm {
+  max-width: 460px;
+}
+
+/* Interview audit — score strip */
+.ana-score-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ana-score-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(118px, 1fr));
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (max-width: 720px) {
+  .ana-score-grid {
+    grid-template-columns: repeat(2, minmax(118px, 1fr));
+  }
+}
+
+.ana-score-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 10px 12px;
+  min-width: 0;
+}
+
+.ana-score-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #71717a;
+}
+
+.ana-score-val {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #f9fafb;
+}
+
+.ana-score-val.accent {
+  color: #fb923c;
+}
+
+/* Dossier additions */
+.ana-dossier-hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.ana-dossier-bio {
+  margin: 0;
+  padding: 11px 13px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: #d4d4d8;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.ana-dossier-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #111117;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.ana-dossier-meta-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #71717a;
+}
+
+.ana-dossier-meta-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  color: #fdba74;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.ana-dossier-meta-value:hover {
+  text-decoration: underline;
+}
+
+.ana-dossier-meta-value.dim {
+  color: #a1a1aa;
+}
+
+/* Code inspector */
+.admin-code-block.ana-code-block {
+  color: #e4e4e7;
+}
+
+/* ---------- Delete confirm ---------- */
+.ana-confirm-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ana-confirm-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #fca5a5;
+}
+
+.ana-confirm-text {
+  margin: 0;
+  padding-top: 6px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #a1a1aa;
+}
+
+.ana-btn-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: rgba(248, 113, 113, 0.14);
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  color: #fca5a5;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.ana-btn-danger:hover {
+  background: rgba(248, 113, 113, 0.22);
+  border-color: rgba(248, 113, 113, 0.6);
+  color: #fecaca;
+}

@@ -1,0 +1,477 @@
+/* ============================================================
+   ThinkAloud.AI — Editorial Footer Card
+   Night-sky distortion canvas · silver moving border
+   → brand grid → hover-reveal wordmark → bottom bar
+   ============================================================ */
+
+.landing-footer {
+  position: relative;
+  width: 100%;
+  padding: 0 0 48px 0;
+  background: transparent;
+  border-top: none;
+}
+
+/* Constrain the card to the same width/insets as the landing CTA card */
+.footer-shell-wrap {
+  width: 100%;
+  max-width: 1420px;
+  margin: 0 auto;
+  padding: 56px 24px 0 24px;
+}
+
+/* --- Silver ring: animated gradient border (hero-video language) --- */
+
+.footer-shell {
+  position: relative;
+  padding: 3px;
+  border-radius: 32px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #2f343b 0%, #e6e9ed 16%, #7a828d 34%, #f8fafc 50%, #5d646e 68%, #dfe3e8 86%, #2f343b 100%);
+  box-shadow:
+    0 40px 100px -30px rgba(0, 0, 0, 0.95),
+    0 0 70px rgba(226, 232, 240, 0.05);
+}
+
+/* Rotating silver sheen sweeping around the ring */
+.footer-shell::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 255, 255, 1) 22deg,
+    rgba(226, 232, 240, 0.6) 48deg,
+    transparent 88deg,
+    transparent 172deg,
+    rgba(255, 255, 255, 0.95) 194deg,
+    rgba(203, 213, 225, 0.5) 220deg,
+    transparent 258deg,
+    transparent 360deg
+  );
+  animation: footerSilverOrbit 6s linear infinite;
+}
+
+@keyframes footerSilverOrbit {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.footer-shell-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: 29px;
+  overflow: hidden;
+  background: #04060c;
+}
+
+/* Night-sky distortion field behind the content (pointer-reactive) */
+.footer-distortion {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Soft scrim: keeps the columns readable over the starfield */
+.footer-shell-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 72% at 50% 0%, rgba(4, 8, 20, 0.5) 0%, rgba(4, 8, 20, 0) 58%),
+    linear-gradient(180deg, rgba(3, 6, 14, 0.4) 0%, rgba(3, 6, 14, 0.1) 34%, rgba(3, 6, 14, 0.28) 76%, rgba(3, 6, 14, 0.5) 100%);
+}
+
+.footer-inner {
+  position: relative;
+  z-index: 2;
+  padding: 54px 54px 24px 54px;
+}
+
+/* ------------------------------------------------------------
+   Top Grid: Brand Column + Navigation Columns
+   ------------------------------------------------------------ */
+
+.footer-top-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) repeat(3, minmax(0, 1fr));
+  gap: 3.5rem;
+  align-items: start;
+}
+
+/* --- Brand column --- */
+
+.footer-brand-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.footer-logo-btn {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 1.5rem;
+  outline: none;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.footer-logo-btn:hover {
+  transform: scale(1.03);
+}
+
+.footer-logo-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.4);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.footer-logo-img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+}
+
+.footer-mission-text {
+  font-family: var(--font-sans, "Public Sans", "Geist", -apple-system, sans-serif);
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0 0 1.5rem 0;
+  max-width: 400px;
+  text-shadow: 0 1px 12px rgba(2, 4, 10, 0.75);
+}
+
+/* Live Audio & WebRTC Pill */
+.footer-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: var(--font-mono, "Geist Mono", monospace);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  user-select: none;
+  transition: all 0.2s ease;
+  width: fit-content;
+}
+
+.footer-status-pill:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.footer-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+  animation: footer-status-pulse 2.2s infinite ease-in-out;
+}
+
+@keyframes footer-status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.82);
+  }
+}
+
+.footer-status-label {
+  letter-spacing: 0.01em;
+}
+
+/* --- Social icon row (square outline buttons) --- */
+
+.footer-social-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 1.75rem;
+}
+
+.footer-social-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(6, 10, 20, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  backdrop-filter: blur(4px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.footer-social-btn svg {
+  width: 17px;
+  height: 17px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.footer-social-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.footer-social-btn:hover svg {
+  transform: scale(1.08);
+}
+
+.footer-social-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.4);
+  outline-offset: 3px;
+}
+
+/* --- Navigation columns (hairline rule on top, bright heading, gray links) --- */
+
+.footer-nav-col {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 1.5rem;
+  min-width: 0;
+}
+
+.footer-col-heading {
+  font-family: var(--font-sans, "Public Sans", "Geist", -apple-system, sans-serif);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+}
+
+.footer-link-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.footer-nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-sans, "Public Sans", "Geist", -apple-system, sans-serif);
+  font-size: 16.5px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.62);
+  letter-spacing: -0.01em;
+  transition: color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.footer-nav-item:hover {
+  color: #ffffff;
+}
+
+.footer-nav-item:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.4);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------
+   Giant Wordmark (Velora TextHoverEffect)
+   Outline draws in on load; gradient ink glows under the pointer
+   ------------------------------------------------------------ */
+
+.footer-wordmark-svg {
+  display: block;
+  width: 100%;
+  margin: 3.75rem auto 2.5rem;
+  font-family: var(--font-display, "Space Grotesk", "Public Sans", sans-serif);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+
+  /* Brand gradient used by the hover reveal */
+  --brand-from: #f6f8ff;
+  --brand-via: #a5d8ff;
+  --brand-to: #38bdf8;
+}
+
+/* Silver hairline outline on the dark card (overrides the light-theme
+   default from the registry component) */
+.footer-wordmark-svg > g:first-of-type > text {
+  stroke: rgba(255, 255, 255, 0.34);
+}
+
+/* ------------------------------------------------------------
+   Bottom Bar: copyright left, actions right
+   ------------------------------------------------------------ */
+
+.footer-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.4rem;
+  font-family: var(--font-sans, "Public Sans", "Geist", -apple-system, sans-serif);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.footer-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.footer-meta-sep {
+  opacity: 0.4;
+}
+
+.footer-meta-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Luxury Circular Back to Top */
+.footer-back-to-top-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.footer-back-to-top-btn svg {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.footer-back-to-top-btn:hover {
+  background: #ffffff;
+  color: #060709;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.18);
+}
+
+.footer-back-to-top-btn:hover svg {
+  transform: translateY(-1.5px);
+}
+
+.footer-back-to-top-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.4);
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------ */
+
+@media (max-width: 1024px) {
+  .footer-top-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.75rem 2rem;
+  }
+
+  .footer-brand-col {
+    grid-column: 1 / -1;
+  }
+
+  .footer-mission-text {
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 680px) {
+  .landing-footer {
+    padding-bottom: 36px;
+  }
+
+  .footer-shell-wrap {
+    padding: 44px 16px 0 16px;
+  }
+
+  .footer-shell {
+    border-radius: 24px;
+  }
+
+  .footer-shell-inner {
+    border-radius: 21px;
+  }
+
+  .footer-inner {
+    padding: 38px 24px 20px 24px;
+  }
+
+  .footer-top-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem 1.5rem;
+  }
+
+  .footer-wordmark-svg {
+    margin: 2.75rem auto 2rem;
+  }
+
+  .footer-bottom-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.1rem;
+  }
+
+  .footer-meta-left {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-top-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------------------------------------------------
+   Reduced motion: freeze the sweeping sheen and the draw-in
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-shell::before {
+    animation: none;
+  }
+}

@@ -1,0 +1,19 @@
+[Unit]
+Description=ThinkAloudAI LiveKit Voice Agent Worker
+After=network.target redis-server.service thinkaloud-backend.service
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/ThinkAloudAI/ThinkAloudAI-Monolith
+EnvironmentFile=/home/ubuntu/ThinkAloudAI/ThinkAloudAI-Monolith/.env
+ExecStart=/home/ubuntu/ThinkAloudAI/ThinkAloudAI-Monolith/.venv/bin/python scripts/run_voice_agent.py start
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
