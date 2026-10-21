@@ -1,63 +1,61 @@
-# Environments & Secrets
+# =============================================================================
+# Secrets & local environment
+# =============================================================================
 .env
-.env.local
-.env.*.local
-*.pem
-*.key
-certs/global-bundle.pem
+.env.*
+!.env.example
+!.env.*.example
 
+# =============================================================================
 # Python
+# =============================================================================
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+*.pyo
 .venv/
-env/
 venv/
+env/
 ENV/
-env.bak/
-venv.bak/
-
-# Testing & Linting
+*.egg-info/
 .pytest_cache/
 .ruff_cache/
+.mypy_cache/
 .coverage
 htmlcov/
-.mypy_cache/
+.python-version
 
-# Node & Frontend
+# =============================================================================
+# Node / frontend
+# =============================================================================
 node_modules/
-frontend/dist/
-frontend/node_modules/
-.npm
-*.log
+dist/
+.vite/
+*.tsbuildinfo
 npm-debug.log*
-yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-# OS & IDE
+# =============================================================================
+# Certificates & keys (the public RDS CA bundle is allowed)
+# =============================================================================
+*.key
+*.p12
+*.pfx
+*.pem
+!backend/certs/global-bundle.pem
+
+# =============================================================================
+# Runtime output & logs
+# =============================================================================
+backend/data/uploads/
+backend/logs/
+*.log
+
+# =============================================================================
+# OS / editors
+# =============================================================================
 .DS_Store
-.DS_Store?
 ._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 .vscode/
 .idea/

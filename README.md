@@ -4,6 +4,8 @@ ThinkAloudAI is a high-performance technical interview and practice arena featur
 
 ---
 
+> **Self-contained EC2 deployment (Docker):** this repository also ships a complete Docker Compose stack (nginx + FastAPI + PostgreSQL + Redis) that runs everything on a single EC2 instance. See **[DOCKER.md](DOCKER.md)** for the one-command setup — no Vercel or RDS dependency.
+
 ## Repository Structure
 
 ```

@@ -1,9 +1,9 @@
 node_modules
 dist
-.git
-.gitignore
+.vite
 .env
+.env.*
+!.env.example
 .DS_Store
-scratch_repo
-npm-debug.log
-yarn-error.log
+npm-debug.log*
+*.log

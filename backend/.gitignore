@@ -38,6 +38,9 @@ env/
 .env.local
 .env.*.local
 *.pem
+
+# Public AWS RDS CA bundle (safe to commit)
+!certs/global-bundle.pem
 *.key
 *.cert
 
