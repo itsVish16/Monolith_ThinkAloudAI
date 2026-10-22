@@ -217,7 +217,7 @@ function translateEvent(data: any): StreamEvent {
 
     // --- Misc ---
     case "error":
-      return { type: "error", message: data.message ?? "Unknown error" };
+      return { type: "error", message: data.message ?? data.error ?? "Unknown error" };
     case "rename_chat":
       return { type: "rename_chat", title: data.title ?? "" };
     case "roadmap":
