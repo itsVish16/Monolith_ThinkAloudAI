@@ -11,6 +11,11 @@ sys.path.insert(0, str(BASE_DIR))
 
 from sqlalchemy import select
 from app.core.database import SessionLocal, engine, Base
+import app.modules.auth.models  # noqa: F401
+import app.modules.interview.models  # noqa: F401
+import app.modules.chat.models  # noqa: F401
+import app.modules.analytics.models  # noqa: F401
+import app.modules.admin.models  # noqa: F401
 from app.modules.dsa.models import DSAQuestion, ProblemTag, slugify
 from app.modules.tracks.models import (
     AIMLQuestion,
