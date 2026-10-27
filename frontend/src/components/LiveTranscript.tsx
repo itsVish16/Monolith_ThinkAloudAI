@@ -26,7 +26,7 @@ export const LiveTranscript: React.FC = () => {
   if (deduplicatedTranscriptions.length === 0) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#666', fontSize: '0.9rem' }}>
-        Transcript will appear here...
+        Transcript will appear here as you speak.
       </div>
     );
   }

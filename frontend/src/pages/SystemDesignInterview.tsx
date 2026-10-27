@@ -313,7 +313,6 @@ const ScreenShareButton = ({ onShareChange }: { onShareChange: (isSharing: boole
 const AgentVisualizer = () => {
   const { state, audioTrack } = useVoiceAssistant();
   const isSpeaking = state === 'speaking';
-  const isListening = state === 'listening';
   
   return (
     <div className="camera-feed-box" style={{ width: '100%', height: '100%', position: 'relative', background: '#090a10', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -334,7 +333,7 @@ const AgentVisualizer = () => {
         border: '1px solid rgba(255,255,255,0.08)'
       }}>
         <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#34d399', boxShadow: '0 0 6px #34d399' }} />
-        <span style={{ fontWeight: 600 }}>Aarav (AI Architect)</span>
+        <span style={{ fontWeight: 600 }}>Aarav · AI Interviewer</span>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
@@ -365,9 +364,6 @@ const AgentVisualizer = () => {
         <div style={{ height: '22px', display: 'flex', alignItems: 'center' }}>
           <BarVisualizer state={state} barCount={7} trackRef={audioTrack} style={{ height: '20px', width: '70px' }} />
         </div>
-        <span style={{ fontSize: '0.72rem', color: isSpeaking ? '#ffffff' : '#9ca3af', fontWeight: 600, transition: 'color 0.2s' }}>
-          {isSpeaking ? 'Aarav is reviewing architecture...' : isListening ? 'Listening to your explanation...' : 'Analyzing tradeoffs...'}
-        </span>
       </div>
     </div>
   );
@@ -447,10 +443,6 @@ export const SystemDesignInterview: React.FC<SystemDesignInterviewProps> = ({
       localStorage.setItem(`bookmark_sd_${roomName}`, String(next));
     } catch {}
     showToast(next ? "Question bookmarked to your review list" : "Bookmark removed");
-  };
-
-  const handleAskAI = () => {
-    showToast("Speak aloud into your microphone to ask the AI Interviewer for guidance.");
   };
 
   const handleEndInterview = useCallback(async () => {
@@ -1045,14 +1037,14 @@ export const SystemDesignInterview: React.FC<SystemDesignInterviewProps> = ({
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 1rem', background: '#0A0A12', borderBottom: '1px solid #222' }}>
                   <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                     <span style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 600 }}>Architecture Whiteboard</span>
-                    <span style={{ color: '#888', fontSize: '0.82rem' }}>ExcaliFlow Engine · Animated Flows</span>
+                    <span style={{ color: '#888', fontSize: '0.82rem' }}>Sketch components, connect flows, and add notes.</span>
                   </div>
                   <div style={{ display: 'flex', gap: '0.75rem', color: '#888' }}>
                     <span style={{ fontSize: '0.75rem', color: whiteboard.ready ? '#00D084' : '#f59e0b', display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <div style={{ width: 6, height: 6, borderRadius: '50%', background: whiteboard.ready ? '#00D084' : '#f59e0b' }} />
                       {whiteboard.ready
-                        ? (isScreenSharing ? '⚡ Live AI Sync + Screen Share Active' : '⚡ Live AI Architecture Sync Active')
-                        : 'Whiteboard booting…'}
+                        ? (isScreenSharing ? 'Screen sharing' : 'Whiteboard ready')
+                        : 'Loading whiteboard…'}
                     </span>
                   </div>
                 </div>
@@ -1067,11 +1059,7 @@ export const SystemDesignInterview: React.FC<SystemDesignInterviewProps> = ({
                 </div>
 
                 {/* Whiteboard Footer Actions */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 1rem', borderTop: '1px solid #222', background: '#0A0A12' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: whiteboard.ready ? '#00D084' : '#f59e0b', fontSize: '0.75rem' }}>
-                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: whiteboard.ready ? '#00D084' : '#f59e0b' }} />
-                    <span>{whiteboard.ready ? 'Whiteboard ready' : 'Whiteboard booting…'}</span>
-                  </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '0.65rem 1rem', borderTop: '1px solid #222', background: '#0A0A12' }}>
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
                     <button 
                       className="btn btn-secondary" 
@@ -1079,13 +1067,6 @@ export const SystemDesignInterview: React.FC<SystemDesignInterviewProps> = ({
                       onClick={() => setIsSummaryCollapsed(!isSummaryCollapsed)}
                     >
                       {isSummaryCollapsed ? 'Show Notes' : 'Hide Notes'}
-                    </button>
-                    <button 
-                      className="btn btn-secondary" 
-                      style={{ padding: '6px 12px', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '5px' }}
-                      onClick={handleAskAI}
-                    >
-                      <Brain size={14} color="#f97316" /> Ask AI
                     </button>
                     <button 
                       className="btn btn-primary" 
@@ -1115,9 +1096,9 @@ export const SystemDesignInterview: React.FC<SystemDesignInterviewProps> = ({
               {!isSummaryCollapsed && (
                 <div style={{ flex: 1, background: '#111', borderRadius: '8px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 1rem', borderBottom: '1px solid #222', background: '#0A0A12' }}>
-                    <div style={{ display: 'flex' }}>
-                      <button style={{ padding: '0.5rem 1rem', background: 'transparent', border: 'none', borderBottom: '2px solid #FF6B00', color: '#fff', fontSize: '0.85rem', fontWeight: 600 }}>Design Summary &amp; Trade-offs</button>
-                    </div>
+                    <span style={{ padding: '0.5rem 0', borderBottom: '2px solid #FF6B00', color: '#fff', fontSize: '0.85rem', fontWeight: 600 }}>
+                      Design Summary &amp; Trade-offs
+                    </span>
                     <span style={{ fontSize: '0.78rem', color: '#888' }}>{sysDesignAnswer.trim().length} characters</span>
                   </div>
                   <div style={{ padding: '0.75rem 1rem', flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -1141,7 +1122,6 @@ export const SystemDesignInterview: React.FC<SystemDesignInterviewProps> = ({
                     />
                     <div className="sd-summary-hint-row" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#777' }}>
                       <span>Include bottlenecks, consistency trade-offs, and failure recovery.</span>
-                      <span style={{ color: '#00D084' }}>Auto-syncs with AI Interviewer</span>
                     </div>
                   </div>
                 </div>

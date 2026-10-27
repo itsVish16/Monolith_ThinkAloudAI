@@ -264,17 +264,6 @@
   box-shadow: 0 0 6px #fbbf24;
 }
 
-.gi-ai-chip {
-  font-size: 0.62rem;
-  font-weight: 700;
-  padding: 1px 6px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 9999px;
-  color: #e2e8f0;
-  margin-left: 2px;
-  letter-spacing: 0.04em;
-}
-
 /* Candidate Floating Quick Controls Pill */
 .gi-candidate-controls {
   position: absolute;
@@ -402,21 +391,6 @@
   transform: scale(1.04);
 }
 
-.gi-ai-status-text {
-  font-size: 0.76rem;
-  color: #9ca3af;
-  font-weight: 600;
-  transition: color 0.2s ease;
-}
-
-.gi-ai-status-text.speaking {
-  color: #ffffff;
-}
-
-.gi-ai-status-text.listening {
-  color: #34d399;
-}
-
 /* ------------------------------------------------------------
    LOWER SECTION: Beautiful Live Transcript UI
    Sized perfectly to fill remaining viewport height
@@ -463,26 +437,6 @@
   font-weight: 700;
   color: #ffffff;
   letter-spacing: -0.01em;
-}
-
-.gi-transcript-meta-badge {
-  font-size: 0.68rem;
-  color: #9ca3af;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 2px 8px;
-  border-radius: 9999px;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.gi-transcript-sync-badge {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.68rem;
-  color: #34d399;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
 }
 
 /* Toolbar Controls */
@@ -697,15 +651,6 @@
   font-size: 0.7rem;
   font-weight: 700;
   color: #ffffff;
-}
-
-.gi-bubble-turn-tag {
-  font-size: 0.62rem;
-  font-family: 'JetBrains Mono', monospace;
-  color: #6b7280;
-  background: rgba(255, 255, 255, 0.04);
-  padding: 1px 5px;
-  border-radius: 4px;
 }
 
 .gi-bubble-body {

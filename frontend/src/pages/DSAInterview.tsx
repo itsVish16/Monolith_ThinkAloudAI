@@ -5,22 +5,14 @@ import {
   Video, 
   VideoOff, 
   Send, 
-  Brain, 
   Play, 
-  Maximize2, 
-  Settings, 
-  Bookmark, 
   CheckCircle,
   ChevronLeft,
   ChevronRight,
   Clock,
   Lock,
-  Sparkles,
-  Code2,
-  ArrowRight,
   AlertTriangle,
   X,
-  Volume2,
   UserCircle
 } from 'lucide-react';
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from 'react-resizable-panels';
@@ -29,7 +21,6 @@ import { Room, RoomEvent } from 'livekit-client';
 import { LiveKitRoom, RoomAudioRenderer, useVoiceAssistant, useRoomContext, useLocalParticipant } from "@livekit/components-react";
 import "@livekit/components-styles";
 import { CameraFeed } from '../components/CameraFeed';
-import { AiVisualizer } from '../components/AiVisualizer';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -150,7 +141,6 @@ const IDESync = ({
   onUpdateCodeEditor,
   onHighlightLine,
   onRunCandidateCode,
-  onCaptureCandidatePhoto,
   onSetInterviewStage,
   onSendDirectiveRef
 }: { 
@@ -166,7 +156,6 @@ const IDESync = ({
   onUpdateCodeEditor: (payload: any) => void,
   onHighlightLine: (payload: any) => void,
   onRunCandidateCode: () => void,
-  onCaptureCandidatePhoto: (reason?: string) => void,
   onSetInterviewStage: (stage: string) => void,
   onSendDirectiveRef: React.MutableRefObject<((text: string) => Promise<void>) | null>
 }) => {
@@ -290,7 +279,6 @@ Please review this execution output and give brief, constructive verbal feedback
           } else if (tool === "run_candidate_code") {
             onRunCandidateCode();
           } else if (tool === "capture_candidate_photo") {
-            onCaptureCandidatePhoto(data?.reason);
             // Directly capture frame from video element and reply
             if (localParticipant) {
               const videoEl = document.querySelector('.camera-video-element') as HTMLVideoElement;
@@ -339,7 +327,6 @@ Please review this execution output and give brief, constructive verbal feedback
     onUpdateCodeEditor, 
     onHighlightLine, 
     onRunCandidateCode, 
-    onCaptureCandidatePhoto, 
     onSetInterviewStage, 
     onNextQuestion, 
     onRevealProblem, 
@@ -356,62 +343,30 @@ const AgentVisualizer = ({
   variant = 'compact'
 }: { 
   variant?: 'compact' | 'large';
-  enableVoice?: boolean;
-  onVoiceDetected?: (detected: boolean) => void;
 }) => {
   const { state } = useVoiceAssistant();
-  const [previewState, setPreviewState] = useState<AgentState | null>(null);
 
-  // Stable, non-flickering state derivation directly from LiveKit Voice Assistant
+  // The avatar glow and voice bars communicate activity without exposing
+  // internal agent states as chatty UI labels.
   const activeState: AgentState = useMemo(() => {
-    if (previewState) return previewState;
     if (state === 'speaking') return 'talking';
     if (state === 'listening') return 'listening';
-    return 'thinking'; // Steady, tranquil analyzing baseline
-  }, [state, previewState]);
+    return 'thinking';
+  }, [state]);
 
   const isLarge = variant === 'large';
 
-  // Toggle state manually for interactive testing & preview
-  const cycleState = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (activeState === 'thinking') setPreviewState('talking');
-    else if (activeState === 'talking') setPreviewState('listening');
-    else setPreviewState('thinking');
-  };
+  const stateColor = activeState === 'talking'
+    ? '#f8fafc'
+    : activeState === 'listening'
+    ? '#38bdf8'
+    : '#c084fc';
 
-  const stateTheme = useMemo(() => {
-    switch (activeState) {
-      case 'talking':
-        return {
-          label: 'Speaking',
-          color: '#f8fafc',
-          glow: 'rgba(226, 232, 240, 0.45)',
-          border: 'rgba(226, 232, 240, 0.35)',
-          bg: 'rgba(226, 232, 240, 0.12)',
-          subtitle: 'Aarav is speaking & walking through the challenge...',
-        };
-      case 'listening':
-        return {
-          label: 'Listening',
-          color: '#38bdf8',
-          glow: 'rgba(56, 189, 248, 0.4)',
-          border: 'rgba(56, 189, 248, 0.25)',
-          bg: 'rgba(2, 132, 199, 0.12)',
-          subtitle: 'Listening to your thought process & explanation...',
-        };
-      case 'thinking':
-      default:
-        return {
-          label: 'Analyzing',
-          color: '#c084fc',
-          glow: 'rgba(168, 85, 247, 0.4)',
-          border: 'rgba(168, 85, 247, 0.25)',
-          bg: 'rgba(99, 102, 241, 0.12)',
-          subtitle: 'Evaluating algorithmic approach & complexity...',
-        };
-    }
-  }, [activeState]);
+  const stateGlow = activeState === 'talking'
+    ? 'rgba(226, 232, 240, 0.45)'
+    : activeState === 'listening'
+    ? 'rgba(56, 189, 248, 0.4)'
+    : 'rgba(168, 85, 247, 0.4)';
 
   return (
     <div className="camera-feed-box" style={{ 
@@ -485,7 +440,7 @@ const AgentVisualizer = ({
           )}
         </div>
 
-        {/* Name and State Title */}
+        {/* Interviewer identity */}
         <div style={{ textAlign: 'center' }}>
           <div style={{
             fontSize: isLarge ? '0.90rem' : '0.74rem',
@@ -497,11 +452,11 @@ const AgentVisualizer = ({
           </div>
           <div style={{
             fontSize: isLarge ? '0.70rem' : '0.62rem',
-            color: stateTheme.color,
+            color: '#94a3b8',
             fontWeight: 500,
             marginTop: 1,
           }}>
-            {stateTheme.label}
+            AI Interviewer
           </div>
         </div>
 
@@ -513,8 +468,8 @@ const AgentVisualizer = ({
               className="ai-voice-bar"
               style={{
                 width: 3,
-                backgroundColor: stateTheme.color,
-                boxShadow: `0 0 6px ${stateTheme.glow}`,
+                backgroundColor: stateColor,
+                boxShadow: `0 0 6px ${stateGlow}`,
                 animation: activeState === 'talking'
                   ? `voiceBarRhythm 0.8s ease-in-out infinite alternate ${delay}s`
                   : activeState === 'listening'
@@ -524,90 +479,6 @@ const AgentVisualizer = ({
             />
           ))}
         </div>
-      </div>
-
-      {/* Floating Aarav Pill Top-Left */}
-      <div style={{ 
-        position: 'absolute', 
-        top: isLarge ? 16 : 8, 
-        left: isLarge ? 16 : 8, 
-        background: 'rgba(7, 7, 9, 0.8)', 
-        backdropFilter: 'blur(12px)', 
-        WebkitBackdropFilter: 'blur(12px)',
-        padding: isLarge ? '5px 14px' : '3px 8px', 
-        borderRadius: '9999px', 
-        fontSize: isLarge ? '0.78rem' : '0.70rem', 
-        zIndex: 10, 
-        display: 'flex', 
-        alignItems: 'center', 
-        gap: '6px', 
-        color: '#fff', 
-        border: '1px solid rgba(255,255,255,0.12)' 
-      }}>
-        <div style={{ 
-          width: 7, 
-          height: 7, 
-          borderRadius: '50%', 
-          background: stateTheme.color, 
-          boxShadow: `0 0 8px ${stateTheme.color}`,
-          transition: 'all 0.3s ease'
-        }} />
-        <span style={{ fontWeight: 700, letterSpacing: '-0.01em' }}>Aarav (AI Interviewer)</span>
-      </div>
-
-      {/* Interactive State Chip Top-Right */}
-      <button 
-        onClick={cycleState}
-        title="Click to cycle AI consciousness state (preview)"
-        style={{ 
-          position: 'absolute', 
-          top: isLarge ? 16 : 8, 
-          right: isLarge ? 16 : 8, 
-          background: stateTheme.bg,
-          backdropFilter: 'blur(12px)', 
-          WebkitBackdropFilter: 'blur(12px)',
-          padding: isLarge ? '4px 12px' : '2px 8px', 
-          borderRadius: '9999px', 
-          fontSize: isLarge ? '0.75rem' : '0.68rem', 
-          zIndex: 10, 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '5px', 
-          color: stateTheme.color, 
-          border: `1px solid ${stateTheme.border}`,
-          cursor: 'pointer',
-          fontWeight: 600,
-          transition: 'all 0.3s ease'
-        }}
-      >
-        {activeState === 'talking' && <Volume2 size={isLarge ? 12 : 10} />}
-        {activeState === 'listening' && <Mic size={isLarge ? 12 : 10} />}
-        {activeState === 'thinking' && <Sparkles size={isLarge ? 12 : 10} />}
-        <span>{stateTheme.label}</span>
-      </button>
-
-      {/* Subtitle status banner at bottom */}
-      <div style={{ 
-        position: 'absolute', 
-        bottom: isLarge ? 18 : 8, 
-        zIndex: 10,
-        background: 'rgba(7, 7, 9, 0.8)',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
-        padding: isLarge ? '5px 18px' : '2px 10px',
-        borderRadius: '9999px',
-        border: `1px solid ${stateTheme.border}`,
-        transition: 'all 0.3s ease'
-      }}>
-        <span style={{ 
-          fontSize: isLarge ? '0.82rem' : '0.70rem', 
-          color: stateTheme.color, 
-          fontWeight: 600, 
-          letterSpacing: '0.01em',
-          transition: 'color 0.2s' 
-        }}>
-          {stateTheme.subtitle}
-        </span>
       </div>
     </div>
   );
@@ -636,28 +507,13 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
   const [isProblemRevealed, setIsProblemRevealed] = useState(false);
   const [isQuestionCollapsed, setIsQuestionCollapsed] = useState(false);
 
-  // AI Tool Call State & Directives
-  const [aiNotification, setAiNotification] = useState<string | null>(null);
+  // AI review annotations in the editor
   const [aiHighlightLine, setAiHighlightLine] = useState<number | null>(null);
   const [aiHighlightReason, setAiHighlightReason] = useState<string | null>(null);
   const editorRef = useRef<any>(null);
   const monacoRef = useRef<any>(null);
   const decorationsRef = useRef<string[]>([]);
   const onSendDirectiveRef = useRef<((text: string) => Promise<void>) | null>(null);
-
-  const triggerBanner = (message: string) => {
-    setAiNotification(message);
-    setTimeout(() => {
-      setAiNotification((prev) => (prev === message ? null : prev));
-    }, 4500);
-  };
-
-  const handleSendDirective = (prompt: string, label: string) => {
-    triggerBanner(`Directive: "${label}" sent to Aarav`);
-    if (onSendDirectiveRef.current) {
-      onSendDirectiveRef.current(prompt);
-    }
-  };
 
   // Sync Monaco Line Decorations
   useEffect(() => {
@@ -766,7 +622,6 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
     loadCode();
   }, [question?.id, language]);
 
-  const [activeTab, setActiveTab] = useState<'problem' | 'editorial'>('problem');
   const [testTab, setTestTab] = useState<'case1' | 'case2' | 'case3'>('case1');
   const [consoleOutput, setConsoleOutput] = useState<{ status: string, runtime?: string, memory?: string, raw?: any, triggeredBy?: 'user' | 'ai' } | null>(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -885,12 +740,10 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
     if (payload?.starter_code) {
       setCode(payload.starter_code);
     }
-    triggerBanner(payload?.problem_title ? `Aarav opened workspace: ${payload.problem_title}` : "Aarav opened the coding workspace");
   };
 
   const handleCloseCodeWorkspace = () => {
     setInterviewPhase('intro');
-    triggerBanner("Aarav closed the editor — Switched to face-to-face discussion");
   };
 
   useEffect(() => {
@@ -922,17 +775,15 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
     }
     if (payload?.highlight_line) {
       setAiHighlightLine(Number(payload.highlight_line));
-      setAiHighlightReason(payload.reason || "Review requested by Aarav");
+      setAiHighlightReason(payload.reason || "Take another look at this line.");
     }
-    triggerBanner("Aarav updated your code workspace");
   };
 
   const handleHighlightLineFromAi = (payload: any) => {
     if (payload?.line) {
       const lineNum = Number(payload.line);
       setAiHighlightLine(lineNum);
-      setAiHighlightReason(payload.reason || "Interviewer pointed out this line");
-      triggerBanner(`Aarav highlighted Line ${lineNum}: ${payload.reason || "Review needed"}`);
+      setAiHighlightReason(payload.reason || "Take another look at this line.");
     }
   };
 
@@ -949,9 +800,6 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
         raw: data,
         triggeredBy
       });
-      if (triggeredBy === 'ai') {
-        triggerBanner("Aarav executed your code");
-      }
     } catch (err: any) {
       console.error("Code run error:", err);
       setConsoleOutput({
@@ -968,10 +816,6 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
 
   const handleRunCodeFromAi = () => {
     handleRunCode('ai');
-  };
-
-  const handleCapturePhotoNotification = (reason?: string) => {
-    triggerBanner(`Aarav evaluated webcam frame: ${reason || "Focus observation"}`);
   };
 
   const handleSetStageFromAi = (stage: string) => {
@@ -1125,18 +969,9 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
         onUpdateCodeEditor={handleUpdateCodeFromAi}
         onHighlightLine={handleHighlightLineFromAi}
         onRunCandidateCode={handleRunCodeFromAi}
-        onCaptureCandidatePhoto={handleCapturePhotoNotification}
         onSetInterviewStage={handleSetStageFromAi}
         onSendDirectiveRef={onSendDirectiveRef}
       />
-
-      {/* FLOATING AI TOOL NOTIFICATION TOAST */}
-      {aiNotification && (
-        <div className="ai-notification-banner">
-          <Sparkles size={14} color="#34d399" />
-          <span>{aiNotification}</span>
-        </div>
-      )}
 
       {/* OBSIDIAN STUDIO TOPBAR */}
       <header style={{ 
@@ -1301,7 +1136,7 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
 
             {/* AI INTERVIEWER CARD */}
             <div className="dsa-intro-card">
-              <AgentVisualizer variant="large" enableVoice={!isMuted} />
+              <AgentVisualizer variant="large" />
             </div>
           </div>
         </div>
@@ -1403,7 +1238,7 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
                   justifyContent: 'center',
                   boxShadow: '0 8px 30px rgba(0,0,0,0.5)'
                 }}>
-                  <AgentVisualizer variant="compact" enableVoice={!isMuted} />
+                  <AgentVisualizer variant="compact" />
                 </div>
               </div>
             </Panel>
@@ -1416,10 +1251,9 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
                 <Panel id="problem-panel" defaultSize="34%" minSize="20%" maxSize="50%">
                   <div style={{ background: '#111', borderRadius: '8px', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 1rem', borderBottom: '1px solid #222', background: '#0A0A12' }}>
-                      <div style={{ display: 'flex' }}>
-                        <button style={{ padding: '0.75rem 1rem', background: 'transparent', border: 'none', borderBottom: activeTab === 'problem' ? '2px solid #34d399' : '2px solid transparent', color: activeTab === 'problem' ? '#fff' : '#888', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }} onClick={() => setActiveTab('problem')}>Problem</button>
-                        <button style={{ padding: '0.75rem 1rem', background: 'transparent', border: 'none', borderBottom: activeTab === 'editorial' ? '2px solid #34d399' : '2px solid transparent', color: activeTab === 'editorial' ? '#fff' : '#888', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }} onClick={() => setActiveTab('editorial')}>Editorial</button>
-                      </div>
+                      <span style={{ padding: '0.75rem 0', borderBottom: '2px solid #34d399', color: '#fff', fontSize: '0.85rem', fontWeight: 600 }}>
+                        Problem Statement
+                      </span>
 
                       <button 
                         onClick={() => setIsQuestionCollapsed(true)}
@@ -1451,15 +1285,12 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
                         </div>
                       ) : question ? (
                         <>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <h1 style={{ fontSize: '1.4rem', fontWeight: 700, margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', color: '#fff' }}>
-                              {question.title}
-                              {submissionStatus === 'Accepted' && (
-                                <CheckCircle size={22} color="#34d399" style={{ marginLeft: '8px' }} />
-                              )}
-                            </h1>
-                            <Bookmark size={18} color="#888" />
-                          </div>
+                          <h1 style={{ fontSize: '1.4rem', fontWeight: 700, margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', color: '#fff' }}>
+                            {question.title}
+                            {submissionStatus === 'Accepted' && (
+                              <CheckCircle size={22} color="#34d399" style={{ marginLeft: '8px' }} />
+                            )}
+                          </h1>
                           <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
                             {(() => {
                               const dc = getDifficultyColor(question.difficulty);
@@ -1548,18 +1379,14 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
                         {isSubmissionLocked && <span style={{ opacity: 0.8 }}>(Closed)</span>}
                       </div>
                     </div>
-                    <div style={{ display: 'flex', gap: '0.75rem', color: '#888' }}>
-                      <Settings size={14} />
-                      <Maximize2 size={14} />
-                    </div>
                   </div>
 
-                  {/* AI Bug / Line Highlight Banner above Editor */}
+                  {/* Line feedback above the editor */}
                   {aiHighlightLine && (
                     <div className="ai-bug-highlight-bar">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <AlertTriangle size={14} color="#fbbf24" />
-                        <span>AI Review Notice on Line {aiHighlightLine}: {aiHighlightReason || "Interviewer highlighted this line"}</span>
+                        <span>Line {aiHighlightLine}: {aiHighlightReason || "Take another look at this line."}</span>
                       </div>
                       <button onClick={() => setAiHighlightLine(null)} title="Dismiss Highlight">
                         <X size={13} />
@@ -1583,11 +1410,7 @@ export const DSAInterview: React.FC<DSAInterviewProps> = ({ questionId, template
                   </div>
 
                   {/* BOTTOM ACTION BAR */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem 1rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)', background: '#08080c' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#94a3b8', fontSize: '0.75rem', fontFamily: 'JetBrains Mono, monospace' }}>
-                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#38bdf8', boxShadow: '0 0 8px rgba(56, 189, 248, 0.6)' }}></div>
-                      <span>Auto-Saved • Ln 1, Col 1</span>
-                    </div>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '0.75rem 1rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)', background: '#08080c' }}>
                     <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
                       <button 
                         className="btn btn-secondary" 

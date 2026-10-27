@@ -370,8 +370,8 @@ export const PreJoinInterview: React.FC<PreJoinInterviewProps> = ({
               <div className="guideline-item">
                 <CheckCircle size={20} weight="fill" color="#e2e8f0" />
                 <div>
-                  <h4>4. Dynamic Voice Interaction</h4>
-                  <p>Aarav will guide you and reveal the editor dynamically.</p>
+                  <h4>4. Voice-Guided Session</h4>
+                  <p>Your AI interviewer will guide you through the session.</p>
                 </div>
               </div>
             </div>
@@ -379,7 +379,7 @@ export const PreJoinInterview: React.FC<PreJoinInterviewProps> = ({
             {/* Domain & Role selection for regular users */}
             {!inviteToken && (
               <div className="prejoin-prefs">
-                <h4>Interview Focus Parameters</h4>
+                <h4>Interview Focus</h4>
                 <div className="prejoin-prefs-grid">
                   <div className="pref-group">
                     <label>Domain</label>

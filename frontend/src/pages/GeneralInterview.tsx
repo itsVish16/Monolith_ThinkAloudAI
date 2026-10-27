@@ -4,10 +4,8 @@ import {
   MicrophoneSlash, 
   VideoCamera, 
   VideoCameraSlash, 
-  Sparkle, 
   WarningCircle, 
   ArrowClockwise, 
-  CheckCircle, 
   User, 
   Robot, 
   SignOut, 
@@ -16,7 +14,6 @@ import {
   MagnifyingGlass,
   Copy,
   Check,
-  Brain,
   UserCircle
 } from '@phosphor-icons/react';
 import { RoomEvent, Track } from 'livekit-client';
@@ -86,7 +83,7 @@ const CandidateVideoCard = ({
       {/* Top Floating Pill Tag */}
       <div className="gi-video-top-tag">
         <div className={`gi-avatar-dot ${!isMuted ? 'green' : 'amber'}`} />
-        <span>You (Candidate)</span>
+        <span>You</span>
       </div>
 
       {/* Video Content or Fallback */}
@@ -134,21 +131,13 @@ const CandidateVideoCard = ({
 const AIAgentCard = () => {
   const { state, audioTrack } = useVoiceAssistant();
   const isSpeaking = state === 'speaking';
-  const isListening = state === 'listening';
-
-  const statusLabel = useMemo(() => {
-    if (isSpeaking) return 'Aarav is speaking...';
-    if (isListening) return 'Listening to your response...';
-    return 'Analyzing response & formulating questions...';
-  }, [isSpeaking, isListening]);
 
   return (
     <div className={`gi-video-card ai ${isSpeaking ? 'speaking' : ''}`}>
       {/* Top Floating Tag */}
       <div className="gi-video-top-tag">
         <div className="gi-avatar-dot emerald" />
-        <span>Aarav (AI Senior Interviewer)</span>
-        <span className="gi-ai-chip">Voice AI</span>
+        <span>Aarav · AI Interviewer</span>
       </div>
 
       {/* Center AI Presence Stage */}
@@ -210,11 +199,6 @@ const AIAgentCard = () => {
             style={{ height: '22px', width: '90px' }} 
           />
         </div>
-
-        {/* Dynamic Status Text */}
-        <span className={`gi-ai-status-text ${isSpeaking ? 'speaking' : isListening ? 'listening' : ''}`}>
-          {statusLabel}
-        </span>
       </div>
     </div>
   );
@@ -268,7 +252,7 @@ const DownsideLiveTranscript = () => {
     const fullText = deduplicated
       .map((t) => {
         const isLocal = t.participantInfo?.identity === localParticipant?.identity;
-        const speaker = isLocal ? 'Candidate' : 'Aarav (AI Interviewer)';
+        const speaker = isLocal ? 'You' : 'Aarav';
         return `[${speaker}]:\n${t.text}\n`;
       })
       .join('\n');
@@ -284,14 +268,7 @@ const DownsideLiveTranscript = () => {
         <div className="gi-transcript-title-wrap">
           <div className="gi-transcript-title">
             <ChatCircleDots size={16} weight="fill" className="text-emerald-400" />
-            <span>Live Dialogue &amp; Transcript</span>
-          </div>
-          <span className="gi-transcript-meta-badge">
-            {deduplicated.length} turns recorded
-          </span>
-          <div className="gi-transcript-sync-badge">
-            <div className="gi-live-dot" />
-            <span>STT Active</span>
+            <span>Live Transcript</span>
           </div>
         </div>
 
@@ -360,7 +337,7 @@ const DownsideLiveTranscript = () => {
         {filteredTurns.length === 0 ? (
           <div className="gi-transcript-empty">
             <Broadcast size={22} className="gi-pulse-icon" />
-            <span>Microphone active. Start speaking aloud and your dialogue will transcribe here in real time...</span>
+            <span>Your conversation will appear here as you speak.</span>
           </div>
         ) : (
           filteredTurns.map((t, idx) => {
@@ -379,9 +356,8 @@ const DownsideLiveTranscript = () => {
                 <div className={`gi-transcript-bubble ${isLocal ? 'candidate' : 'ai'}`}>
                   <div className="gi-bubble-meta-head">
                     <span className="gi-speaker-label">
-                      {isLocal ? 'You (Candidate)' : 'Aarav (AI)'}
+                      {isLocal ? 'You' : 'Aarav'}
                     </span>
-                    <span className="gi-bubble-turn-tag">Turn #{idx + 1}</span>
                   </div>
                   <div className="gi-bubble-body">{t.text}</div>
                 </div>
