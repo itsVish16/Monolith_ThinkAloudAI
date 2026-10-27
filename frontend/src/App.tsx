@@ -9,6 +9,7 @@ import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 import { AboutPage } from './pages/AboutPage';
 import { InterviewTypesPage } from './pages/InterviewTypesPage';
+import { InterviewCompleteScreen } from './components/interview/InterviewCompleteScreen';
 
 // Lazy loaded heavy workspace and track routes for optimized initial bundle
 const DSAPractice = lazy(() => import('./pages/DSAPractice'));
@@ -331,8 +332,13 @@ function App() {
             onNavigate={handleNavigate} 
           />
         );
-      case 'analysis':
+      case 'analysis': {
+        const isGuestInvite = Boolean(sessionStorage.getItem('guest_invite_token'));
+        if (isGuestInvite) {
+          return <InterviewCompleteScreen onExit={() => handleNavigate('landing')} />;
+        }
         return <InterviewAnalysis sessionId={navParams.sessionId || ''} onNavigate={handleNavigate} />;
+      }
       case 'admin':
         return <AdminDashboard onNavigate={handleNavigate} user={user} initialTab={navParams.adminTab as any} />;
       case 'candidate-invite':
