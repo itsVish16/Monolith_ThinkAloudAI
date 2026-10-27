@@ -41,6 +41,8 @@ Monolith_ThinkAloudAI/
 
 ## Deployment Architecture
 
+![ThinkAloudAI System Design Architecture](docs/system_architecture_diagram.png)
+
 - **Frontend**: Deployed on **Vercel** as a static Vite Single Page Application.
 - **Backend**: Deployed on **AWS EC2** (FastAPI backend + LiveKit voice agent worker + Redis) connected to **Amazon RDS PostgreSQL**.
 

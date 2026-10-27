@@ -8,36 +8,8 @@ This repository consolidates the previous 3 microservices (`Scalable_User_Servic
 
 ## 🏗️ Architecture Blueprint
 
-```
-                      +-----------------------------+
-                      |   Frontend (React + Vite)   |
-                      |   http://localhost:5173     |
-                      +--------------+--------------+
-                                     |
-                                     | All REST API calls via VITE_API_URL
-                                     | http://localhost:8000/api/v1/*
-                                     v
-                      +-----------------------------+
-                      |    FastAPI Modular Monolith |
-                      |    (Port 8000)              |
-                      +------+---------------+------+
-                             |               |
-              +--------------+               +--------------+
-              |                                             |
-              v                                             v
-  +-----------------------+                     +-----------------------+
-  |    PostgreSQL 16      |                     |        Redis 7        |
-  |  Host Mounted Disk:   |                     |  Async Task Queue &   |
-  | /var/lib/thinkaloud/  |                     |  Session Cache        |
-  | postgres_data         |                     +-----------------------+
-  +-----------------------+                                 |
-                                                            v
-                                                +-----------------------+
-                                                | Background Task Loop  |
-                                                | (Post-Interview LLM   |
-                                                |  Evaluation & Runner) |
-                                                +-----------------------+
-```
+![ThinkAloudAI System Design Architecture](docs/system_architecture_diagram.png)
+
 
 ### Key Architectural Decisions:
 1. **Single Unified Port (`8000`)**: Eliminates multi-port Caddy reverse proxy routing. All domain services are consolidated under `/api/v1/*`.
