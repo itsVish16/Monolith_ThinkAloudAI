@@ -65,7 +65,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               </div>
             </div>
 
-            {/* Right: cinematic video demo box (YouTube embed · animated silver frame) */}
+            {/* Below the headline: cinematic video demo box */}
             <div className="hero-video-box-wrapper">
               <div className="hero-video-glow" aria-hidden="true" />
               <div className="hero-video-frame">
