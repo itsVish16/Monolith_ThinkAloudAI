@@ -284,70 +284,6 @@ const Visual = ({ feature }: { feature: ShowcaseFeature }) => {
   );
 };
 
-/* ---------------------------------------------------------------
-   Animated beam backdrop — ported from Animata's "AnimatedBeam".
-   Deterministic 0–1 pseudo-random from an integer so every beam
-   gets its own length / speed / width / brightness — identical on
-   every render, no measurement, no resize listeners.
-   --------------------------------------------------------------- */
-const prand = (n: number) => {
-  const x = Math.sin(n * 127.1 + 311.7) * 43758.5453;
-  return x - Math.floor(x);
-};
-const lerp = (min: number, max: number, t: number) => min + (max - min) * t;
-
-// Enough 40px lanes to cover wide screens; extras are clipped by overflow-hidden.
-const BEAM_LANES = 64;
-
-function MeteorBeam({ index }: { index: number }) {
-  // ~30% are quick zips (1.2–3.2s); the rest drift slowly (6–14s).
-  const fast = prand(index + 91) < 0.3;
-  const duration = fast ? lerp(1.2, 3.2, prand(index)) : lerp(6, 14, prand(index));
-  const delay = lerp(0, 9, prand(index + 13));
-  const length = Math.round(lerp(24, 84, prand(index + 29))); // streak length
-  const width = Math.round(lerp(3, 7, prand(index + 53)));
-  // fast streaks read brighter, like real meteors
-  const opacity = fast ? lerp(0.8, 1, prand(index + 71)) : lerp(0.35, 0.9, prand(index + 71));
-
-  return (
-    <div
-      className="ff-ab-beam"
-      style={
-        {
-          '--duration': `${duration.toFixed(2)}s`,
-          '--delay': `${delay.toFixed(2)}s`,
-          '--length': `${length}px`,
-          '--opacity': opacity.toFixed(2),
-          width: `${width}px`,
-        } as CSSProperties
-      }
-    >
-      <div className="ff-ab-streak">
-        <div className="ff-ab-streak-fill" />
-      </div>
-    </div>
-  );
-}
-
-function BeamBackdrop() {
-  return (
-    <div className="ff-ab-bg" aria-hidden="true">
-      {/* soft teal glow pooling in the lower half */}
-      <div className="ff-ab-glow" />
-
-      {/* fixed-width lanes → constant 40px spacing, clipped to whatever fits */}
-      {Array.from({ length: BEAM_LANES }, (_, i) => (
-        <div key={i} className="ff-ab-lane">
-          <div className="ff-ab-line">
-            {/* beam rides this diagonal line; ~30% of lanes get one */}
-            {prand(i + 7) < 0.3 && <MeteorBeam index={i + 1} />}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export const FeatureShowcase = ({ onNavigate }: FeatureShowcaseProps) => {
   const [active, setActive] = useState(0);
   const stepRefs = useRef<Array<HTMLElement | null>>([]);
@@ -414,9 +350,6 @@ export const FeatureShowcase = ({ onNavigate }: FeatureShowcaseProps) => {
       </div>
 
       <div className="ff-scrolly ff-console">
-        {/* Animated beam backdrop — indigo night sky with meteor streaks */}
-        <BeamBackdrop />
-
         {/* Scrolling narrative */}
         <div className="ff-steps">
           {FEATURES.map((feature, i) => {
@@ -430,14 +363,13 @@ export const FeatureShowcase = ({ onNavigate }: FeatureShowcaseProps) => {
                 className={`ff-step ${i === active ? 'is-active' : ''}`}
               >
                 <div className="ff-step-inner">
-                  <span className="ff-ghost" aria-hidden="true">
-                    {feature.index}
-                  </span>
-
-                  <span className="ff-tag">
-                    <Icon size={13} />
-                    {feature.tag}
-                  </span>
+                  <div className="ff-kicker">
+                    <span className="ff-index">{feature.index}</span>
+                    <span className="ff-tag">
+                      <Icon size={13} />
+                      {feature.tag}
+                    </span>
+                  </div>
 
                   <h3 className="ff-title">
                     {feature.title} <em>{feature.titleAccent}</em>
@@ -475,7 +407,6 @@ export const FeatureShowcase = ({ onNavigate }: FeatureShowcaseProps) => {
         {/* Pinned, crossfading stage */}
         <div className="ff-stage-col" aria-hidden="true">
           <div className="ff-stage-sticky">
-            <span className="ff-stage-glow" />
             <div className="ff-stage">
               <div className="ff-stage-body">
                 {FEATURES.map((feature, i) => (
