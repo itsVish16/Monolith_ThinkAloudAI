@@ -304,10 +304,10 @@ export const Header: React.FC<HeaderProps> = ({
           ) : (
             <div className="mobile-auth-section">
               <button className="mobile-btn-login" onClick={() => handleNav('login')}>
-                Log In
+                Log in
               </button>
               <button className="mobile-btn-signup" onClick={() => handleNav('signup')}>
-                <span>Get Started Free</span>
+                <span>Get Started</span>
                 <span aria-hidden="true">↗</span>
               </button>
             </div>

@@ -32,8 +32,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               {/* Eyebrow Pill Badge */}
               <div className="hero-pill-badge">
                 <span className="hero-pill-dot" />
-                <span className="hero-pill-label">Real-Time Voice AI Interviewing</span>
-                <span className="hero-pill-meta">&lt; 500ms WebRTC</span>
+                <span className="hero-pill-label">Voice interviews, out loud</span>
               </div>
 
               {/* Masked Clamped Headline */}
@@ -72,7 +71,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
                 <div className="hero-video-inner">
                   <iframe
                     src="https://www.youtube.com/embed/eqOfmtTJD1A"
-                    title="ThinkAloudAI — Product Demo"
+                    title="Featured video"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
@@ -137,14 +136,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             </div>
             <div className="lp-cta-eyebrow-pill">
               <span className="lp-cta-dot" />
-              <span>Instant AI Access</span>
-              <span className="lp-cta-meta">No Setup Required</span>
+              <span>Free to start</span>
             </div>
             <h2 className="lp-cta-title">
-              Start your first live mock interview in <span className="lp-cta-accent">60 seconds.</span>
+              Start your first <span className="lp-cta-accent">mock interview.</span>
             </h2>
             <p className="lp-cta-desc">
-              Join thousands of engineers leveling up their coding, system design, and technical communication with real-time voice feedback.
+              Practice coding, system design, and how you explain your thinking.
             </p>
 
             <div className="lp-cta-buttons">

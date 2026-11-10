@@ -1,5 +1,4 @@
 import React from 'react';
-import { GithubLogo, LinkedinLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react';
 import GridDistortion from './landing/GridDistortion';
 import { TextHoverEffect } from './velora/text-hover-effect';
 import '../styles/Footer.css';
@@ -8,14 +7,6 @@ interface FooterProps {
   onNavigate: (page: string) => void;
   currentPage?: string;
 }
-
-/* Social profile links — replace href values with the official profiles */
-const SOCIAL_LINKS = [
-  { label: 'X (Twitter)', href: '#', Icon: XLogo },
-  { label: 'GitHub', href: '#', Icon: GithubLogo },
-  { label: 'YouTube', href: '#', Icon: YoutubeLogo },
-  { label: 'LinkedIn', href: '#', Icon: LinkedinLogo },
-];
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const isAuthenticated = !!localStorage.getItem('access_token');
@@ -67,30 +58,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </div>
 
             <p className="footer-mission-text">
-              Real-time voice AI technical interviews with live code synchronization,
-              system architecture canvas, and instant post-session performance telemetry.
+              Practice interviews out loud. Code, design systems, and review how you explained your thinking.
             </p>
-
-            <div className="footer-status-pill">
-              <span className="footer-status-dot" />
-              <span className="footer-status-label">LiveKit WebRTC · Sub-500ms Audio</span>
-            </div>
-
-            <div className="footer-social-row">
-              {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-                <a
-                  key={label}
-                  className="footer-social-btn"
-                  href={href}
-                  target={href.startsWith('http') ? '_blank' : undefined}
-                  rel="noreferrer"
-                  aria-label={label}
-                  title={label}
-                >
-                  <Icon weight="bold" aria-hidden="true" />
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Column: Tracks */}
@@ -99,7 +68,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <ul className="footer-link-list">
               <li>
                 <button className="footer-nav-item" onClick={() => onNavigate('interview-types')}>
-                  Mock Interviews
+                  Interviews
                 </button>
               </li>
               <li>
@@ -121,12 +90,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <ul className="footer-link-list">
               <li>
                 <button className="footer-nav-item" onClick={() => onNavigate(isAuthenticated ? 'dashboard' : 'login')}>
-                  {isAuthenticated ? 'Candidate Workspace' : 'Log In'}
+                  {isAuthenticated ? 'Dashboard' : 'Log in'}
                 </button>
               </li>
               <li>
                 <button className="footer-nav-item" onClick={() => onNavigate(isAuthenticated ? 'profile' : 'signup')}>
-                  {isAuthenticated ? 'Profile & Achievements' : 'Create Free Account'}
+                  {isAuthenticated ? 'Profile' : 'Get Started'}
                 </button>
               </li>
             </ul>
@@ -138,7 +107,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <ul className="footer-link-list">
               <li>
                 <button className="footer-nav-item" onClick={() => onNavigate('about')}>
-                  Architecture &amp; About
+                  About
                 </button>
               </li>
             </ul>
