@@ -1,7 +1,7 @@
 /* ThinkAloudAI — Modern SaaS Landing Page Stylesheet */
 
 :root {
-  --lp-bg: #050508;
+  --lp-bg: #000000;
   --lp-surface: #0a0b10;
   --lp-surface-raised: #101118;
   --lp-border: rgba(255, 255, 255, 0.08);
@@ -38,17 +38,6 @@
 .landing-root *:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.4) !important;
   outline-offset: 2px;
-}
-
-/* Animated Beams Background — fixed, viewport-filling layer of curved light
-   streaks (cyan → indigo → violet) sweeping behind the whole page */
-
-.lp-beams-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
 }
 
 .lp-container {
