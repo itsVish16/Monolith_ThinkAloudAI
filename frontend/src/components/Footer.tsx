@@ -58,7 +58,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </div>
 
             <p className="footer-mission-text">
-              Practice interviews out loud. Code, design systems, and review how you explained your thinking.
+              Practice for the part of the interview you have to say out loud.
             </p>
           </div>
 
@@ -123,7 +123,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="footer-meta-left">
             <span>© {new Date().getFullYear()} ThinkAloud.AI</span>
             <span className="footer-meta-sep">/</span>
-            <span>Built for engineering interview excellence</span>
+            <span>Interview practice for engineers</span>
           </div>
 
           <div className="footer-meta-right">

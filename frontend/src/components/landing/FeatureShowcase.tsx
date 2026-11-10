@@ -43,22 +43,22 @@ const FEATURES: ShowcaseFeature[] = [
   {
     id: 'voice',
     index: '01',
-    tag: 'Voice interview',
-    title: 'Interview out loud,',
-    titleAccent: 'never in a text box.',
-    desc: 'The AI listens, asks follow-ups, and pushes on your trade-offs like a senior engineer.',
-    cta: 'Start a voice interview',
+    tag: 'Voice',
+    title: 'Say it the way',
+    titleAccent: 'you will in the room.',
+    desc: 'The interviewer listens, follows up, and presses on the decision you skipped past.',
+    cta: 'Start a voice round',
     target: 'interview-types',
     icon: Mic,
   },
   {
     id: 'editor',
     index: '02',
-    tag: 'DSA & Coding',
-    title: 'Write code under',
-    titleAccent: 'real interview pressure.',
-    desc: 'Solve the problem in the editor and explain your approach while you write.',
-    cta: 'Practice DSA',
+    tag: 'Coding',
+    title: 'Write the solution.',
+    titleAccent: 'Defend the approach.',
+    desc: 'Work in the editor and explain each choice while the interviewer is still with you.',
+    cta: 'Practice coding',
     target: 'practice',
     icon: Code2,
     image: {
@@ -70,11 +70,11 @@ const FEATURES: ShowcaseFeature[] = [
   {
     id: 'canvas',
     index: '03',
-    tag: 'System Design',
-    title: 'Design systems,',
-    titleAccent: 'not just functions.',
-    desc: 'Sketch the architecture on a whiteboard and talk through the trade-offs.',
-    cta: 'Try a design round',
+    tag: 'System design',
+    title: 'Draw the system.',
+    titleAccent: 'Name the trade-off.',
+    desc: 'Put the architecture on the whiteboard and walk through what fails when the constraints change.',
+    cta: 'Start a design round',
     target: 'interview-types',
     icon: Layers,
     image: {
@@ -86,11 +86,11 @@ const FEATURES: ShowcaseFeature[] = [
   {
     id: 'chat',
     index: '04',
-    tag: 'Study assistant',
-    title: 'Ask anything,',
-    titleAccent: 'get a roadmap.',
-    desc: 'Ask about a topic or a problem, then turn what you miss into a study plan.',
-    cta: 'Open the assistant',
+    tag: 'Study plan',
+    title: 'Leave with a plan,',
+    titleAccent: 'not a vague next step.',
+    desc: 'After a round, ask what to work on. The gaps become a study plan you can follow.',
+    cta: 'Build a study plan',
     target: 'chat',
     icon: MessageSquare,
     image: {
@@ -129,7 +129,7 @@ const Visual = ({ feature }: { feature: ShowcaseFeature }) => {
             <Volume2 size={20} />
           </span>
           <span className="ff-voice-meta">
-            <b>Aarav · Staff AI Interviewer</b>
+            <b>Aarav · Interviewer</b>
             <i>
               <span className="ff-live-dot" />
               Listening
@@ -402,14 +402,14 @@ export const FeatureShowcase = ({ onNavigate }: FeatureShowcaseProps) => {
   };
 
   return (
-    <section className="ff-section" id="features" aria-label="Platform capabilities">
+    <section className="ff-section" id="features" aria-label="What you practice">
       <div className="ff-header">
         <div className="ff-eyebrow">
           <span className="ff-eyebrow-dot" />
-          <span>Platform capabilities</span>
+          <span>What you practice</span>
         </div>
         <h2 className="ff-heading">
-          Four ways to practice. One <em>interview loop.</em>
+          The whole interview. <em>Not just the answer.</em>
         </h2>
       </div>
 
