@@ -28,10 +28,8 @@ interface ShowcaseFeature {
   title: string;
   titleAccent: string;
   desc: string;
-  stats: Array<{ value: string; label: string }>;
   cta: string;
   target: string;
-  url: string;
   icon: typeof Mic;
   image?: {
     src: string;
@@ -45,79 +43,59 @@ const FEATURES: ShowcaseFeature[] = [
   {
     id: 'voice',
     index: '01',
-    tag: 'Real-Time Voice AI',
-    title: 'Interview out loud,',
-    titleAccent: 'never in a text box.',
-    desc: 'The AI listens, interrupts with follow-ups, and pressure-tests your trade-offs like a senior engineer.',
-    stats: [
-      { value: '420ms', label: 'round-trip' },
-      { value: '<1%', label: 'word error rate' },
-    ],
-    cta: 'Start a voice interview',
+    tag: 'Voice',
+    title: 'Say it the way',
+    titleAccent: 'you will in the room.',
+    desc: 'The interviewer listens, follows up, and presses on the decision you skipped past.',
+    cta: 'Start a voice round',
     target: 'interview-types',
-    url: 'thinkaloud.ai/voice-room',
     icon: Mic,
   },
   {
     id: 'editor',
     index: '02',
-    tag: 'Live Code Arena',
-    title: 'Write code under',
-    titleAccent: 'real screen pressure.',
-    desc: 'A Monaco workspace wired to a sandboxed judge with hidden edge suites and runtime telemetry.',
-    stats: [
-      { value: '3+', label: 'languages' },
-      { value: '14', label: 'hidden suites' },
-    ],
-    cta: 'Open the code arena',
+    tag: 'Coding',
+    title: 'Write the solution.',
+    titleAccent: 'Defend the approach.',
+    desc: 'Work in the editor and explain each choice while the interviewer is still with you.',
+    cta: 'Practice coding',
     target: 'practice',
-    url: 'thinkaloud.ai/arena',
     icon: Code2,
     image: {
       src: '/features/dsa-interview.webp',
-      alt: 'ThinkAloud AI DSA interview workspace — Minimum Window Substring solved in Python under a live timer',
+      alt: 'DSA interview workspace with a coding problem open',
       ar: 1.777,
     },
   },
   {
     id: 'canvas',
     index: '03',
-    tag: 'Systems Whiteboard',
-    title: 'Design systems,',
-    titleAccent: 'not just functions.',
-    desc: 'Sketch caches and shards on an infinite canvas while your QPS math gets stress-tested.',
-    stats: [
-      { value: '120k', label: 'QPS drills' },
-      { value: '99.99%', label: 'uptime target' },
-    ],
-    cta: 'Try a design round',
+    tag: 'System design',
+    title: 'Draw the system.',
+    titleAccent: 'Name the trade-off.',
+    desc: 'Put the architecture on the whiteboard and walk through what fails when the constraints change.',
+    cta: 'Start a design round',
     target: 'interview-types',
-    url: 'thinkaloud.ai/whiteboard',
     icon: Layers,
     image: {
       src: '/features/system-design.webp',
-      alt: 'ThinkAloud AI whiteboard — designing a URL shortener with an API gateway, Redis cache and sharded Postgres',
+      alt: 'System design whiteboard',
       ar: 1.777,
     },
   },
   {
     id: 'chat',
     index: '04',
-    tag: 'AI Chat Agent',
-    title: 'Ask anything,',
-    titleAccent: 'get a roadmap.',
-    desc: 'Pulls problems by topic, walks through intuition and Big-O, then turns every weak spot into a day-by-day study plan.',
-    stats: [
-      { value: '24/7', label: 'doubt solving' },
-      { value: '4-wk', label: 'study roadmaps' },
-    ],
-    cta: 'Chat with the assistant',
+    tag: 'Study plan',
+    title: 'Leave with a plan,',
+    titleAccent: 'not a vague next step.',
+    desc: 'After a round, ask what to work on. The gaps become a study plan you can follow.',
+    cta: 'Build a study plan',
     target: 'chat',
-    url: 'thinkaloud.ai/chat',
     icon: MessageSquare,
     image: {
       src: '/features/ai-chat.webp',
-      alt: 'ThinkAloud AI chat agent recommending DSA practice problems and building a study roadmap',
+      alt: 'Study assistant suggesting practice problems and a roadmap',
       ar: 1.494,
     },
   },
@@ -151,10 +129,10 @@ const Visual = ({ feature }: { feature: ShowcaseFeature }) => {
             <Volume2 size={20} />
           </span>
           <span className="ff-voice-meta">
-            <b>Aarav · Staff AI Interviewer</b>
+            <b>Aarav · Interviewer</b>
             <i>
               <span className="ff-live-dot" />
-              Listening · barge-in ready
+              Listening
             </i>
           </span>
         </div>
@@ -215,11 +193,11 @@ const Visual = ({ feature }: { feature: ShowcaseFeature }) => {
         <div className="ff-chips">
           <span className="ff-chip" style={{ '--i': 0 } as CSSProperties}>
             <Check size={11} strokeWidth={3} />
-            12/12 sample cases · 0.2ms
+            Sample cases passed
           </span>
           <span className="ff-chip accent" style={{ '--i': 1 } as CSSProperties}>
             <ShieldCheck size={11} />
-            14/14 hidden suite · 16.2 MB
+            Hidden cases passed
           </span>
         </div>
       </div>
@@ -245,7 +223,7 @@ const Visual = ({ feature }: { feature: ShowcaseFeature }) => {
               <Server size={13} />
             </span>
             <span className="ff-arch-name">API Gateway</span>
-            <span className="ff-arch-sub">rate limit + TLS</span>
+            <span className="ff-arch-sub">entry point</span>
           </div>
           <span className="ff-arch-arrow" aria-hidden="true">
             →
@@ -256,7 +234,7 @@ const Visual = ({ feature }: { feature: ShowcaseFeature }) => {
                 <Zap size={13} />
               </span>
               <span className="ff-arch-name">Redis Cluster</span>
-              <span className="ff-arch-sub">p99 0.8ms · 85% hit</span>
+              <span className="ff-arch-sub">cache</span>
             </div>
             <div className="ff-arch-node">
               <span className="ff-arch-ic">
@@ -268,13 +246,6 @@ const Visual = ({ feature }: { feature: ShowcaseFeature }) => {
           </div>
         </div>
 
-        <div className="ff-canvas-strip">
-          <span>120k QPS</span>
-          <i aria-hidden="true" />
-          <span>read:write 100:1</span>
-          <i aria-hidden="true" />
-          <span>99.99% uptime</span>
-        </div>
       </div>
     );
   }
@@ -284,9 +255,8 @@ const Visual = ({ feature }: { feature: ShowcaseFeature }) => {
       <div className="ff-score-head">
         <span className="ff-score-verdict">
           <Trophy size={13} />
-          Strong hire · L5
+          Strong hire
         </span>
-        <span className="ff-score-time">debrief in 28s</span>
       </div>
 
       <div className="ff-score-bars">
@@ -432,14 +402,14 @@ export const FeatureShowcase = ({ onNavigate }: FeatureShowcaseProps) => {
   };
 
   return (
-    <section className="ff-section" id="features" aria-label="Platform capabilities">
+    <section className="ff-section" id="features" aria-label="What you practice">
       <div className="ff-header">
         <div className="ff-eyebrow">
           <span className="ff-eyebrow-dot" />
-          <span>Platform capabilities</span>
+          <span>What you practice</span>
         </div>
         <h2 className="ff-heading">
-          Four systems. One <em>interview loop.</em>
+          The whole interview. <em>Not just the answer.</em>
         </h2>
       </div>
 
@@ -476,16 +446,17 @@ export const FeatureShowcase = ({ onNavigate }: FeatureShowcaseProps) => {
                   <p className="ff-desc">{feature.desc}</p>
 
                   <div className="ff-meta">
-                    <div className="ff-stats">
-                      {feature.stats.map((stat) => (
-                        <div key={stat.label} className="ff-stat">
-                          <span className="ff-stat-value">{stat.value}</span>
-                          <span className="ff-stat-label">{stat.label}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <button type="button" className="ff-link" onClick={() => onNavigate(feature.target)}>
+                    <button
+                      type="button"
+                      className="ff-link"
+                      onClick={() => {
+                        if (feature.target === 'chat' && !localStorage.getItem('access_token')) {
+                          onNavigate('signup');
+                          return;
+                        }
+                        onNavigate(feature.target);
+                      }}
+                    >
                       {feature.cta}
                       <ArrowRight size={14} />
                     </button>

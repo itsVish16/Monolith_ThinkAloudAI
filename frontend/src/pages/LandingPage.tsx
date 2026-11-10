@@ -32,8 +32,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               {/* Eyebrow Pill Badge */}
               <div className="hero-pill-badge">
                 <span className="hero-pill-dot" />
-                <span className="hero-pill-label">Real-Time Voice AI Interviewing</span>
-                <span className="hero-pill-meta">&lt; 500ms WebRTC</span>
+                <span className="hero-pill-label">Engineering interview practice</span>
               </div>
 
               {/* Masked Clamped Headline */}
@@ -49,30 +48,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               </h1>
 
               <p className="hero-subhead">
-                Practice coding, explain your reasoning, and master system design with an AI interviewer built for real engineering interviews.
+                An interviewer that listens while you code, design, and explain the decision. Then you review how clearly you made the case.
               </p>
 
               {/* Luxury CTAs */}
               <div className="hero-ctas">
                 <button className="btn-hero-primary" onClick={handleStart}>
-                  <span>{userToken ? 'Go to Workspace' : 'Start Mock Interview'}</span>
+                  <span>{userToken ? 'Go to workspace' : 'Start a mock interview'}</span>
                   <span className="hero-btn-arrow" aria-hidden="true">↗</span>
                 </button>
                 <button className="btn-hero-secondary" onClick={() => onNavigate('interview-types')}>
-                  <span>Explore Interview Tracks</span>
+                  <span>Browse tracks</span>
                   <span className="hero-btn-arrow" aria-hidden="true">↗</span>
                 </button>
               </div>
             </div>
 
-            {/* Right: cinematic video demo box (YouTube embed · animated silver frame) */}
+            {/* Below the headline: cinematic video demo box */}
             <div className="hero-video-box-wrapper">
               <div className="hero-video-glow" aria-hidden="true" />
               <div className="hero-video-frame">
                 <div className="hero-video-inner">
                   <iframe
                     src="https://www.youtube.com/embed/eqOfmtTJD1A"
-                    title="ThinkAloudAI — Product Demo"
+                    title="Featured video"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
@@ -100,7 +99,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               <Sparkles size={17} />
             </span>
             <p className="lp-quote-large">
-              “Interviews don't test memory. They test <span className="lp-quote-serif">structured problem breakdown.</span>”
+              “Interviews don’t reward a memorized answer. They reward <span className="lp-quote-serif">a clear breakdown.</span>”
             </p>
           </div>
         </section>
@@ -137,23 +136,22 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             </div>
             <div className="lp-cta-eyebrow-pill">
               <span className="lp-cta-dot" />
-              <span>Instant AI Access</span>
-              <span className="lp-cta-meta">No Setup Required</span>
+              <span>Before the real round</span>
             </div>
             <h2 className="lp-cta-title">
-              Start your first live mock interview in <span className="lp-cta-accent">60 seconds.</span>
+              Run the round <span className="lp-cta-accent">before it counts.</span>
             </h2>
             <p className="lp-cta-desc">
-              Join thousands of engineers leveling up their coding, system design, and technical communication with real-time voice feedback.
+              Take a coding, design, or voice round. See how clearly you explained the decision, then choose what to practice next.
             </p>
 
             <div className="lp-cta-buttons">
               <button className="btn-hero-primary lp-cta-btn-large" onClick={handleStart}>
-                <span>{userToken ? 'Go to Workspace' : 'Start Mock Interview'}</span>
+                <span>{userToken ? 'Go to workspace' : 'Start a mock interview'}</span>
                 <span className="hero-btn-arrow" aria-hidden="true">↗</span>
               </button>
               <button className="btn-hero-secondary lp-cta-btn-large" onClick={() => onNavigate('interview-types')}>
-                <span>Explore Interview Tracks</span>
+                <span>Browse tracks</span>
                 <span className="hero-btn-arrow" aria-hidden="true">↗</span>
               </button>
             </div>

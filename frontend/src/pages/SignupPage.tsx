@@ -103,8 +103,7 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSignupSucc
         <div className="auth-panel-content">
           <div className="auth-panel-pill">
             <span className="auth-panel-pill-dot" aria-hidden="true" />
-            <span className="auth-panel-pill-label">Real-Time Voice AI Interviewing</span>
-            <span className="auth-panel-pill-meta">WebRTC</span>
+            <span className="auth-panel-pill-label">Voice interviews, out loud</span>
           </div>
 
           <h1 className="auth-panel-headline">
@@ -114,7 +113,7 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSignupSucc
           </h1>
 
           <p className="auth-panel-sub">
-            Create your account and run your first live mock in under a minute — no setup required.
+            Create your account and start a mock interview when you are ready.
           </p>
 
           <ul className="auth-panel-list">
@@ -132,16 +131,6 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSignupSucc
             </li>
           </ul>
 
-          <div className="auth-panel-stats">
-            <div className="auth-panel-stat">
-              <b>500ms</b>
-              <span>voice loop</span>
-            </div>
-            <div className="auth-panel-stat">
-              <b>14</b>
-              <span>hidden test suites</span>
-            </div>
-          </div>
         </div>
       </aside>
 
@@ -164,7 +153,7 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate, onSignupSucc
             {step === 'signup' ? 'Create your account' : 'Verify email'}
           </h2>
           {step === 'signup' && (
-            <p className="auth-card-subtitle">Your voice interview workspace, ready in under a minute.</p>
+            <p className="auth-card-subtitle">Your voice interview workspace.</p>
           )}
           {step === 'verify' && (
             <p className="auth-card-subtitle">Code sent to <span className="auth-highlight-text">{email}</span></p>

@@ -61,9 +61,9 @@
 
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-  gap: clamp(32px, 4vw, 58px);
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(40px, 5vw, 64px);
+  align-items: start;
 }
 
 .hero-copy {
@@ -383,10 +383,9 @@
   }
 }
 
-/* Below tablet: stack the hero — centered copy, video underneath */
+/* Below tablet: center the stacked hero copy */
 @media (max-width: 1024px) {
   .hero-grid {
-    grid-template-columns: minmax(0, 1fr);
     gap: 44px;
   }
 

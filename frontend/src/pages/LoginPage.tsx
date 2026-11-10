@@ -97,8 +97,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
         <div className="auth-panel-content">
           <div className="auth-panel-pill">
             <span className="auth-panel-pill-dot" aria-hidden="true" />
-            <span className="auth-panel-pill-label">Real-Time Voice AI Interviewing</span>
-            <span className="auth-panel-pill-meta">WebRTC</span>
+            <span className="auth-panel-pill-label">Voice interviews, out loud</span>
           </div>
 
           <h1 className="auth-panel-headline">
@@ -126,16 +125,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
             </li>
           </ul>
 
-          <div className="auth-panel-stats">
-            <div className="auth-panel-stat">
-              <b>500ms</b>
-              <span>voice loop</span>
-            </div>
-            <div className="auth-panel-stat">
-              <b>14</b>
-              <span>hidden test suites</span>
-            </div>
-          </div>
         </div>
       </aside>
 
