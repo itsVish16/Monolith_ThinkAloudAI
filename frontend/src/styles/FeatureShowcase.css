@@ -1,10 +1,7 @@
 /* ============================================================================
-   FeatureShowcase — "scrollytelling" / split-scroll section
-   The visual pins (position: sticky) while narrative steps scroll past;
-   each step activates and crossfades the stage content, one by one.
-   Everything lives inside one big "console" box (.ff-console).
-   Palette: indigo "night sky" canvas lit by drifting meteor beams;
-   light ink text, dark product visuals for maximum contrast.
+   FeatureShowcase — split scroll
+   Notes on the left, one pinned picture on the right.
+   The panel is a faint transparent field on the page black.
    ============================================================================ */
 
 .ff-section {
@@ -70,30 +67,8 @@
   color: #e6ecf5;
 }
 
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .ff-heading em,
-  .ff-title em {
-    background: linear-gradient(100deg, #f8fafc 0%, #8fa0b8 36%, #e8eef7 62%, #f8fafc 100%);
-    background-size: 220% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: ffSilverSheen 8s ease-in-out infinite;
-  }
-}
-
 .ff-heading em {
   padding-left: 0.06em;
-}
-
-@keyframes ffSilverSheen {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
 }
 
 /* ---------------------------------------------------------------
@@ -102,135 +77,11 @@
    --------------------------------------------------------------- */
 .ff-console {
   position: relative;
-  /* clip (NOT hidden — hidden would kill the inner position: sticky) keeps the
-     animated backdrop inside the rounded corners */
+  /* clip (not hidden) keeps the rounded edge without breaking position: sticky */
   overflow: clip;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: #12122a; /* base colour under the beam backdrop */
-  box-shadow:
-    0 60px 150px rgba(0, 0, 0, 0.6),
-    0 30px 90px rgba(79, 70, 229, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  isolation: isolate;
-}
-
-/* Thin luminous top edge — sells the "console" feel (glimmers slowly) */
-.ff-console::before {
-  content: '';
-  position: absolute;
-  /* top:0 not -1px — overflow:clip would cut anything outside the padding box */
-  top: 0;
-  left: 12%;
-  right: 12%;
-  height: 1px;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(90deg, transparent, rgba(248, 250, 252, 0.35), transparent);
-  animation: ffEdgeGlimmer 6s ease-in-out infinite;
-}
-
-@keyframes ffEdgeGlimmer {
-  0%,
-  100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-/* ---------------------------------------------------------------
-   Animated beam backdrop (ported from Animata's AnimatedBeam) —
-   an indigo night sky crossed by faint diagonal lanes; roughly a
-   third of the lanes carry drifting meteor streaks. Out-of-flow,
-   so it is NOT a grid item (the 2-column layout is untouched).
-   Transforms/opacity only → GPU-composited, cheap to run.
-   --------------------------------------------------------------- */
-.ff-ab-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  overflow: hidden;
-  pointer-events: none;
-  background: linear-gradient(to top, #312e81, #1e1b4b);
-}
-
-/* Soft teal glow pooling in the lower half */
-.ff-ab-glow {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 9999px;
-  opacity: 0.4;
-  background: radial-gradient(50% 50% at 50% 50%, #072a39 0%, rgb(7, 42, 57) 50%, rgba(7, 42, 57, 0) 100%);
-}
-
-/* Fixed-width lanes → constant 40px spacing, clipped to whatever fits */
-.ff-ab-lane {
-  display: flex;
-  height: 100%;
-  width: 40px;
-  flex-shrink: 0;
-  justify-content: center;
-}
-
-/* Faint diagonal guide line that the meteors ride */
-.ff-ab-line {
-  position: relative;
-  height: 100%;
-  width: 1px;
-  transform: rotate(12deg);
-  background: rgba(243, 244, 246, 0.1);
-}
-
-/* A meteor: width/duration/delay/length/opacity arrive as CSS vars */
-.ff-ab-beam {
-  height: 100%;
-  transform: translateY(-20%) translateX(-50%);
-  animation: ffMeteor var(--duration, 8s) var(--delay, 0s) ease-in-out infinite backwards;
-}
-
-.ff-ab-streak {
-  width: 100%;
-  height: var(--length, 60px);
-  /* tapered comet — a point at the head widening toward the tail */
-  clip-path: polygon(54% 0, 54% 0, 60% 100%, 40% 100%);
-}
-
-.ff-ab-streak-fill {
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(to bottom, rgba(250, 250, 250, 0.5), #f5f5f5 75%, #fafafa);
-}
-
-@keyframes ffMeteor {
-  0% {
-    transform: translateY(-20%) translateX(-50%);
-    opacity: 0;
-  }
-  12% {
-    opacity: var(--opacity, 1);
-  }
-  88% {
-    opacity: var(--opacity, 1);
-  }
-  100% {
-    transform: translateY(300%) translateX(-50%);
-    opacity: 0;
-  }
-}
-
-/* Narrative + stage paint above the backdrop */
-.ff-console .ff-steps,
-.ff-console .ff-stage-col {
-  position: relative;
-  z-index: 1;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 /* ---------------------------------------------------------------
@@ -257,158 +108,46 @@
 
 .ff-step-inner {
   position: relative;
-  z-index: 0; /* own stacking context so the glass card can sit behind the text */
   width: 100%;
-  max-width: 520px;
-  padding: 34px 34px 30px;
-  border-radius: 26px;
+  max-width: 460px;
+  padding: 8px 8px 8px 0;
+  opacity: 0.34;
+  transition: opacity 0.4s var(--ff-ease);
 }
 
-/* Frosted glass card — deepens the sky behind the ink so text always pops */
-.ff-step-inner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  border: 1px solid rgba(226, 232, 240, 0.14);
-  background:
-    linear-gradient(
-      168deg,
-      rgba(255, 255, 255, 0.09) 0%,
-      rgba(255, 255, 255, 0.02) 44%,
-      rgba(255, 255, 255, 0.05) 100%
-    ),
-    linear-gradient(180deg, rgba(15, 16, 42, 0.62), rgba(12, 13, 36, 0.5));
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  backdrop-filter: blur(16px) saturate(150%);
-  box-shadow:
-    0 34px 80px -34px rgba(4, 5, 18, 0.9),
-    0 12px 34px -18px rgba(4, 5, 18, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  opacity: 0;
-  transition: opacity 0.7s var(--ff-ease) 0.05s;
-  pointer-events: none;
-}
-
-/* Luminous top edge — same "console" language as the section shell */
-.ff-step-inner::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 32px;
-  right: 32px;
-  height: 1px;
-  z-index: -1;
-  background: linear-gradient(90deg, transparent, rgba(248, 250, 252, 0.45), transparent);
-  opacity: 0;
-  transition: opacity 0.7s var(--ff-ease) 0.25s;
-  pointer-events: none;
-}
-
-.ff-step.is-active .ff-step-inner::before,
-.ff-step.is-active .ff-step-inner::after {
+.ff-step.is-active .ff-step-inner {
   opacity: 1;
 }
 
-/* Text rises in when its step becomes active */
-.ff-step-inner > * {
-  opacity: 0;
-  transform: translateY(18px);
-  filter: blur(9px);
-  transition:
-    opacity 0.6s var(--ff-ease),
-    transform 0.6s var(--ff-ease),
-    filter 0.6s var(--ff-ease);
+.ff-kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.ff-step.is-active .ff-step-inner > * {
-  opacity: 1;
-  transform: none;
-  filter: blur(0);
-}
-
-.ff-step.is-active .ff-step-inner > *:nth-child(1) {
-  transition-delay: 0.02s;
-}
-.ff-step.is-active .ff-step-inner > *:nth-child(2) {
-  transition-delay: 0.08s;
-}
-.ff-step.is-active .ff-step-inner > *:nth-child(3) {
-  transition-delay: 0.15s;
-}
-.ff-step.is-active .ff-step-inner > *:nth-child(4) {
-  transition-delay: 0.23s;
-}
-.ff-step.is-active .ff-step-inner > *:nth-child(5) {
-  transition-delay: 0.32s;
-}
-.ff-step.is-active .ff-step-inner > *:nth-child(6) {
-  transition-delay: 0.4s;
-}
-
-/* Oversized outlined index number */
-.ff-ghost {
-  position: absolute;
-  top: -70px;
-  left: -18px;
+.ff-index {
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: clamp(4.2rem, 7.2vw, 6.6rem);
-  font-weight: 700;
-  line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(226, 232, 240, 0.16);
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.46);
 }
 
 .ff-tag {
-  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #eef3fa;
-  margin-bottom: 20px;
-  padding: 7px 15px 7px 12px;
-  border-radius: 9999px;
-  border: 1px solid transparent;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)) padding-box,
-    linear-gradient(
-        120deg,
-        rgba(248, 250, 252, 0.55),
-        rgba(148, 163, 184, 0.12) 45%,
-        rgba(248, 250, 252, 0.4)
-      )
-      border-box;
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 16px rgba(4, 6, 20, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .ff-tag svg {
-  color: var(--ff-silver-bright);
-}
-
-.ff-step.is-active .ff-tag svg {
-  animation: ffTagGlow 3.2s ease-in-out infinite;
-}
-
-@keyframes ffTagGlow {
-  0%,
-  100% {
-    opacity: 0.75;
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.08);
-  }
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .ff-title {
@@ -420,8 +159,7 @@
   letter-spacing: -0.032em;
   color: #ffffff;
   margin: 0 0 18px;
-  max-width: 22ch;
-  filter: drop-shadow(0 12px 34px rgba(6, 8, 24, 0.4));
+  max-width: 20ch;
 }
 
 .ff-title em {
@@ -580,15 +318,6 @@
   flex-direction: column;
 }
 
-.ff-stage-glow {
-  position: absolute;
-  inset: 6% -8% -6% -8%;
-  background: radial-gradient(55% 55% at 50% 45%, rgba(199, 210, 254, 0.12), transparent 72%);
-  filter: blur(52px);
-  pointer-events: none;
-  z-index: 0;
-}
-
 /* Frameless stage — the photo (or mock card) floats directly in the box */
 .ff-stage {
   position: relative;
@@ -614,16 +343,16 @@
   place-items: center;
   padding: 0;
   opacity: 0;
-  transform: translateY(26px) scale(0.975);
+  transform: translateY(8px);
   transition:
-    opacity 0.6s var(--ff-ease),
-    transform 0.6s var(--ff-ease);
+    opacity 0.4s var(--ff-ease),
+    transform 0.4s var(--ff-ease);
   pointer-events: none;
 }
 
 .ff-stage-visual.active {
   opacity: 1;
-  transform: none;
+  transform: translateY(0);
   pointer-events: auto;
 }
 
@@ -641,13 +370,11 @@
   width: min(100%, calc(100cqh * var(--ff-ar, 1.6)));
   max-width: 720px;
   aspect-ratio: var(--ff-ar, 1.6);
-  border-radius: 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background: #0b0c10;
   overflow: hidden;
-  box-shadow:
-    0 34px 90px rgba(0, 0, 0, 0.62),
-    0 0 0 1px rgba(255, 255, 255, 0.08),
-    0 0 80px rgba(165, 180, 252, 0.08);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.45);
 }
 
 .ff-shot img {
@@ -655,54 +382,20 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(1);
 }
 
-/* --- Animated silver ring around the screenshots ---
-   A masked conic gradient draws only the 2px border ring;
-   two brushed-silver arcs travel around it while the step is active. */
-@property --ff-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
+.ff-stage-visual.active .ff-shot img,
+.ff-step.is-active .ff-shot img {
+  animation: ffShotSettle 0.7s var(--ff-ease) both;
 }
 
-.ff-shot::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border-radius: inherit;
-  padding: 2px;
-  background: conic-gradient(
-    from var(--ff-angle),
-    rgba(255, 255, 255, 0.2) 0deg,
-    rgba(248, 250, 252, 0.98) 38deg,
-    rgba(255, 255, 255, 0.2) 92deg,
-    rgba(255, 255, 255, 0.2) 188deg,
-    rgba(148, 163, 184, 0.92) 236deg,
-    rgba(255, 255, 255, 0.2) 292deg,
-    rgba(255, 255, 255, 0.2) 360deg
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* The ring only animates while its step is on screen */
-.ff-stage-visual.active .ff-shot::before,
-.ff-step.is-active .ff-shot::before {
-  animation: ffRingSpin 6s linear infinite;
-}
-
-@keyframes ffRingSpin {
+@keyframes ffShotSettle {
+  from {
+    transform: scale(1.045);
+  }
   to {
-    --ff-angle: 360deg;
+    transform: scale(1);
   }
 }
 
@@ -757,8 +450,7 @@
 }
 
 .ff-progress-seg.active {
-  background: linear-gradient(90deg, #cbd5e1, #f8fafc);
-  box-shadow: 0 0 12px rgba(226, 232, 240, 0.5);
+  background: #ffffff;
 }
 
 /* ---------------------------------------------------------------
@@ -795,19 +487,7 @@
   display: grid;
   place-items: center;
   color: #0b0c10;
-  background: radial-gradient(circle at 32% 28%, #ffffff, var(--ff-steel) 80%);
-  box-shadow: 0 0 20px var(--ff-silver-soft), 0 0 0 5px rgba(255, 255, 255, 0.04);
-  animation: ffOrbPulse 2.8s ease-in-out infinite;
-}
-
-@keyframes ffOrbPulse {
-  0%,
-  100% {
-    box-shadow: 0 0 16px var(--ff-silver-soft), 0 0 0 5px rgba(255, 255, 255, 0.04);
-  }
-  50% {
-    box-shadow: 0 0 28px rgba(226, 232, 240, 0.18), 0 0 0 9px rgba(255, 255, 255, 0.05);
-  }
+  background: #f4f4f5;
 }
 
 .ff-voice-meta {
@@ -837,18 +517,6 @@
   height: 6px;
   border-radius: 50%;
   background: #34d399;
-  box-shadow: 0 0 8px rgba(52, 211, 153, 0.7);
-  animation: ffLivePulse 1.8s ease-in-out infinite;
-}
-
-@keyframes ffLivePulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
-  }
 }
 
 .ff-wave-row {
@@ -1222,11 +890,6 @@
     display: block;
     margin-top: 26px;
   }
-
-  .ff-ghost {
-    top: -56px;
-    left: -10px;
-  }
 }
 
 @media (max-width: 640px) {
@@ -1250,16 +913,6 @@
   .ff-step-inner {
     padding: 26px 22px 24px;
     border-radius: 20px;
-  }
-
-  .ff-step-inner::after {
-    left: 20px;
-    right: 20px;
-  }
-
-  .ff-ghost {
-    top: -48px;
-    left: -6px;
   }
 
   .ff-stat {
@@ -1313,36 +966,21 @@
    Reduced motion
    --------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .ff-step-inner > *,
-  .ff-step-inner::before,
-  .ff-step-inner::after,
+  .ff-step-inner,
   .ff-stage-visual,
+  .ff-shot img,
   .ff-chip,
-  .ff-shot::before {
-    transition: none !important;
-    animation: none !important;
-  }
-
-  .ff-wave-bar,
-  .ff-voice-orb,
-  .ff-live-dot,
-  .ff-heading em,
-  .ff-title em,
-  .ff-tag svg {
-    animation: none !important;
-  }
-
   .ff-bar-fill {
     transition: none !important;
-  }
-
-  /* Console backdrop: hide the meteor beams entirely */
-  .ff-ab-beam {
     animation: none !important;
-    opacity: 0 !important;
   }
 
-  .ff-console::before {
+  .ff-stage-visual,
+  .ff-shot img {
+    transform: none !important;
+  }
+
+  .ff-wave-bar {
     animation: none !important;
   }
 }
