@@ -4,6 +4,10 @@
   min-height: 100vh;
 }
 
+.app-root-layout.is-landing {
+  background: #000000;
+}
+
 .app-main-content {
   flex: 1;
   display: flex;

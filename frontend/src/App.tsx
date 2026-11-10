@@ -396,7 +396,7 @@ function App() {
   }
 
   return (
-    <div className="app-root-layout">
+    <div className={currentPage === 'landing' ? 'app-root-layout is-landing' : 'app-root-layout'}>
       {showLayout && <Header currentPage={currentPage} onNavigate={handleNavigate} user={user} onLogout={handleLogout} />}
       <main className="app-main-content">
         <ErrorBoundary>

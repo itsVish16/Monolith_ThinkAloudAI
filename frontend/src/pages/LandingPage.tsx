@@ -1,7 +1,6 @@
 import React from 'react';
 import { Sparkles } from 'lucide-react';
 import { FeatureShowcase } from '../components/landing/FeatureShowcase';
-import { BackgroundBeams } from '../components/landing/BackgroundBeams';
 import GradientASCII from '../components/landing/GradientASCII';
 import '../styles/LandingPage.css';
 
@@ -22,12 +21,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="landing-root">
-      {/* Animated beams backdrop — curved gradient light streaks sweeping
-          behind the whole page */}
-      <div className="lp-beams-bg" aria-hidden="true">
-        <BackgroundBeams />
-      </div>
-
       <main className="lp-container">
         {/* ============================================================
             HERO SECTION (Editorial Clamped Big-Type + Tactile Textures)
